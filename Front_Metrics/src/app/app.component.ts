@@ -74,8 +74,8 @@ export class AppComponent implements OnInit {
 
   // Is authenticated
   getAccountName() {
-    this.authService.instance.getActiveAccount()?.username;
-    return this.authService.instance.getActiveAccount()?.username;
+    this.authService.instance.getActiveAccount()?.name;
+    return this.authService.instance.getActiveAccount()?.name;
   }
 
 }
