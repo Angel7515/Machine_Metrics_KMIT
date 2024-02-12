@@ -1,0 +1,56 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.title{
+    color: #4aff13;
+}
+
+.container {
+    /* Medidas para abarcar completamente la pantalla */
+    top: 0;
+    left: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../../../assets/login/Cimmyt.jpg'); /* Agrega la ruta de tu imagen de fondo */
+}
+
+.content {
+    text-align: center;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6); /* Cambia el último valor para ajustar la opacidad */
+    padding: 20px; /* Ajusta el tamaño del padding según sea necesario */
+    border-radius: 10px; /* Ajusta el radio del borde si deseas esquinas redondeadas */
+}
+
+.btn {
+    display: inline-block;
+    background-color: #2a860e;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+    padding: 17.5px 35px; /* Ajusta el padding para hacer el botón más grande */
+    font-size: 20px; /* Ajusta el tamaño del texto */
+}
+
+.btn:hover {
+    background-color: #2379d6;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 20px;
+    }
+}

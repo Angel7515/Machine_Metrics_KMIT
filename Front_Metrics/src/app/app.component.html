@@ -1,0 +1,9 @@
+<!-- Muestra el componente de login solo si el usuario no está autenticado -->
+<ng-container *ngIf="!isAuthenticated()">
+  <app-login></app-login>
+</ng-container>
+
+<!-- Muestra el componente de inicio solo si el usuario está autenticado -->
+<ng-container *ngIf="isAuthenticated()">
+  <router-outlet></router-outlet>
+</ng-container>
