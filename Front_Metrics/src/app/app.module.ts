@@ -12,6 +12,7 @@ import { MSAL_INSTANCE, MsalModule, MsalService } from '@azure/msal-angular';
 import { IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
 import { RouterModule } from '@angular/router';
 import { Environment } from './environments/environment';
+import { ProjectCreateComponent } from './components/project-create/project-create.component';
 
 export function MSSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -27,7 +28,8 @@ export function MSSALInstanceFactory(): IPublicClientApplication {
     HomeComponent,
     LoginComponent,
     NavBarComponent,
-    AppComponent
+    AppComponent,
+    ProjectCreateComponent
   ],
   imports: [
     BrowserModule,

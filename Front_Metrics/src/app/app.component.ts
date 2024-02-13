@@ -7,6 +7,7 @@ import { AuthenticationResult, IPublicClientApplication, PublicClientApplication
 import { Environment } from './environments/environment';
 import { RouterModule, Router } from '@angular/router';
 import { Inject } from '@angular/core';
+import { AuthServiceTokenService } from './services/auth-service-token.service';
 
 export function MSSALInstanceFactory(): IPublicClientApplication {
   const pca = new PublicClientApplication({
@@ -52,11 +53,13 @@ export class AppComponent implements OnInit {
   }
 
 
-  constructor(@Inject(MSAL_INSTANCE) private msalInstance: IPublicClientApplication, private authService: MsalService, public router: Router) { }
+  constructor(@Inject(MSAL_INSTANCE) private msalInstance: IPublicClientApplication, private authService: MsalService, public router: Router, public authServiceToken: AuthServiceTokenService) { }
 
   // Login
   login() {
     this.authService.loginPopup().subscribe((response: AuthenticationResult) => {
+      const accessToken = response.accessToken;
+      this.authServiceToken.setAccessToken(accessToken);
       this.authService.instance.setActiveAccount(response.account);
     });
   }

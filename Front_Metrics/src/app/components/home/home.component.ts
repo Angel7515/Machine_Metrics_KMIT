@@ -4,6 +4,7 @@ import { MSAL_INSTANCE,MsalService } from '@azure/msal-angular';
 import { IPublicClientApplication } from '@azure/msal-browser';
 import { Inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthServiceTokenService } from '../../services/auth-service-token.service';
 
 @Component({
   selector: 'app-home',
@@ -12,8 +13,14 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent {
 
-  constructor(@Inject(MSAL_INSTANCE) private msalInstance: IPublicClientApplication, private authService: MsalService, public router: Router) { }
+  accessToken: string='';
 
+  constructor(@Inject(MSAL_INSTANCE) private msalInstance: IPublicClientApplication, private authService: MsalService, public router: Router, private authServiceToken:AuthServiceTokenService) { }
+
+  ngOnInit(): void {
+    // Obtener el token de acceso desde el servicio
+    this.accessToken = this.authServiceToken.getAccessToken();
+  }
   
   getAccountName() {
     let name = this.authService.instance.getActiveAccount()?.name;

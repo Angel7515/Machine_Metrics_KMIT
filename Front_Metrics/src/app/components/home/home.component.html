@@ -1,6 +1,11 @@
-<app-nav-bar></app-nav-bar>
 <h1>Welcome {{getAccountName()}}</h1>
 <div class="container">
+    <br>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search by Project name or person Responsible"
+            aria-label="search by project name or person responsible" aria-describedby="button-addon2">
+        <button routerLink="/project" type="button" class="btn btn-warning">CREATE A NEW PROJECT</button>
+    </div>
     <br>
     <table class="table table-hover">
         <thead>

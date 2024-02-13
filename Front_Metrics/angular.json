@@ -70,21 +70,21 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "Front_Metrics:build",
+            "ssl": true,
+            "sslKey": "/home/angelayala/MonitorApp/Machine_Metrics_KMIT/Front_Metrics/src/server.key",
+            "sslCert": "/home/angelayala/MonitorApp/Machine_Metrics_KMIT/Front_Metrics/src/server.cert"
+          },
           "configurations": {
             "production": {
-              "buildTarget": "Front_Metrics:build:production"
+              "browserTarget": "Front_Metrics:build:production"
             },
             "development": {
-              "buildTarget": "Front_Metrics:build:development"
+              "browserTarget": "Front_Metrics:build:development"
             }
           },
           "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "Front_Metrics:build"
-          }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
