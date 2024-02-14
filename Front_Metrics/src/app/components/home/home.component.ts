@@ -18,8 +18,8 @@ export class HomeComponent {
   constructor(@Inject(MSAL_INSTANCE) private msalInstance: IPublicClientApplication, private authService: MsalService, public router: Router, private authServiceToken:AuthServiceTokenService) { }
 
   ngOnInit(): void {
-    // Obtener el token de acceso desde el servicio
     this.accessToken = this.authServiceToken.getAccessToken();
+    console.log(this.accessToken)
   }
   
   getAccountName() {
