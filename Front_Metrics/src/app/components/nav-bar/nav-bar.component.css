@@ -1,0 +1,11 @@
+/* Estilo para el enlace activo en la barra de navegación */
+.navbar-nav .nav-item .nav-link.active {
+    background-color: #28a745; /* Cambia el color de fondo cuando está activo */
+    
+}
+
+/* Estilo para el enlace hover en la barra de navegación */
+.navbar-nav .nav-item .nav-link:hover {
+    background-color: #ff7627; /* Cambia el color de fondo al pasar el ratón */
+    
+}

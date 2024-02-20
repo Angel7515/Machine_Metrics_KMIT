@@ -1,0 +1,60 @@
+<div class="container">
+    <br>
+    <h1>Users list</h1>
+    <br>
+    <div class="form-group">
+        <label class="col-form-label mt-4" for="inputDefault"><strong>Search User:</strong></label>
+        <input type="text" class="form-control" placeholder="Enter username by last name or your corporate email"
+            id="inputDefault" (input)="onSearch($event)">
+    </div>
+    <br>
+    <!-- Nueva tabla para mostrar usuarios encontrados -->
+    <table class="table table-hover" *ngIf="foundUsers.length > 0">
+        <thead>
+            <tr class="table-active">
+                <th scope="col">User(s) found</th>
+                <th scope="col">Register User as:</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of foundUsers">
+                <td><strong>{{ user.full_name }}</strong></td>
+                <td>
+                    <div class="input-group mb-3">
+                        <button class="btn btn-primary" [disabled]="user.user_role === 'LEADER'" (click)="createUser(user.full_name, 'LEADER')">LEADER</button>
+                        <button class="btn btn-warning" [disabled]="user.user_role === 'PARTICIPANT'" (click)="createUser(user.full_name, 'PARTICIPANT')">PARTICIPANT</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+
+    <!-- end  -->
+    <br>
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-active">
+                <th scope="col">Full Name</th>
+                <th scope="col">Current Role</th>
+                <th scope="col">Option</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users">
+                <td><strong>{{ user.full_name }}</strong></td>
+                <td><strong>{{ user.user_role }}</strong></td>
+                <td>
+                    <div class="input-group mb-3">
+                        <button class="btn btn-success" [disabled]="user.user_role === 'ADMIN'"
+                            (click)="confirmUpdate(user.full_name, 'ADMIN')">ADMIN</button>
+                        <button class="btn btn-primary" [disabled]="user.user_role === 'LEADER'"
+                            (click)="confirmUpdate(user.full_name, 'LEADER')">LEADER</button>
+                        <button class="btn btn-warning" [disabled]="user.user_role === 'PARTICIPANT'"
+                            (click)="confirmUpdate(user.full_name, 'PARTICIPANT')">PARTICIPANT</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

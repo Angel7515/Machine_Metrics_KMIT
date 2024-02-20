@@ -3,6 +3,15 @@ export const Environment = {
     CLIENT_ID: 'e0f0e1e2-8dfc-41c8-bc60-1cb97b2bdc98',
     REDIRECT_URI: 'https://localhost:4200/',
     AUTHORITY: "https://login.microsoftonline.com/da1068b1-9955-40c3-a728-451a21599bb3",
+    API_URL: 'http://localhost:3000/',
+
+    projectId: '', // Variable para almacenar el ID
+    getProjectId: () => Environment.projectId, // Función getter para obtener el ID
+    setProjectId: (id: string) => { Environment.projectId = id; }, // Función setter para establecer el ID
+
+    Token: '', // Variable para almacenar el ID
+    getToken: () => Environment.Token, // Función getter para obtener el ID
+    setToken: (accesstoken: string) => { Environment.Token = accesstoken; } // Función setter para establecer el ID
 }
 
 

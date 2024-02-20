@@ -1,0 +1,56 @@
+<div class="container" *ngIf="projectDetails && projectDetails.length > 0">
+    <h1>Edit the Project</h1>
+
+    <div class="form-group">
+        <label class="col-form-label mt-4" for="projectName"><strong>Title or name:</strong></label>
+        <input type="text" class="form-control" placeholder="Enter the title or name of your project to register"
+            id="projectName" [value]="projectDetails[0]?.project_name">
+    </div>
+    <br>
+    <div class="status_projects">
+        <label for="statusSelect">Status:</label>
+        <select id="statusSelect" [(ngModel)]="selectedStatus">
+            <option value="CREATED">CREATED</option>
+            <option value="PENDING">PENDING</option>
+            <option value="ACTIVE">ACTIVE</option>
+            <option value="COMPLETE">COMPLETE</option>
+        </select>
+    </div>
+    <br>
+    <div class="date_start">
+        <label class="col-form-label mt-4" for="startDate"><strong>Start Date ( old ): </strong></label>
+        <p>Created Date: {{ projectDetails[0].start_date }}</p>
+        <label class="col-form-label mt-4" for="startDate"><strong>Start Date ( new ): </strong></label>
+        <input type="date" id="startDate" >
+    </div>
+    <br>
+    <div class="date_end" *ngIf="selectedStatus === 'COMPLETE'">
+        <label class="col-form-label mt-4" for="endDate"><strong>End Date:</strong></label>
+        <input type="date" id="endDate" >
+    </div>
+    <br>
+    <div class="form-group">
+        <label for="projectDescription" class="form-label mt-4"><strong>Description:</strong></label>
+        <textarea class="form-control" id="projectDescription" rows="3" [value]="projectDetails[0]?.description"></textarea>
+    </div>
+    <br>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search Participant" aria-label="Search Participant"
+            aria-describedby="button-addon2">
+        <button class="btn btn-primary" type="button" id="button-addon2">Search</button>
+    </div>
+    <div class="alert alert-dismissible alert-light">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Heads up!</strong> This <a href="#" class="alert-link">alert needs your attention</a>, but it's not
+        super important.
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn btn-outline-danger" routerLink="/home">Cancel</button>
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-outline-success" (click)="uploadProjectData()">Upload</button>
+        </div>
+    </div>
+</div>

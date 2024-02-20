@@ -1,0 +1,10 @@
+<div class="container" style="max-width: 100%;">
+    <div class="content">
+        <h1 class="title">UPS!! We're sorry {{name}}</h1>
+        <p> It seems that your profile is not registered or does not have sufficient permissions to access this site!
+            Contact your Area Leader to review the status of your profile.</p>
+        <br>
+        <p>Greetings!</p>
+        <a *ngIf="isAuthenticated()" (click)="logout()" class="btn">Sign Out</a>
+    </div>
+</div>

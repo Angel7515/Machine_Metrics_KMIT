@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +15,19 @@ import { RouterModule } from '@angular/router';
 import { Environment } from './environments/environment';
 import { ProjectCreateComponent } from './components/project-create/project-create.component';
 import { ProjectViewComponent } from './components/project-view/project-view.component';
+
+import { HttpClientModule } from '@angular/common/http';
+
+/* filter */
+import { FilterPipe } from './components/filter.pipe';
+import { ProjectEditComponent } from './components/project-edit/project-edit.component';
+import { UserComponent } from './components/user/user.component';
+import { KpisComponent } from './components/kpis/kpis.component';
+import { KpisViewComponent } from './components/kpis-view/kpis-view.component';
+import { KpisPerformanceComponent } from './components/kpis-performance/kpis-performance.component';
+import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+
 
 export function MSSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -31,11 +45,20 @@ export function MSSALInstanceFactory(): IPublicClientApplication {
     NavBarComponent,
     AppComponent,
     ProjectCreateComponent,
-    ProjectViewComponent
+    ProjectViewComponent,
+    FilterPipe,
+    ProjectEditComponent,
+    UserComponent,
+    KpisComponent,
+    KpisViewComponent,
+    KpisPerformanceComponent,
+    AccessDeniedComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
+    FormsModule
   ],
   providers: [
     provideClientHydration(),
@@ -44,6 +67,7 @@ export function MSSALInstanceFactory(): IPublicClientApplication {
       useFactory: MSSALInstanceFactory
     },
     MsalService,
+    provideAnimationsAsync(),
   ],
   bootstrap: [AppComponent]
 })

@@ -7,9 +7,13 @@ import { AuthenticationResult, IPublicClientApplication, PublicClientApplication
 import { Environment } from './environments/environment';
 import { RouterModule, Router } from '@angular/router';
 import { Inject } from '@angular/core';
-import { AuthServiceTokenService } from './services/auth-service-token.service';
+import { AuthServiceTokenService } from './services/AuthServiceToken/auth-service-token.service';
+
+
+import { CheckUserService } from './services/CheckUsers/check-user.service';
 
 export function MSSALInstanceFactory(): IPublicClientApplication {
+
   const pca = new PublicClientApplication({
     auth: {
       clientId: Environment.CLIENT_ID,
@@ -34,26 +38,51 @@ export function MSSALInstanceFactory(): IPublicClientApplication {
 })
 export class AppComponent implements OnInit {
   title = 'Front_Metrics';
+  showNavigationBar: boolean = true;
 
   async ngOnInit() {
     await this.msalInstance.initialize();
     this.handleRedirect();
   }
-
+  
   public handleRedirect() {
     this.msalInstance.handleRedirectPromise().then(() => {
       if (this.authService.instance.getAllAccounts().length > 0) {
-        // Usuario ya ha iniciado sesión
-        this.router.navigate(['home']);
-        console.log("Usuario ya ha iniciado sesión");
-      }else{
+        const username: any = this.getAccountName();
+        this.checkUserService.checkUserAccess(username).subscribe(
+          (response) => {
+            if (response.accessGranted) {
+              this.router.navigate(['home']);
+            } else {
+              // Redirigir al componente de acceso denegado
+              this.router.navigate(['access-denied']);
+            }
+          },
+          (error) => {
+            if (error.accessGranted === false) {
+              // Acceso denegado
+              this.router.navigate(['access-denied']);
+            } else {
+              console.error('Error:', error);
+              // Manejar otros errores según corresponda
+            }
+          }
+        );
+      } else {
         this.router.navigate(['login']);
       }
     });
   }
 
 
-  constructor(@Inject(MSAL_INSTANCE) private msalInstance: IPublicClientApplication, private authService: MsalService, public router: Router, public authServiceToken: AuthServiceTokenService) { }
+
+  constructor(
+    @Inject(MSAL_INSTANCE) private msalInstance: IPublicClientApplication,
+    private authService: MsalService,
+    public router: Router,
+    public authServiceToken: AuthServiceTokenService,
+    private checkUserService: CheckUserService
+  ) { }
 
   // Login
   login() {
@@ -77,7 +106,6 @@ export class AppComponent implements OnInit {
 
   // Is authenticated
   getAccountName() {
-    this.authService.instance.getActiveAccount()?.name;
     return this.authService.instance.getActiveAccount()?.name;
   }
 
