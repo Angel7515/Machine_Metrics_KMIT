@@ -1,1 +1,37 @@
-<p>kpis-performance works!</p>
+<div class="container">
+    <h1>KPI Performance</h1>
+    <div>
+        <p><strong>ID:</strong> {{ kpiData.idkpis }}</p>
+        <p><strong>Name:</strong> {{ kpiData.name }}</p>
+        <p><strong>Type:</strong> {{ kpiData.type_kp }}</p>
+        <p><strong>Importance:</strong> {{ kpiData.importance }}</p>
+        <!-- Aquí puedes mostrar más detalles de la KPI según sea necesario -->
+        <button routerLink="/newperformance" [queryParams]="{ idkpis: kpiData.idkpis, name: kpiData.name, type_kp: kpiData.type_kp, importance: kpiData.importance }" class="btn btn-primary">New Performance</button>
+    </div>
+    <br>
+    <!-- Tabla de performance -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID Performance</th>
+                <th>KPI Number</th>
+                <th>KPI String</th>
+                <th>KPI String Percentage</th>
+                <th>Description</th>
+                <th>Date Upload</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let performance of performances">
+                <td>{{ performance.idperformance }}</td>
+                <td>{{ performance.kpi_num }}</td>
+                <td>{{ performance.kpi_str }}</td>
+                <td>{{ performance.kpi_str_porcent }}</td>
+                <td>{{ performance.kpi_descripcion }}</td>
+                <td>{{ performance.date_upload }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+</div>

@@ -11,15 +11,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let project of projects | filter: searchTerm"
-                (click)="navigateToKpisView(project.idproject)">
-                <th scope="row">{{ project.idproject }}</th>
-                <td
-                    style="max-width: 250px; max-height: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                    {{ project.project_name }}
-                </td>
-                <td>{{ project.status_project }}</td>
-            </tr>
+            <ng-container>
+                <tr *ngFor="let project of filteredProjects | filter: searchTerm" (click)="navigateToKpisView(project.idproject, project.project_name)">
+                    <th scope="row">{{ project.idproject }}</th>
+                    <td style="max-width: 250px; max-height: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        {{ project.project_name }}
+                    </td>
+                    <td>{{ project.status_project }}</td>
+                </tr>
+            </ng-container>
         </tbody>
     </table>
 </div>

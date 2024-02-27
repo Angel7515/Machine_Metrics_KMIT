@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../services/AllUsers/users.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, timer } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 import { AuthServiceTokenService } from '../../services/AuthServiceToken/auth-service-token.service';
 import { UpdatePersonService } from '../../services/UpdatePerson/update-person.service';
 import { CreatePersonsService } from '../../services/CreatePerson/create-persons.service';
+
+let TokenAccess: string = '';
 
 @Component({
   selector: 'app-user',
@@ -15,6 +18,9 @@ export class UserComponent implements OnInit {
 
   users: any[] = [];
   foundUsers: any[] = []; // Nueva matriz para almacenar usuarios encontrados durante la búsqueda
+  
+  /* alert user */
+  showAlert = false;
 
   constructor(
     private userService: UsersService,
@@ -26,6 +32,7 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUsers();
+    TokenAccess = this.authserviceToken.getAccessToken();
   }
 
   getUsers(): void {
@@ -40,39 +47,22 @@ export class UserComponent implements OnInit {
     this.userService.getUsers().subscribe(users => this.users = users);
   }
 
-  /* onSearch(event: any): void {
-    const query = event.target.value;
-    if (query && query.trim() !== '') {
-      this.searchUsers(query).subscribe(
-        (data: any) => {
-          this.foundUsers = data.value.map((user: any) => ({
-            full_name: user.displayName,
-            user_role: '' // Debes obtener el rol del usuario de tu fuente de datos
-          }));
-        },
-        (error) => {
-          console.error('Error:', error);
-        }
-      );
-    } else {
-      // Si el campo de búsqueda está vacío, mostrar todos los usuarios nuevamente
-      this.foundUsers = [];
-    }
-  } */
   onSearch(event: any): void {
     const query = event.target.value;
     if (query && query.trim() !== '') {
       this.searchUsers(query).subscribe(
         (data: any) => {
-          const uniqueUsers: { full_name: string, user_role: string }[] = []; // Especificar el tipo de la variable uniqueUsers
+          const uniqueUsers: { id:string, full_name: string, user_role: string }[] = []; // Especificar el tipo de la variable uniqueUsers
           const foundUserNames = new Set(); // Conjunto para verificar nombres de usuario duplicados
   
           data.value.forEach((user: any) => {
-            // Verificar si el nombre de usuario ya existe en el conjunto
-            if (!foundUserNames.has(user.displayName)) {
-              // Si no existe, agregar el nombre de usuario al conjunto y al arreglo de usuarios únicos
+            // Verificar si el nombre de usuario ya existe en la lista de usuarios
+            const existingUser = this.users.find(u => u.full_name === user.displayName);
+            if (!existingUser && !foundUserNames.has(user.displayName)) {
+              // Si no existe en la lista de usuarios y en el conjunto de nombres, agregarlo
               foundUserNames.add(user.displayName);
               uniqueUsers.push({
+                id: user.id,
                 full_name: user.displayName,
                 user_role: '' // Obtén el rol del usuario de tu fuente de datos
               });
@@ -92,14 +82,11 @@ export class UserComponent implements OnInit {
     }
   }
   
-  
-
-  private TokenAccess: string = this.authserviceToken.getAccessToken();
   private apiUrl = 'https://graph.microsoft.com/v1.0/users';
 
   searchUsers(query: string): Observable<any> {
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.TokenAccess}`
+      'Authorization': `Bearer ${TokenAccess}`
     });
 
     const params = new HttpParams().set('$filter', `startswith(mail, '${query}') or startswith(displayName, '${query}')`);
@@ -118,7 +105,8 @@ export class UserComponent implements OnInit {
   updateRole(fullName: string, newRole: string): void {
     this.personService.updateRole(fullName, newRole).subscribe(
       response => {
-        this.getUsers();
+        // Recargar la página en la ruta '/dbusers'
+        window.location.href = '/dbusers';
       },
       error => {
         console.error('Error al actualizar usuario:', error);
@@ -127,14 +115,16 @@ export class UserComponent implements OnInit {
   }
 
   /* create user */
-  createUser(fullName: string, userRole: string): void {
-    this.createPerson.createNewUser(fullName, userRole).subscribe(
-      response => {
-        console.log('Usuario creado correctamente', fullName, 'con el rol de : ', userRole);
-      },
-      error => {
-        console.error('Error al crear usuario:', error);
-      }
-    );
+  registerAs(idactive:string,fullName: string, role: string): void {
+    console.log(idactive,' ----- ', fullName, ' ---- ', role);
+    this.createPerson.createNewUser(idactive,fullName, role).pipe(
+      tap(() => this.showAlert = true), // Mostrar la alerta
+      switchMap(() => timer(2000)) // Esperar 2 segundos
+    ).subscribe(() => {
+      this.showAlert = false; // Ocultar la alerta después de 2 segundos
+      this.getUsers(); // Obtener usuarios actualizados
+    }, error => {
+      console.error('Error al crear usuario:', error);
+    });
   }
 }

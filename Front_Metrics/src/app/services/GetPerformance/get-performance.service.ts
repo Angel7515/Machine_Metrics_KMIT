@@ -6,14 +6,15 @@ import { Environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class CreatePersonsService {
+export class GetPerformanceService {
 
-  private api = Environment.API_URL+'dbcreateperson'
+  private baseUrl = Environment.API_URL+'dbgetperformance'; // URL base para las solicitudes
 
   constructor(private http: HttpClient) { }
 
-  createNewUser(idactive:string, fullName: string, userRole: string): Observable<any> {
-    return this.http.post<any>(`${this.api}/create`, {idactive, fullName, userRole });
+  // Función para obtener todas las entradas de performance
+  getAllPerformances(): Observable<any> {
+    return this.http.get(`${this.baseUrl}`);
   }
   
 }

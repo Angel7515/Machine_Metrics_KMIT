@@ -2,10 +2,17 @@
     <br>
     <h1>Users list</h1>
     <br>
+    <!-- solo cuando se crea un usuario nuevo  -->
     <div class="form-group">
         <label class="col-form-label mt-4" for="inputDefault"><strong>Search User:</strong></label>
         <input type="text" class="form-control" placeholder="Enter username by last name or your corporate email"
             id="inputDefault" (input)="onSearch($event)">
+    </div>
+    <!-- end user new -->
+    <br>
+    <div class="alert alert-dismissible alert-success" role="alert" *ngIf="showAlert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <h3><strong>Well done!</strong> You have successfully added a new person.</h3>
     </div>
     <br>
     <!-- Nueva tabla para mostrar usuarios encontrados -->
@@ -21,14 +28,16 @@
                 <td><strong>{{ user.full_name }}</strong></td>
                 <td>
                     <div class="input-group mb-3">
-                        <button class="btn btn-primary" [disabled]="user.user_role === 'LEADER'" (click)="createUser(user.full_name, 'LEADER')">LEADER</button>
-                        <button class="btn btn-warning" [disabled]="user.user_role === 'PARTICIPANT'" (click)="createUser(user.full_name, 'PARTICIPANT')">PARTICIPANT</button>
+                        <button class="btn btn-primary" [disabled]="user.user_role === 'LEADER'"
+                            (click)="registerAs(user.id,user.full_name, 'LEADER')">LEADER</button>
+                        <button class="btn btn-warning" [disabled]="user.user_role === 'PARTICIPANT'"
+                            (click)="registerAs(user.id,user.full_name, 'PARTICIPANT')">PARTICIPANT</button>
                     </div>
                 </td>
             </tr>
         </tbody>
     </table>
-    
+
 
     <!-- end  -->
     <br>
@@ -37,7 +46,7 @@
             <tr class="table-active">
                 <th scope="col">Full Name</th>
                 <th scope="col">Current Role</th>
-                <th scope="col">Option</th>
+                <th scope="col">Role Options:</th>
             </tr>
         </thead>
         <tbody>

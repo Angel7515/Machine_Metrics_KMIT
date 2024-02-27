@@ -1,72 +1,30 @@
-<!-- <h1>Welcome {{getAccountName()}}</h1>
-<div class="container">
-    <br>
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search by Project name, person Responsible or Status"
-            aria-label="search by project name or person responsible" aria-describedby="button-addon2"
-            [(ngModel)]="searchTerm">
-        <button routerLink="/project" type="button" class="btn btn-warning">CREATE A NEW PROJECT</button>
-    </div>
-    <br>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">#ID</th>
-                <th scope="col">Project Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">Start Date</th>
-                <th scope="col">End Date</th>
-                <th scope="col">Status</th>
-                <th scope="col">Responsable</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let project of projects | filter: searchTerm"
-                (click)="navigateToProjectView(project.idproject)">
-                <th scope="row">{{ project.idproject }}</th>
-                <td
-                    style="max-width: 250px; max-height: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                    {{ project.project_name }}
-                </td>
-                <td
-                    style="max-width: 250px; max-height: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                    {{ project.description }}
-                </td>
-                <td>{{ project.start_date }}</td>
-                <td>{{ project.end_date }}</td>
-                <td>{{ project.status_project }}</td>
-                <td>{{ project.person_full_name }}</td>
-            </tr>
-        </tbody>
-    </table>
-</div> -->
-
 <div class="body">
-<h1 class="Welcome" style="font-size: 30px;">Welcome {{getAccountName()}}</h1>
-<div class="container">
-    <br>
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search by Project name, person Responsible or Status"
-            aria-label="search by project name or person responsible" aria-describedby="button-addon2"
-            [(ngModel)]="searchTerm">
-        <button routerLink="/project" type="button" class="btn btn-warning">CREATE A NEW PROJECT</button>
-    </div>
-    <br>
-    <div class="list-group">
-        <a *ngFor="let project of projects | filter: searchTerm" (click)="navigateToProjectView(project.idproject)"
-            class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-                <h2 class="mb-1">{{ project.project_name }}</h2>
-                <small>{{ project.start_date }}</small>
-            </div>
-            <p class="mb-1">{{ project.description }}</p>
+    <h1 class="Welcome" style="font-size: 30px;">Welcome {{getAccountName()}} - {{ getAccessRole() }}</h1>
+    <div class="container">
+        <br>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search by Project name or Status"
+                aria-label="search by project name or person responsible" aria-describedby="button-addon2"
+                [(ngModel)]="searchTerm" (input)="filterProjects()">
+            <button *ngIf="!isAdminRole()" routerLink="/project" type="button" class="btn btn-warning">CREATE A NEW
+                PROJECT</button>
+        </div>
+        <br>
+        <div class="list-group">
+            <a *ngFor="let project of filteredProjects" (click)="navigateToProjectView(project.idproject)"
+                class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h2 class="mb-1">{{ project.project_name }}</h2>
+                    <p><strong>{{ project.start_date }}</strong></p>
+                </div>
+                <p class="mb-1">{{ project.end_date }}</p>
                 <div [ngClass]="{
                     'complete': project.status_project === 'COMPLETE',
                     'created': project.status_project === 'CREATED',
                     'pending': project.status_project === 'PENDING',
                     'active': project.status_project === 'ACTIVE'
                 }" class="status-pill position-absolute bottom-0 end-0">{{ project.status_project }}</div>
-        </a>
+            </a>
+        </div>
     </div>
-</div>
 </div>

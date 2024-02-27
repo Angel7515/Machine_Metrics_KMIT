@@ -6,14 +6,15 @@ import { Environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class CreatePersonsService {
+export class KpisAllService {
 
-  private api = Environment.API_URL+'dbcreateperson'
+  private apiUrl = Environment.API_URL+'kpis'; // URL del servidor Node.js
 
   constructor(private http: HttpClient) { }
 
-  createNewUser(idactive:string, fullName: string, userRole: string): Observable<any> {
-    return this.http.post<any>(`${this.api}/create`, {idactive, fullName, userRole });
+  // Método para obtener todos los KPIs del servidor
+  getAllKPIs(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
   }
-  
+
 }

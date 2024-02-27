@@ -8,6 +8,7 @@ import { Environment } from './environments/environment';
 import { RouterModule, Router } from '@angular/router';
 import { Inject } from '@angular/core';
 import { AuthServiceTokenService } from './services/AuthServiceToken/auth-service-token.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 import { CheckUserService } from './services/CheckUsers/check-user.service';
@@ -39,40 +40,55 @@ export function MSSALInstanceFactory(): IPublicClientApplication {
 export class AppComponent implements OnInit {
   title = 'Front_Metrics';
   showNavigationBar: boolean = true;
+  userNameMsal: any;
+  userIDData: any;
+
 
   async ngOnInit() {
     await this.msalInstance.initialize();
     this.handleRedirect();
   }
-  
+
   public handleRedirect() {
     this.msalInstance.handleRedirectPromise().then(() => {
-      if (this.authService.instance.getAllAccounts().length > 0) {
-        const username: any = this.getAccountName();
-        this.checkUserService.checkUserAccess(username).subscribe(
-          (response) => {
-            if (response.accessGranted) {
-              this.router.navigate(['home']);
-            } else {
-              // Redirigir al componente de acceso denegado
+      if (this.isAuthenticated()) {
+        const accessToken = this.authServiceToken.getAccessToken();
+
+        if (accessToken) {
+          const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+
+          this.http.get<any>('https://graph.microsoft.com/v1.0/me', { headers }).subscribe(
+            (response) => {
+              this.authServiceToken.setAccessIdactive(response.id);//guardar el id de usuario en variable local del navegador
+              this.checkUserService.checkUserAccess(response.id, response.displayName).subscribe(
+                (accessResponse) => {
+                  if (accessResponse.accessGranted) {
+                    this.router.navigate(['home']);
+                  } else {
+                    this.router.navigate(['access-denied']);
+                  }
+                },
+                (error) => {
+                  console.error('Error al validar acceso del usuario:', error);
+                  this.router.navigate(['access-denied']);
+                }
+              );
+            },
+            (error) => {
+              console.error('Error al obtener datos del usuario:', error);
               this.router.navigate(['access-denied']);
             }
-          },
-          (error) => {
-            if (error.accessGranted === false) {
-              // Acceso denegado
-              this.router.navigate(['access-denied']);
-            } else {
-              console.error('Error:', error);
-              // Manejar otros errores según corresponda
-            }
-          }
-        );
+          );
+        } else {
+          console.error('No se pudo obtener el token de acceso del usuario.');
+          this.router.navigate(['access-denied']);
+        }
       } else {
         this.router.navigate(['login']);
       }
     });
   }
+  
 
 
 
@@ -81,8 +97,10 @@ export class AppComponent implements OnInit {
     private authService: MsalService,
     public router: Router,
     public authServiceToken: AuthServiceTokenService,
-    private checkUserService: CheckUserService
+    private checkUserService: CheckUserService,
+    public http: HttpClient
   ) { }
+
 
   // Login
   login() {
@@ -90,6 +108,7 @@ export class AppComponent implements OnInit {
       const accessToken = response.accessToken;
       this.authServiceToken.setAccessToken(accessToken);
       this.authService.instance.setActiveAccount(response.account);
+
     });
   }
 

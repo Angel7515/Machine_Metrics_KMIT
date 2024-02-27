@@ -9,6 +9,10 @@ export const Environment = {
     getProjectId: () => Environment.projectId, // Función getter para obtener el ID
     setProjectId: (id: string) => { Environment.projectId = id; }, // Función setter para establecer el ID
 
+    username: '', // Variable para almacenar el ID
+    getusername: () => Environment.username, // Función getter para obtener el ID
+    setusername: (name: string) => { Environment.username = name; }, // Función setter para establecer el ID
+
     Token: '', // Variable para almacenar el ID
     getToken: () => Environment.Token, // Función getter para obtener el ID
     setToken: (accesstoken: string) => { Environment.Token = accesstoken; } // Función setter para establecer el ID

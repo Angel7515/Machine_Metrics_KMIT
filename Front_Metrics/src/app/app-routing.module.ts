@@ -10,6 +10,9 @@ import { ProjectEditComponent } from './components/project-edit/project-edit.com
 import { UserComponent } from './components/user/user.component';
 import { KpisComponent } from './components/kpis/kpis.component';
 import { KpisViewComponent } from './components/kpis-view/kpis-view.component';
+import { KpisAddComponent } from './components/kpis-add/kpis-add.component';
+import { KpisPerformanceComponent } from './components/kpis-performance/kpis-performance.component';
+import { NewPerformanceComponent } from './components/new-performance/new-performance.component';
 
 const routes: Routes = [
   {path:'',component:HomeComponent},
@@ -22,6 +25,9 @@ const routes: Routes = [
   {path:'dbusers',component:UserComponent},
   {path:'dbkpis',component:KpisComponent},
   {path:'kpisview/:idproject',component:KpisViewComponent},
+  {path:'kpiAdd',component:KpisAddComponent},
+  {path:'performance/:id',component:KpisPerformanceComponent},
+  {path:'newperformance',component:NewPerformanceComponent},
   {path:'**',component:HomeComponent}
 ];
 

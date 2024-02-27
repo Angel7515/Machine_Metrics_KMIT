@@ -12,6 +12,7 @@ export class CreatenewProjectService {
   constructor(private http: HttpClient) { }
 
   createProject(projectData: any): Observable<any> {
+    console.log('data enviada final front',projectData)
     return this.http.post<any>(Environment.API_URL+'dbNewproject/create', projectData);
   }
 

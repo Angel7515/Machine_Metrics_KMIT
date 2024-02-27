@@ -1,25 +1,3 @@
-/* import { Injectable } from '@angular/core';
-import { Environment } from '../../environments/environment';
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthServiceTokenService {
-
-  private accessToken: string = '';
-
-  constructor() { }
-
-  setAccessToken(token: string) {
-    this.accessToken = token;
-  }
-
-  getAccessToken(): string {
-    return this.accessToken;
-  }
-
-}
- */
-
 import { Injectable } from '@angular/core';
 import { Environment } from '../../environments/environment';
 
@@ -29,6 +7,9 @@ import { Environment } from '../../environments/environment';
 export class AuthServiceTokenService {
 
   private accessTokenKey = 'accessToken'; // Key for localStorage
+  private accessName = 'accessName';
+  private accessRole = 'accessRole';
+  private accessIDactive = 'accessIDactive_user';
 
   constructor() { }
 
@@ -42,6 +23,30 @@ export class AuthServiceTokenService {
 
   clearAccessToken() {
     localStorage.removeItem(this.accessTokenKey); // Remove token from localStorage
+  }
+
+  setAccessName(name:string){
+    localStorage.setItem(this.accessName,name);
+  }
+
+  getAccessName(): string {
+    return localStorage.getItem(this.accessName) ?? ''; 
+  }
+
+  setAccessRole(role:string){
+    localStorage.setItem(this.accessRole,role);
+  }
+
+  getAccessRole(): string {
+    return localStorage.getItem(this.accessRole) ?? ''; 
+  }
+
+  setAccessIdactive(idactive:string) {
+    localStorage.setItem(this.accessIDactive,idactive);
+  }
+
+  getAccessIdactive():string{
+    return localStorage.getItem(this.accessIDactive) ?? '';
   }
 
 }

@@ -6,7 +6,7 @@
         </div>
         <br>
         <div class="title">
-            <h1 class="ResumeProject" style="font-size: 50px;"><strong>{{ projectDetails[0].project_name }}</strong>
+            <h1 class="ResumeProject"><strong>{{ projectDetails[0].project_name }}</strong>
             </h1>
         </div>
         <br>
@@ -19,21 +19,30 @@
         <h2>Created Date: {{ projectDetails[0].start_date }}</h2>
     </div>
     <br>
-    <div class="status_projects">
-        <h3 [ngClass]="{
-            'complete': projectDetails[0].status_project === 'COMPLETE',
-            'created': projectDetails[0].status_project === 'CREATED',
-            'pending': projectDetails[0].status_project === 'PENDING',
-            'active': projectDetails[0].status_project === 'ACTIVE'
-        }"> {{ projectDetails[0].status_project }}</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="responsable">
+                <h1 for="exampleTextarea">Responsable:</h1>
+                <h1>{{ nameperson }}</h1>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="status_projects">
+                <h3 [ngClass]="{
+                    'complete': projectDetails[0].status_project === 'COMPLETE',
+                    'created': projectDetails[0].status_project === 'CREATED',
+                    'pending': projectDetails[0].status_project === 'PENDING',
+                    'active': projectDetails[0].status_project === 'ACTIVE'
+                }">{{ projectDetails[0].status_project }}</h3>
+            </div>
+        </div>
     </div>
     <br>
     <div class="form-group">
-        <label for="exampleTextarea" class="form-label mt-4"><strong>Description:</strong></label>
+        <h1 for="exampleTextarea">Description:</h1>
         <p>{{ projectDetails[0].description }}</p>
     </div>
     <div class="participants">
-        <label for="exampleTextarea" class="form-label mt-4"><strong>Responsable:</strong></label>
-        <p>{{ projectDetails[0].person_full_name }}</p>
+
     </div>
 </div>
