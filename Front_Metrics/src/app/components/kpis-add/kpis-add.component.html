@@ -19,12 +19,18 @@
   <!-- END CARD NOTIFICATION -->
 
   <div class="mt-4">
-    <label for="inputDefault" class="form-label">KPI Name:</label>
+    <div>
+      <label for="inputDefault" class="form-label">KPI Name:</label>
+      <small class="text-muted">* Required</small>
+    </div>
     <input type="text" class="form-control" id="inputDefault" placeholder="Enter KPI Name:" [(ngModel)]="kpiName">
   </div>
 
   <div class="mt-4">
-    <label for="exampleSelect1" class="form-label">Type:</label>
+    <div>
+      <label for="exampleSelect1" class="form-label">Type:</label>
+      <small class="text-muted">* Required</small>
+    </div>
     <select class="form-select" id="exampleSelect1" [(ngModel)]="kpiType">
       <option>QUANTITATIVE</option>
       <option>QUALITATIVE</option>
@@ -32,7 +38,10 @@
   </div>
 
   <div class="mt-4">
-    <label for="exampleTextarea" class="form-label">Description:</label>
+    <div>
+      <label for="exampleTextarea" class="form-label">Description:</label>
+      <small class="text-muted">* Required</small>
+    </div>
     <textarea class="form-control" id="exampleTextarea" rows="3" [(ngModel)]="kpiDescription"></textarea>
   </div>
 
@@ -41,5 +50,7 @@
     <button class="btn btn-primary ms-2" (click)="createKpi()"
       [disabled]="!kpiName || !kpiType || !kpiDescription">Create</button>
   </div>
+
+
 
 </div>

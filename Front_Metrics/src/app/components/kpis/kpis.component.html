@@ -1,25 +1,29 @@
 <div class="container">
     <br>
-    <h1>KPIS For Project</h1>
-    <br>
-    <table class="table table-hover">
-        <thead>
-            <tr class="table-active">
-                <th scope="col">ID</th>
-                <th scope="col">Project</th>
-                <th scope="col">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <ng-container>
-                <tr *ngFor="let project of filteredProjects | filter: searchTerm" (click)="navigateToKpisView(project.idproject, project.project_name)">
-                    <th scope="row">{{ project.idproject }}</th>
-                    <td style="max-width: 250px; max-height: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                        {{ project.project_name }}
-                    </td>
-                    <td>{{ project.status_project }}</td>
+    <h1 class="text-center mb-4">KPIs For Project</h1>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Project</th>
+                    <th scope="col">Status</th>
                 </tr>
-            </ng-container>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="filteredProjects.length > 0; else noProjects">
+                    <tr *ngFor="let project of filteredProjects | filter: searchTerm" (click)="navigateToKpisView(project.idproject, project.project_name)">
+                        <th scope="row">{{ project.idproject }}</th>
+                        <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ project.project_name }}</td>
+                        <td>{{ project.status_project }}</td>
+                    </tr>
+                </ng-container>
+                <ng-template #noProjects>
+                    <tr>
+                        <td colspan="3" class="text-center">No projects available</td>
+                    </tr>
+                </ng-template>
+            </tbody>
+        </table>
+    </div>
 </div>

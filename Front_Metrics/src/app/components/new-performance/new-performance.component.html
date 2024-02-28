@@ -28,24 +28,29 @@
     <form>
         <div class="form-group" *ngIf="showKpiNumField">
             <label for="kpiNum">Quantifiable number of your progress:</label>
+            <small class="text-muted">* Required</small>
             <input type="number" class="form-control" id="kpiNum" [(ngModel)]="kpiNum" name="kpiNum">
         </div>
         <div class="form-group" *ngIf="showKpiStrField">
             <label for="kpiStr">Qualitative characteristic of your progress:</label>
+            <small class="text-muted">* Required</small>
             <input type="text" class="form-control" id="kpiStr" [(ngModel)]="kpiStr" name="kpiStr">
         </div>
         <div class="form-group">
             <label for="kpiStrPorcent">Approximate progress percentage</label>
+            <small class="text-muted">* Required</small>
             <input type="number" class="form-control" id="kpiStrPorcent" [(ngModel)]="kpiStrPorcent"
                 name="kpiStrPorcent">
         </div>
         <div class="form-group">
             <label for="kpiDescripcion">Description:</label>
+            <small class="text-muted">* Required</small>
             <textarea class="form-control" id="kpiDescripcion" [(ngModel)]="kpiDescripcion"
                 name="kpiDescripcion"></textarea>
         </div>
         <div class="form-group">
             <label for="dateUpload">Update:</label>
+            <small class="text-muted">* Required</small>
             <input type="date" class="form-control" id="dateUpload" [(ngModel)]="dateUpload" name="dateUpload">
         </div>
         <!-- Puedes ocultar estos campos si los obtienes del componente anterior -->
@@ -60,4 +65,5 @@
             <button type="button" class="btn btn-primary" (click)="onSubmit()">Submit</button>
         </div>
     </form>
+
 </div>

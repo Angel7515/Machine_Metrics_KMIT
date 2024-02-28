@@ -20,17 +20,20 @@
 
     <div class="form-group">
         <label class="col-form-label mt-4" for="projectName"><strong>Title or name:</strong></label>
+        <small class="text-muted">*Required</small>
         <input type="text" class="form-control" placeholder="Enter the title or name of your project to register"
             id="projectName" [(ngModel)]="projectData.project_name">
     </div>
     <br>
     <div class="date_start">
         <label class="col-form-label mt-4" for="startDate"><strong>Start Date:</strong></label>
+        <small class="text-muted">*Required</small>
         <input type="date" id="startDate" [(ngModel)]="projectData.start_date">
     </div>
     <br>
     <div class="form-group">
         <label for="projectDescription" class="form-label mt-4"><strong>Description:</strong></label>
+        <small class="text-muted">*Required</small>
         <textarea class="form-control" id="projectDescription" rows="3"
             [(ngModel)]="projectData.description"></textarea>
     </div>

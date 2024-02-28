@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IDprojectService } from '../../services/IDprojectService/idproject.service';
 import { Environment } from '../../environments/environment';
 import { SearchOnePersonService } from '../../services/SearchOnePerson/search-one-person.service';
+import { AuthServiceTokenService } from '../../services/AuthServiceToken/auth-service-token.service';
 
 @Component({
   selector: 'app-project-view',
@@ -15,7 +16,7 @@ export class ProjectViewComponent implements OnInit {
   date: any;
   nameperson:string = '';
 
-  constructor(private route: ActivatedRoute, private projectService: IDprojectService, private searchperson:SearchOnePersonService) { }
+  constructor(private route: ActivatedRoute, private projectService: IDprojectService, private searchperson:SearchOnePersonService, private authServiceToken:AuthServiceTokenService) { }
 
   ngOnInit() {
     this.projectID = Environment.getProjectId();
@@ -43,4 +44,13 @@ export class ProjectViewComponent implements OnInit {
       }
     );
   }
+
+  isAdminRole():boolean{
+    if(this.authServiceToken.getAccessRole() === 'ADMIN'){
+      return true
+    }else{
+      return false
+    }
+  }
+
 }

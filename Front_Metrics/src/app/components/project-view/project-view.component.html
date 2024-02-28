@@ -11,7 +11,7 @@
         </div>
         <br>
         <div class="edith_reg">
-            <button [routerLink]="['/dbeditproject', projectID]" class="btn btn-warning">Edit</button>
+            <button *ngIf="!isAdminRole()" [routerLink]="['/dbeditproject', projectID]" class="btn btn-warning">Edit</button>
         </div>
     </div>
     <br>

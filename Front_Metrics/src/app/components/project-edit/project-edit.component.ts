@@ -5,6 +5,10 @@ import { Environment } from '../../environments/environment';
 import { UPloadProjectService } from '../../services/UploadProjects/upload-project.service';
 import { AuthServiceTokenService } from '../../services/AuthServiceToken/auth-service-token.service';
 import { MsalService } from '@azure/msal-angular';
+import { UsersService } from '../../services/AllUsers/users.service';
+import { ParticipantsService } from '../../services/CreatePersonroject/participants.service';
+import { GetParticipantsAllService } from '../../services/GetPersonProject/get-participants-all.service';
+import { DeletePersonProjectService } from '../../services/DeletePersonPro/delete-person-project.service';
 import { Router } from '@angular/router'; // Importa el módulo Router
 
 @Component({
@@ -23,6 +27,12 @@ export class ProjectEditComponent implements OnInit {
   isEndDateSelected: boolean = false;
   projectCreationSuccess: boolean = false;
   projectCreationError: boolean = false;
+  users: any[] = [];
+  searchResults: any[] = [];
+  participants: any[] = [];
+  idperson_has_project: number = 0;
+  getparticipantsAll: any[] = [];
+
 
   constructor(
     private route: ActivatedRoute,
@@ -30,18 +40,36 @@ export class ProjectEditComponent implements OnInit {
     private uploadService: UPloadProjectService,
     private authService: MsalService,
     private authserviceToken: AuthServiceTokenService,
-    private router: Router // Inyecta el módulo Router
+    private router: Router, // Inyecta el módulo Router
+    private usersAll: UsersService,
+    private participantsService: ParticipantsService,
+    private getparticipants: GetParticipantsAllService,
+    private deletePersonP: DeletePersonProjectService
   ) { }
 
   ngOnInit() {
     this.projectID = Environment.getProjectId();
     this.loadProjectDetails(this.projectID);
+    this.loadUsers();
+    this.getAllPersonProjects();
   }
 
   getAccountName() {
     let name = this.authService.instance.getActiveAccount()?.name;
     return name;
   }
+
+  loadUsers(): void {
+    this.usersAll.getUsers().subscribe(
+      (users: any[]) => {
+        this.users = users;
+      },
+      (error) => {
+        console.error('Error al cargar los datos de los usuarios:', error);
+      }
+    );
+  }
+  
 
   // Método para cargar los detalles del proyecto
   loadProjectDetails(projectID: string) {
@@ -51,12 +79,28 @@ export class ProjectEditComponent implements OnInit {
         this.projectDetails[0].start_date = this.projectDetails[0].start_date.substring(0, 10);
         this.selectedStatus = this.projectDetails[0].status_project;
         this.selectedStartDate = this.projectDetails[0].start_date; // Inicializar selectedStartDate con la fecha de inicio actual
+        this.idperson_has_project = this.projectDetails[0].idproject;//id del proyecto
       },
       error => {
         console.log('Error al obtener los detalles del proyecto:', error);
       }
     );
   }
+
+
+  /* get participants in the project */
+
+  getAllPersonProjects(): void {
+    this.getparticipants.getAllPersonProjects().subscribe(
+      (data: any[]) => {
+        this.getparticipantsAll = data;
+      },
+      error => {
+        console.error('Error al obtener los datos de personas y proyectos:', error);
+      }
+    );
+  }
+
 
   // Método para cargar los datos del proyecto
   uploadProjectData(): void {
@@ -127,5 +171,65 @@ export class ProjectEditComponent implements OnInit {
     } else {
       console.error('Elementos projectName, projectDescription o startDate no encontrados.');
     }
+    this.associateUsersWithProject();
   }
+
+  // Función para asociar usuarios con el proyecto
+  associateUsersWithProject(): void {
+    this.participants.forEach(participant => {
+      this.participantsService.createPersonProject(participant.idactive, this.idperson_has_project)
+        .subscribe(
+          response => {
+            console.log('Asociación creada correctamente:', response);
+          },
+          error => {
+            console.error('Error al crear la asociación:', error);
+          }
+        );
+    });
+  }
+
+  /* obtener todos los usuarios - participants */
+  searchUsers(event: Event) {
+    const searchTerm = (event.target as HTMLInputElement).value;
+    if (searchTerm !== '') {
+      this.searchResults = this.users.filter(user =>
+        user.full_name.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+    } else {
+      this.searchResults = [];
+    }
+  }
+
+
+  addParticipant(user: any) {
+    if (!this.participants.some(participant => participant.idactive === user.idactive)) {
+      this.participants.push(user);
+    }
+  }
+
+  removeParticipant(index: number) {
+    this.participants.splice(index, 1);
+  }
+
+/* si participante existe */
+isUserRegistered(user: any): boolean {
+  return this.getparticipantsAll.some(participant => participant.person_idactive === user.idactive);
+}
+
+/* remove user */
+removeParticipantFromProject(user: any): void {
+  this.deletePersonP.deletePersonProject(user.idactive).subscribe(
+    () => {
+      // Eliminación exitosa, recargar la lista de personas registradas en el proyecto
+      this.getAllPersonProjects();
+    },
+    error => {
+      console.error('Error al eliminar la persona del proyecto:', error);
+      // Manejar el error según sea necesario
+    }
+  );
+}
+
+
 }
