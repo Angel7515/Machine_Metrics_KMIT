@@ -69,7 +69,7 @@ export class ProjectEditComponent implements OnInit {
       }
     );
   }
-  
+
 
   // Método para cargar los detalles del proyecto
   loadProjectDetails(projectID: string) {
@@ -80,6 +80,10 @@ export class ProjectEditComponent implements OnInit {
         this.selectedStatus = this.projectDetails[0].status_project;
         this.selectedStartDate = this.projectDetails[0].start_date; // Inicializar selectedStartDate con la fecha de inicio actual
         this.idperson_has_project = this.projectDetails[0].idproject;//id del proyecto
+        if (this.selectedStatus === 'COMPLETE') {
+          this.projectDetails[0].end_date = this.projectDetails[0].end_date.substring(0, 10);
+          this.selectedEndDate = this.projectDetails[0].end_date;
+        }
       },
       error => {
         console.log('Error al obtener los detalles del proyecto:', error);
@@ -121,11 +125,9 @@ export class ProjectEditComponent implements OnInit {
         if (endDateInput && endDateInput.value) { // Verifica si se ha seleccionado una fecha
           this.selectedEndDate = endDateInput.value; // Actualiza selectedEndDate con la fecha seleccionada
           this.isEndDateSelected = true; // Marcar como verdadero si se selecciona una fecha de término
-          console.log(this.isEndDateSelected)
           this.projectCreationSuccess = true;
           this.projectCreationError = false;
         } else {
-          console.error('Fecha de término no seleccionada.');
           this.projectCreationSuccess = false;
           this.projectCreationError = true;
           this.isEndDateSelected = false; // Marcar como falso si no se selecciona una fecha de término
@@ -150,7 +152,7 @@ export class ProjectEditComponent implements OnInit {
             response => {
               this.projectCreationSuccess = true;
               this.projectCreationError = false;
-              console.log('Datos enviados exitosamente al servidor:', response);
+              //console.log('Datos enviados exitosamente al servidor:', response);
 
               // Oculta la notificación después de 2 segundos y redirige a la página de inicio
               setTimeout(() => {
@@ -180,7 +182,7 @@ export class ProjectEditComponent implements OnInit {
       this.participantsService.createPersonProject(participant.idactive, this.idperson_has_project)
         .subscribe(
           response => {
-            console.log('Asociación creada correctamente:', response);
+            //console.log('Asociación creada correctamente:', response);
           },
           error => {
             console.error('Error al crear la asociación:', error);
@@ -212,24 +214,28 @@ export class ProjectEditComponent implements OnInit {
     this.participants.splice(index, 1);
   }
 
-/* si participante existe */
-isUserRegistered(user: any): boolean {
-  return this.getparticipantsAll.some(participant => participant.person_idactive === user.idactive);
-}
+  /* si participante existe */
+  isUserRegistered(user: any): boolean {
+    return this.getparticipantsAll.some(participant =>
+      participant.person_idactive === user.idactive &&
+      participant.project_idproject === this.idperson_has_project
+    );
+  }
 
-/* remove user */
-removeParticipantFromProject(user: any): void {
-  this.deletePersonP.deletePersonProject(user.idactive).subscribe(
-    () => {
-      // Eliminación exitosa, recargar la lista de personas registradas en el proyecto
-      this.getAllPersonProjects();
-    },
-    error => {
-      console.error('Error al eliminar la persona del proyecto:', error);
-      // Manejar el error según sea necesario
-    }
-  );
-}
+
+  /* remove user */
+  removeParticipantFromProject(user: any): void {
+    this.deletePersonP.deletePersonProject(user.idactive).subscribe(
+      () => {
+        // Eliminación exitosa, recargar la lista de personas registradas en el proyecto
+        this.getAllPersonProjects();
+      },
+      error => {
+        console.error('Error al eliminar la persona del proyecto:', error);
+        // Manejar el error según sea necesario
+      }
+    );
+  }
 
 
 }

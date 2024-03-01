@@ -5,10 +5,6 @@
         <p><strong>Name:</strong> {{ kpiData.name }}</p>
         <p><strong>Type:</strong> {{ kpiData.type_kp }}</p>
         <p><strong>Importance:</strong> {{ kpiData.importance }}</p>
-
-        <div class="editKPI">
-            <button class="btn btn-warning">Edith KPI</button>
-        </div>
         <!-- Aquí puedes mostrar más detalles de la KPI según sea necesario -->
         <button routerLink="/newperformance" [queryParams]="{ idkpis: kpiData.idkpis, name: kpiData.name, type_kp: kpiData.type_kp, importance: kpiData.importance }" class="btn btn-primary">New Performance</button>
     </div>

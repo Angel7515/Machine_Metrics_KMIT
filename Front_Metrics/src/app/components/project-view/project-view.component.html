@@ -11,7 +11,8 @@
         </div>
         <br>
         <div class="edith_reg">
-            <button *ngIf="!isAdminRole()" [routerLink]="['/dbeditproject', projectID]" class="btn btn-warning">Edit</button>
+            <button *ngIf="!isAdminRole()" [routerLink]="['/dbeditproject', projectID]"
+                class="btn btn-warning">Edit</button>
         </div>
     </div>
     <br>
@@ -22,7 +23,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="responsable">
-                <h1 for="exampleTextarea">Responsable:</h1>
+                <h1 for="exampleTextarea">Responsible:</h1>
                 <h1>{{ nameperson }}</h1>
             </div>
         </div>
@@ -40,9 +41,21 @@
     <br>
     <div class="form-group">
         <h1 for="exampleTextarea">Description:</h1>
-        <p>{{ projectDetails[0].description }}</p>
+        <div>{{ projectDetails[0].description }}</div>
     </div>
-    <div class="participants">
-
+    <br>
+    <div class="participants" *ngIf="filteredParticipants && filteredParticipants.length > 0">
+        <h2>Participants</h2>
+        <div class="participant-container">
+            <ng-container *ngFor="let participant of filteredParticipants">
+                <div class="participant">
+                    <i class="material-icons">person</i>
+                    <span>{{ getUserName(participant.person_idactive) }}</span>
+                </div>
+            </ng-container>
+        </div>
+    </div>    
+    <br>
+    <div class="kpis_performance">
     </div>
 </div>

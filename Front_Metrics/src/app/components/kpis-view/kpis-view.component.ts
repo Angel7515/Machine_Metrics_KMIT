@@ -42,4 +42,8 @@ export class KpisViewComponent implements OnInit{
     this.router.navigate(['/performance', selectedKpi.idkpis], { state: { kpiData: selectedKpi } });
   }
 
+  redirectToEditKPI(selectedKpi:any):void{
+    this.router.navigate(['/editkpi/', selectedKpi.idkpis], { state: { kpiData: selectedKpi } });
+  }
+
 }

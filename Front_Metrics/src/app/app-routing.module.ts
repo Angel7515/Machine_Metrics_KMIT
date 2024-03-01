@@ -13,6 +13,7 @@ import { KpisViewComponent } from './components/kpis-view/kpis-view.component';
 import { KpisAddComponent } from './components/kpis-add/kpis-add.component';
 import { KpisPerformanceComponent } from './components/kpis-performance/kpis-performance.component';
 import { NewPerformanceComponent } from './components/new-performance/new-performance.component';
+import { KpiEditComponent } from './components/kpi-edit/kpi-edit.component';
 
 const routes: Routes = [
   {path:'',component:HomeComponent},
@@ -28,6 +29,7 @@ const routes: Routes = [
   {path:'kpiAdd',component:KpisAddComponent},
   {path:'performance/:id',component:KpisPerformanceComponent},
   {path:'newperformance',component:NewPerformanceComponent},
+  {path:'editkpi/:id',component:KpiEditComponent},
   {path:'**',component:HomeComponent}
 ];
 

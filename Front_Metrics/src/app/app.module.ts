@@ -29,6 +29,7 @@ import { AccessDeniedComponent } from './components/access-denied/access-denied.
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { KpisAddComponent } from './components/kpis-add/kpis-add.component';
 import { NewPerformanceComponent } from './components/new-performance/new-performance.component';
+import { KpiEditComponent } from './components/kpi-edit/kpi-edit.component';
 
 export function MSSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -55,7 +56,8 @@ export function MSSALInstanceFactory(): IPublicClientApplication {
     KpisPerformanceComponent,
     AccessDeniedComponent,
     KpisAddComponent,
-    NewPerformanceComponent
+    NewPerformanceComponent,
+    KpiEditComponent
   ],
   imports: [
     BrowserModule,

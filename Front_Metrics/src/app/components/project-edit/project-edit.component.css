@@ -1,0 +1,8 @@
+.alert {
+    position: fixed; /* Para mantener la tarjeta fija en la ventana del navegador */
+    top: 50%; /* Ajusta según sea necesario */
+    left: 50%; /* Ajusta según sea necesario */
+    transform: translate(-50%, -50%); /* Centra la tarjeta horizontal y verticalmente */
+    z-index: 9999; /* Ajusta el z-index según sea necesario, debe ser mayor que otros elementos */
+    width: 300px; /* Ajusta el ancho según sea necesario */
+}
