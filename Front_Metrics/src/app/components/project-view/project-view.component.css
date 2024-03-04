@@ -1,6 +1,7 @@
 .ResumeProject {
     color: rgb(236, 166, 16);
-    font-size: 40px; /* Establece el tamaño del texto al 3% del ancho de la ventana */
+    font-size: 40px;
+    /* Establece el tamaño del texto al 3% del ancho de la ventana */
     word-wrap: break-word;
     max-width: 100%;
     display: block;
@@ -9,16 +10,22 @@
 
 
 .status_projects {
-    text-align: right; /* Alinear el texto a la derecha */
-    margin-top: -20px; /* Ajustar el margen para alinear con la fecha */
+    text-align: right;
+    /* Alinear el texto a la derecha */
+    margin-top: -20px;
+    /* Ajustar el margen para alinear con la fecha */
 }
 
 .complete {
     background-color: rgb(235, 255, 52);
-    color: rgb(0, 0, 0); /* Para asegurarse de que el texto sea legible */
-    padding: 5px 10px; /* Ajustar el relleno según sea necesario */
-    border-radius: 10px; /* Para redondear los bordes */
-    display: inline-block; /* Para que ocupen solo el ancho del contenido */
+    color: rgb(0, 0, 0);
+    /* Para asegurarse de que el texto sea legible */
+    padding: 5px 10px;
+    /* Ajustar el relleno según sea necesario */
+    border-radius: 10px;
+    /* Para redondear los bordes */
+    display: inline-block;
+    /* Para que ocupen solo el ancho del contenido */
     font-weight: bold;
 }
 
@@ -32,7 +39,7 @@
 }
 
 .pending {
-    background-color: rgb(255, 0,0);
+    background-color: rgb(255, 0, 0);
     color: white;
     padding: 5px 10px;
     border-radius: 10px;
@@ -42,10 +49,14 @@
 
 .active {
     background-color: rgb(28, 250, 28);
-    color: rgb(0, 0, 0); /* Para asegurarse de que el texto sea legible */
-    padding: 5px 10px; /* Ajustar el relleno según sea necesario */
-    border-radius: 10px; /* Para redondear los bordes */
-    display: inline-block; /* Para que ocupen solo el ancho del contenido */
+    color: rgb(0, 0, 0);
+    /* Para asegurarse de que el texto sea legible */
+    padding: 5px 10px;
+    /* Ajustar el relleno según sea necesario */
+    border-radius: 10px;
+    /* Para redondear los bordes */
+    display: inline-block;
+    /* Para que ocupen solo el ancho del contenido */
     font-weight: bold;
 }
 
@@ -54,31 +65,43 @@
     padding: 5px 10px;
     border-radius: 5px;
     font-weight: bold;
-    box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.5); /* Sombra inferior */
-    transition: all 0.3s ease; /* Transición suave */
+    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.5);
+    /* Sombra inferior */
+    transition: all 0.3s ease;
+    /* Transición suave */
 }
 
 .status-pill:hover {
-    box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.5); /* Sombra más suave al pasar el mouse */
-    transform: translateY(10px); /* Efecto de levantamiento al pasar el mouse */
+    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.5);
+    /* Sombra más suave al pasar el mouse */
+    transform: translateY(10px);
+    /* Efecto de levantamiento al pasar el mouse */
 }
 
 /* text area  */
 .form-group {
-    text-align: justify; /* Justifica el texto */
-    margin: auto; /* Centra horizontalmente */
+    text-align: justify;
+    /* Justifica el texto */
+    margin: auto;
+    /* Centra horizontalmente */
 }
 
 .form-label {
-    font-size: 12px; /* Tamaño del texto para la etiqueta */
-    color: rgb(0, 0, 0); /* Color del texto */
+    font-size: 12px;
+    /* Tamaño del texto para la etiqueta */
+    color: rgb(0, 0, 0);
+    /* Color del texto */
 }
 
 .form-group p {
-    font-size: 18px; /* Tamaño del texto del párrafo */
-    color: rgb(0, 0, 0); /* Color del texto */
-    margin-top: 10px; /* Añade un margen superior para separar del título */
-    line-height: 1.6; /* Espaciado entre líneas del párrafo */
+    font-size: 18px;
+    /* Tamaño del texto del párrafo */
+    color: rgb(0, 0, 0);
+    /* Color del texto */
+    margin-top: 10px;
+    /* Añade un margen superior para separar del título */
+    line-height: 1.6;
+    /* Espaciado entre líneas del párrafo */
 }
 
 
@@ -112,3 +135,16 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+.progress-bar {
+    font-size: 18px;
+    /* Ajusta el tamaño de la fuente según tus necesidades */
+    height: 18px;
+    /* Ajusta la altura de la barra de progreso según tus necesidades */
+}
+
+.progress {
+    line-height: 30px;
+    /* Ajusta el alto del contenedor de la barra de progreso según tus necesidades */
+}
+

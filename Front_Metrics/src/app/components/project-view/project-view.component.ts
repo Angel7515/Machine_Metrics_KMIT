@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+
+
 import { ActivatedRoute } from '@angular/router';
 import { IDprojectService } from '../../services/IDprojectService/idproject.service';
 import { Environment } from '../../environments/environment';
@@ -6,9 +8,11 @@ import { SearchOnePersonService } from '../../services/SearchOnePerson/search-on
 import { AuthServiceTokenService } from '../../services/AuthServiceToken/auth-service-token.service';
 
 import { UsersService } from '../../services/AllUsers/users.service';
-import { GetPerformanceService } from '../../services/GetPerformance/get-performance.service';
+
 import { GetParticipantsAllService } from '../../services/GetPersonProject/get-participants-all.service';
-import { KpisAllService } from '../../services/KpisAll/kpis-all.service';
+
+import { KpiPerformanceService } from '../../services/OverviewKPIPerformance/kpi-performance.service';
+
 
 
 @Component({
@@ -17,6 +21,8 @@ import { KpisAllService } from '../../services/KpisAll/kpis-all.service';
   styleUrl: './project-view.component.css'
 })
 export class ProjectViewComponent implements OnInit {
+  @ViewChild('progressBar') progressBar!: ElementRef;
+
   projectID: string = '';
   projectDetails: any;
   date: any;
@@ -24,10 +30,17 @@ export class ProjectViewComponent implements OnInit {
 
   usuariosDB: any[] = [];
   participantesDB: any[] = [];
-  rendimientosDB: any[] = [];
-  categoriaRendimientoDB: any[] = [];
+  kpiPerformance: any[] = [];
+  kpiStrPorcentSum: number = 0;
+  kpiStrPorcentAverage: number = 0;
+  pieChartData: number[] = [];
 
   filteredParticipants: any[] = [];
+
+  formattedDescription: string = '';
+
+
+
 
 
   constructor(
@@ -37,22 +50,33 @@ export class ProjectViewComponent implements OnInit {
     private authServiceToken: AuthServiceTokenService,
     private userAllDB: UsersService,
     private participantsDB: GetParticipantsAllService,
-    private performanceDB: GetPerformanceService,
-    private kpiDB: KpisAllService
+    private kpiPerformanceDB: KpiPerformanceService
   ) { }
 
   ngOnInit() {
     this.projectID = Environment.getProjectId();
     this.loadProjectData();
+
+  }
+
+  formatDescription(): void {
+    if (this.projectDetails && this.projectDetails.length > 0) {
+      this.formattedDescription = this.projectDetails[0].description.replace(/\n/g, '<br>');
+    }
   }
 
   loadProjectData() {
     this.loadProjectDetails(this.projectID);
     this.loadUsuarios();
     this.loadParticipantes();
-    this.loadRendimientos();
-    this.loadCategoriaRendimiento();
+    this.loadKpiPerformance();
+    this.toggleDescription();
+  }
 
+  showDescription: boolean = true; // Variable para controlar la visibilidad de la descripción
+
+  toggleDescription(): void {
+    this.showDescription = !this.showDescription;
   }
 
   loadProjectDetails(projectID: string) {
@@ -60,6 +84,7 @@ export class ProjectViewComponent implements OnInit {
       (data: any) => {
         this.projectDetails = data;
         this.projectDetails[0].start_date = this.projectDetails[0].start_date.substring(0, 10);
+        this.formatDescription();
         this.searchperson.getPersonNameByIdActive(this.projectDetails[0].person_idactive)
           .subscribe(
             (person: any) => {
@@ -99,27 +124,57 @@ export class ProjectViewComponent implements OnInit {
     );
   }
 
-  loadRendimientos() {
-    this.performanceDB.getAllPerformances().subscribe(
+  loadKpiPerformance() {
+    this.kpiPerformanceDB.getKpisByProject(parseInt(this.projectID)).subscribe(
       (data: any[]) => {
-        this.rendimientosDB = data;
+        this.kpiPerformance = data;
+        let totalKPIs = this.kpiPerformance.length;
+        let kpiDataArray: any[] = [];
+        this.kpiPerformance.forEach(kpi => {
+          kpi.date_upload = kpi.date_upload.substring(0, 10);
+          this.kpiStrPorcentSum += parseFloat(kpi.kpi_str_porcent);
+          kpiDataArray.push({ name: kpi.name, kpi_str_porcent: kpi.kpi_str_porcent });
+        });
+        if (totalKPIs > 0) {
+          this.kpiStrPorcentAverage = this.kpiStrPorcentSum / totalKPIs;
+        }
+        this.graphics(kpiDataArray, this.kpiStrPorcentAverage);
       },
       error => {
-        console.log('Error al obtener los rendimientos:', error);
+        console.log('Error al obtener los KPIs de rendimiento:', error);
       }
     );
   }
 
-  loadCategoriaRendimiento() {
-    this.kpiDB.getAllKPIs().subscribe(
-      (data: any[]) => {
-        this.categoriaRendimientoDB = data;
-      },
-      error => {
-        console.log('Error al obtener la categoría de rendimiento:', error);
-      }
-    );
+  graphics(kpiDataArray: any[], kpiStrPorcentAverage: number) {
+    this.fillProgressBar();
+    console.log('Array de datos de KPI:', kpiDataArray);
+    console.log('promedio de avance: ', kpiStrPorcentAverage, '%');
+  
+    // Actualiza el valor de la barra de progreso
+    const progressBar = document.getElementById('progress-bar') as HTMLElement;
+    if (progressBar) {
+      progressBar.style.width = kpiStrPorcentAverage + '%';
+      progressBar.innerText = kpiStrPorcentAverage + '%';
+    }
   }
+
+  fillProgressBar(): void {
+    const progressBar = this.progressBar.nativeElement;
+    let width = 0;
+    const interval = setInterval(() => {
+      if (width >= this.kpiStrPorcentAverage) {
+        clearInterval(interval);
+      } else {
+        width++;
+        progressBar.style.width = width + '%';
+        progressBar.innerText = width + '%';
+      }
+    }, 70); // Este intervalo determina la velocidad de llenado de la barra de progreso
+  }
+  
+
+
 
   isAdminRole(): boolean {
     if (this.authServiceToken.getAccessRole() === 'ADMIN') {

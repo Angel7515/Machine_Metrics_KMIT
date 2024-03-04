@@ -50,7 +50,7 @@ export class KpisComponent {
       (data: any[]) => {
         this.filteredProjects = data;
         if (this.authServiceToken.getAccessRole() == 'ADMIN') {
-          console.log('ADMIN')
+          //console.log('ADMIN')
           // Si es administrador, muestra todos los proyectos
           this.projects = data.map(project => {
             // Aplicar la transformación a start_date de cada posición
@@ -63,7 +63,7 @@ export class KpisComponent {
             return project;
           });
         } else {
-          console.log('LEADER')
+          //console.log('LEADER')
           // Si no es administrador, filtra los proyectos por el nombre del líder
           const idactive_responsable = this.authServiceToken.getAccessIdactive();
           this.filteredProjects = data.filter(project => project.person_idactive === idactive_responsable)

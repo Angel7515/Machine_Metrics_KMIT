@@ -9,6 +9,8 @@ import { ProjectViewComponent } from '../project-view/project-view.component';
 import { Environment } from '../../environments/environment';
 import { UsersService } from '../../services/AllUsers/users.service';
 
+import { KpiPerformanceService } from '../../services/OverviewKPIPerformance/kpi-performance.service';
+
 import { AllProjectsServiceService } from '../../services/AllProjectsDB/all-projects-service.service';
 
 /* filter */
@@ -29,6 +31,8 @@ export class HomeComponent {
   projectID: string = '';
   projectDetails: any;
 
+  kpiPerformance: any[] = [];
+
   constructor(
     @Inject(MSAL_INSTANCE) private msalInstance:
       IPublicClientApplication,
@@ -36,13 +40,14 @@ export class HomeComponent {
     public router: Router,
     private authServiceToken: AuthServiceTokenService,
     private projectService: AllProjectsServiceService,
-    private userService: UsersService
+    private userService: UsersService,
+    private kpiPerformanceDB: KpiPerformanceService
   ) { }
 
   ngOnInit(): void {
     this.loadProjects();
     this.setUserRole();
-
+    this.loadKpiPerformance()
   }
 
   getAccessRole(): string {
@@ -136,6 +141,23 @@ export class HomeComponent {
         project.status_project.toLowerCase().includes(this.searchTerm.toLowerCase()))
       );
     }
+  }
+
+  /* carga de overview */
+
+  loadKpiPerformance() {
+    this.kpiPerformanceDB.getKpisByProject(parseInt(this.projectID)).subscribe(
+      (data: any[]) => {
+        this.kpiPerformance = data;
+        this.kpiPerformance.forEach(kpi => {
+          kpi.date_upload = kpi.date_upload.substring(0, 10);
+        });
+        console.log(this.kpiPerformance)
+      },
+      error => {
+        console.log('Error al obtener los KPIs de rendimiento:', error);
+      }
+    );
   }
 
 

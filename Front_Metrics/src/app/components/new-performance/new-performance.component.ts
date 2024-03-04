@@ -66,7 +66,7 @@ export class NewPerformanceComponent implements OnInit {
 
     this.createPerformance.createPerformance(performanceData).subscribe(
       response => {
-        console.log('Performance created successfully:', response);
+        //console.log('Performance created successfully:', response);
 
         this.projectCreationSuccess = true;
         this.projectCreationError = false;
@@ -76,7 +76,7 @@ export class NewPerformanceComponent implements OnInit {
         }, 2000);
       },
       error => {
-        console.error('Error creating performance:', error);
+        //console.error('Error creating performance:', error);
         this.projectCreationSuccess = false;
         this.projectCreationError = true;
         setTimeout(() => {

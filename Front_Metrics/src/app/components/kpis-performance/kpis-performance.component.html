@@ -14,9 +14,9 @@
         <thead>
             <tr>
                 <th>ID Performance</th>
-                <th>KPI Number</th>
-                <th>KPI String</th>
-                <th>KPI String Percentage</th>
+                <th *ngIf="kpiData.type_kp === 'QUANTITATIVE'">KPI (Quantity)</th>
+                <th *ngIf="kpiData.type_kp === 'QUALITATIVE'">KPI (Quality)</th>
+                <th>KPI Percentage %</th>
                 <th>Description</th>
                 <th>Date Upload</th>
             </tr>
@@ -24,8 +24,8 @@
         <tbody>
             <tr *ngFor="let performance of performances">
                 <td>{{ performance.idperformance }}</td>
-                <td>{{ performance.kpi_num }}</td>
-                <td>{{ performance.kpi_str }}</td>
+                <td *ngIf="kpiData.type_kp === 'QUANTITATIVE'">{{ performance.kpi_num }}</td>
+                <td *ngIf="kpiData.type_kp === 'QUALITATIVE'">{{ performance.kpi_str }}</td>
                 <td>{{ performance.kpi_str_porcent }}</td>
                 <td>{{ performance.kpi_descripcion }}</td>
                 <td>{{ performance.date_upload }}</td>
@@ -33,5 +33,4 @@
         </tbody>
     </table>
     <br>
-
 </div>

@@ -31,6 +31,7 @@ import { KpisAddComponent } from './components/kpis-add/kpis-add.component';
 import { NewPerformanceComponent } from './components/new-performance/new-performance.component';
 import { KpiEditComponent } from './components/kpi-edit/kpi-edit.component';
 
+
 export function MSSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
     auth:{
