@@ -8,6 +8,7 @@ import { AuthServiceTokenService } from '../../services/AuthServiceToken/auth-se
 import { ProjectViewComponent } from '../project-view/project-view.component';
 import { Environment } from '../../environments/environment';
 import { UsersService } from '../../services/AllUsers/users.service';
+import { OverviewProjectsService } from '../../services/OverviewProjects/overview-projects.service';
 
 import { KpiPerformanceService } from '../../services/OverviewKPIPerformance/kpi-performance.service';
 
@@ -33,6 +34,8 @@ export class HomeComponent {
 
   kpiPerformance: any[] = [];
 
+  projectSummary: any[] = [];
+
   constructor(
     @Inject(MSAL_INSTANCE) private msalInstance:
       IPublicClientApplication,
@@ -41,11 +44,13 @@ export class HomeComponent {
     private authServiceToken: AuthServiceTokenService,
     private projectService: AllProjectsServiceService,
     private userService: UsersService,
-    private kpiPerformanceDB: KpiPerformanceService
+    private kpiPerformanceDB: KpiPerformanceService, 
+    private overviewSummary: OverviewProjectsService
   ) { }
 
   ngOnInit(): void {
     this.loadProjects();
+    this.loadProjectSummary();
     this.setUserRole();
     this.loadKpiPerformance()
   }
@@ -63,7 +68,7 @@ export class HomeComponent {
     // Obtener el rol del localStorage y comprobar si es 'admin'
     const role = this.authServiceToken.getAccessRole();
     if (role === 'ADMIN') {
-      return true
+      return true;
     } else {
       return false;
     }
@@ -74,7 +79,6 @@ export class HomeComponent {
       (data: any[]) => {
         this.filteredProjects = data;
         if (this.authServiceToken.getAccessRole() == 'ADMIN') {
-          console.log('ADMIN')
           // Si es administrador, muestra todos los proyectos
           this.projects = data.map(project => {
             // Aplicar la transformación a start_date de cada posición
@@ -104,6 +108,20 @@ export class HomeComponent {
       },
       error => {
         console.log('Error al obtener proyectos:', error);
+      }
+    );
+  }
+
+
+  loadProjectSummary() {
+    this.overviewSummary.getProjectSummary().subscribe(
+      (data: any[]) => {
+        this.projectSummary = data;
+        
+        console.log(this.projectSummary); // Para verificar los datos recibidos
+      },
+      error => {
+        console.log('Error al obtener el resumen del proyecto:', error);
       }
     );
   }

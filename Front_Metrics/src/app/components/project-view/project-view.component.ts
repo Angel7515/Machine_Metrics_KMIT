@@ -148,9 +148,6 @@ export class ProjectViewComponent implements OnInit {
 
   graphics(kpiDataArray: any[], kpiStrPorcentAverage: number) {
     this.fillProgressBar();
-    console.log('Array de datos de KPI:', kpiDataArray);
-    console.log('promedio de avance: ', kpiStrPorcentAverage, '%');
-  
     // Actualiza el valor de la barra de progreso
     const progressBar = document.getElementById('progress-bar') as HTMLElement;
     if (progressBar) {
@@ -172,7 +169,16 @@ export class ProjectViewComponent implements OnInit {
       }
     }, 70); // Este intervalo determina la velocidad de llenado de la barra de progreso
   }
-  
+
+  DescriptionTable(kpi: any) {
+    kpi.showDescription = !kpi.showDescription;
+    // Cambiar el color del texto del enlace en función del estado de showDescription
+    const link = document.getElementById('descriptionLink_' + kpi.id) as HTMLSpanElement;
+    if (link) {
+      link.style.color = kpi.showDescription ? 'blue' : 'red';
+    }
+  }
+
 
 
 

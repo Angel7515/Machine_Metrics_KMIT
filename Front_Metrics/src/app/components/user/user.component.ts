@@ -35,6 +35,10 @@ export class UserComponent implements OnInit {
     TokenAccess = this.authserviceToken.getAccessToken();
   }
 
+  getAccessRole(): string {
+    return this.authserviceToken.getAccessRole();
+  }
+
   getUsers(): void {
     this.userService.getUsers().subscribe(
       (data: any[]) => {

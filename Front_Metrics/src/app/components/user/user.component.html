@@ -55,12 +55,23 @@
                 <td><strong>{{ user.user_role }}</strong></td>
                 <td>
                     <div class="input-group mb-3">
-                        <button class="btn btn-success" [disabled]="user.user_role === 'ADMIN'"
-                            (click)="confirmUpdate(user.full_name, 'ADMIN')">ADMIN</button>
-                        <button class="btn btn-primary" [disabled]="user.user_role === 'LEADER'"
-                            (click)="confirmUpdate(user.full_name, 'LEADER')">LEADER</button>
-                        <button class="btn btn-warning" [disabled]="user.user_role === 'PARTICIPANT'"
-                            (click)="confirmUpdate(user.full_name, 'PARTICIPANT')">PARTICIPANT</button>
+                        <!-- Mostrar botón ADMIN solo si el usuario es ADMIN -->
+                        <button *ngIf="getAccessRole() === 'ADMIN'" class="btn btn-success"
+                            [disabled]="user.user_role === 'ADMIN'"
+                            (click)="confirmUpdate(user.full_name, 'ADMIN')">ADMIN
+                        </button>
+                        <!-- Mostrar botón LEADER solo si el usuario es LEADER -->
+                        <button
+                            *ngIf="(getAccessRole() === 'LEADER' && user.user_role !== 'LEADER') || getAccessRole() === 'ADMIN'"
+                            class="btn btn-primary" [disabled]="user.user_role === 'LEADER'"
+                            (click)="confirmUpdate(user.full_name, 'LEADER')">LEADER
+                        </button>
+                        <!-- Mostrar botón PARTICIPANT solo si el usuario es LEADER o PARTICIPANT -->
+                        <button
+                            *ngIf="getAccessRole() === 'LEADER' && user.user_role !== 'ADMIN' || getAccessRole() === 'ADMIN'"
+                            class="btn btn-warning" [disabled]="user.user_role === 'PARTICIPANT'"
+                            (click)="confirmUpdate(user.full_name, 'PARTICIPANT')">PARTICIPANT
+                        </button>
                     </div>
                 </td>
             </tr>
