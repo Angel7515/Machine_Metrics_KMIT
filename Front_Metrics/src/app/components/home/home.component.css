@@ -68,3 +68,10 @@
     margin-left: 10%;
     margin-top: 2%;
 }
+
+
+.progress-bar:hover {
+    transform: scaleX(2.5); /* Aumenta el ancho de la barra al 120% */
+    transition: transform 0.3s ease; /* Agrega una transición suave */
+    z-index: 1; /* Asegura que la barra de progreso esté por encima de otros elementos */
+}

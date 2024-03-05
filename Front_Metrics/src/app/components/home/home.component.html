@@ -24,6 +24,14 @@
                     'pending': project.status_project === 'PENDING',
                     'active': project.status_project === 'ACTIVE'
                 }" class="status-pill position-absolute bottom-0 end-0">{{ project.status_project }}</div>
+                <div class="progress mt-2">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                        [style.width.%]="project.prom" [attr.aria-valuenow]="project.prom" aria-valuemin="0"
+                        aria-valuemax="100">
+                        {{ project.prom }}%
+                    </div>
+                </div>
+
             </a>
         </div>
     </div>
