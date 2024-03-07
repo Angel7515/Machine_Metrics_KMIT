@@ -1,29 +1,32 @@
-<div class="container">
+<div class="body">
     <br>
-    <h1 class="text-center mb-4">KPIs For Project</h1>
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Project</th>
-                    <th scope="col">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <ng-container *ngIf="filteredProjects.length > 0; else noProjects">
-                    <tr *ngFor="let project of filteredProjects | filter: searchTerm" (click)="navigateToKpisView(project.idproject, project.project_name)">
-                        <th scope="row">{{ project.idproject }}</th>
-                        <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ project.project_name }}</td>
-                        <td>{{ project.status_project }}</td>
-                    </tr>
-                </ng-container>
-                <ng-template #noProjects>
+    <h1 class="title mb-4"><strong> KPIs For Project</strong></h1>
+    <div class="container">
+        <br>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover custom-table">
+                <thead class="thead-dark">
                     <tr>
-                        <td colspan="3" class="text-center">No projects available</td>
+                        <th scope="col">ID</th>
+                        <th scope="col">Project</th>
+                        <th scope="col">Status</th>
                     </tr>
-                </ng-template>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <ng-container *ngIf="filteredProjects.length > 0; else noProjects">
+                        <tr *ngFor="let project of filteredProjects | filter: searchTerm" (click)="navigateToKpisView(project.idproject, project.project_name)">
+                            <th scope="row">{{ project.idproject }}</th>
+                            <td class="project-name">{{ project.project_name }}</td>
+                            <td>{{ project.status_project }}</td>
+                        </tr>
+                    </ng-container>
+                    <ng-template #noProjects>
+                        <tr>
+                            <td colspan="3" class="text-center">No projects available</td>
+                        </tr>
+                    </ng-template>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

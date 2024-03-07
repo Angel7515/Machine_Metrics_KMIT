@@ -1,12 +1,36 @@
+/* Estilo para el enlace en la barra de navegación */
+.navbar-nav .nav-item .nav-link {
+    color: white; /* Color del texto */
+    font-size: 16px; /* Tamaño de la fuente */
+    transition: color 0.3s ease; /* Transición suave */
+}
+
 /* Estilo para el enlace activo en la barra de navegación */
 .navbar-nav .nav-item .nav-link.active {
-    background-color: #28a745; /* Cambia el color de fondo cuando está activo */
-    
+    background-color: #20fff4; /* Cambia el color de fondo cuando está activo */
+    border-radius: 5px; /* Añade bordes redondeados */
 }
 
 /* Estilo para el enlace hover en la barra de navegación */
 .navbar-nav .nav-item .nav-link:hover {
-    background-color: #ff7627; /* Cambia el color de fondo al pasar el ratón */
-    
+    background-color: #fda219; /* Cambia el color de fondo al pasar el ratón */
+    color: rgb(0, 0, 0);
+    transition: background-color 0.3s ease; /* Agrega una transición suave */
 }
 
+/* Estilo para el botón de hamburguesa */
+.navbar-toggler-icon {
+    background-color: white; /* Cambia el color del icono del botón */
+}
+
+/* Estilo para el logo de la barra de navegación */
+.navbar-brand {
+    font-weight: bold; /* Ajusta el peso de la fuente */
+    color: white; /* Color del texto del logo */
+    font-size: 22px; /* Tamaño de la fuente del logo */
+}
+
+/* Añade espacio alrededor del contenido del navbar */
+.navbar {
+    padding: 10px 20px;
+}

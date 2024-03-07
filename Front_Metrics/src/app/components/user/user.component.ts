@@ -16,9 +16,11 @@ let TokenAccess: string = '';
 })
 export class UserComponent implements OnInit {
 
+
+
   users: any[] = [];
   foundUsers: any[] = []; // Nueva matriz para almacenar usuarios encontrados durante la búsqueda
-  
+
   /* alert user */
   showAlert = false;
 
@@ -56,9 +58,9 @@ export class UserComponent implements OnInit {
     if (query && query.trim() !== '') {
       this.searchUsers(query).subscribe(
         (data: any) => {
-          const uniqueUsers: { id:string, full_name: string, user_role: string }[] = []; // Especificar el tipo de la variable uniqueUsers
+          const uniqueUsers: { id: string, full_name: string, user_role: string }[] = []; // Especificar el tipo de la variable uniqueUsers
           const foundUserNames = new Set(); // Conjunto para verificar nombres de usuario duplicados
-  
+
           data.value.forEach((user: any) => {
             // Verificar si el nombre de usuario ya existe en la lista de usuarios
             const existingUser = this.users.find(u => u.full_name === user.displayName);
@@ -72,7 +74,7 @@ export class UserComponent implements OnInit {
               });
             }
           });
-  
+
           // Asignar el arreglo de usuarios únicos a foundUsers
           this.foundUsers = uniqueUsers;
         },
@@ -85,7 +87,7 @@ export class UserComponent implements OnInit {
       this.foundUsers = [];
     }
   }
-  
+
   private apiUrl = 'https://graph.microsoft.com/v1.0/users';
 
   searchUsers(query: string): Observable<any> {
@@ -119,9 +121,9 @@ export class UserComponent implements OnInit {
   }
 
   /* create user */
-  registerAs(idactive:string,fullName: string, role: string): void {
-    console.log(idactive,' ----- ', fullName, ' ---- ', role);
-    this.createPerson.createNewUser(idactive,fullName, role).pipe(
+  registerAs(idactive: string, fullName: string, role: string): void {
+    console.log(idactive, ' ----- ', fullName, ' ---- ', role);
+    this.createPerson.createNewUser(idactive, fullName, role).pipe(
       tap(() => this.showAlert = true), // Mostrar la alerta
       switchMap(() => timer(2000)) // Esperar 2 segundos
     ).subscribe(() => {

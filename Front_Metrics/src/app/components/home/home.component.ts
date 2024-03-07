@@ -13,7 +13,6 @@ import { KpiPerformanceService } from '../../services/OverviewKPIPerformance/kpi
 import { AllProjectsServiceService } from '../../services/AllProjectsDB/all-projects-service.service';
 
 /* filter */
-import { FilterPipe } from '../filter.pipe';
 
 @Component({
   selector: 'app-home',
@@ -86,8 +85,6 @@ export class HomeComponent {
           // Agregar el promedio como una nueva propiedad al objeto summary
           return { ...summary, prom: promedio };
         });
-        console.log('project summary :', this.projectSummary);
-
         // Una vez que se ha calculado el promedio, cargar los proyectos
         this.loadProjects(); // Llamar a loadProjects() aquí
       },
@@ -129,10 +126,7 @@ export class HomeComponent {
               project.person_name = user.full_name;
             }
           });
-        });
-
-        console.log('Filtered projects with user names:', this.filteredProjects);
-
+        });console.log(this.filteredProjects)
         // Aplicar el filtro según el rol de acceso
         if (this.authServiceToken.getAccessRole() !== 'ADMIN') {
           const idactive_responsable = this.authServiceToken.getAccessIdactive();
@@ -179,18 +173,9 @@ export class HomeComponent {
   }
 
   // Método para filtrar los proyectos en función de searchTerm
-  filterProjects() {
-    if (!this.searchTerm || this.searchTerm.trim() === '') {
-      // Si searchTerm está vacío, mostrar todos los proyectos
-      this.filteredProjects = this.projects;
-    } else {
-      // Filtrar los proyectos en función de searchTerm y status
-      this.filteredProjects = this.projects.filter(project =>
-      (project.project_name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        project.status_project.toLowerCase().includes(this.searchTerm.toLowerCase()))
-      );
-    }
-  }
+
+
+
 
   /* carga de overview */
 

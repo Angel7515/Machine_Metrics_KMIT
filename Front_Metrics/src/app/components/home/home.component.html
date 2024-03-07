@@ -4,8 +4,7 @@
         <br>
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Search by Project name or Status"
-                aria-label="search by project name or person responsible" aria-describedby="button-addon2"
-                [(ngModel)]="searchTerm" (input)="filterProjects()">
+                aria-label="search by project name or person responsible" aria-describedby="button-addon2">
             <button *ngIf="!isAdminRole()" routerLink="/project" type="button" class="btn btn-warning">CREATE A NEW
                 PROJECT</button>
         </div>

@@ -41,9 +41,9 @@
 
     <!-- end  -->
     <br>
-    <table class="table table-hover">
+    <table class="table">
         <thead>
-            <tr class="table-active">
+            <tr class="table-primary">
                 <th scope="col">Full Name</th>
                 <th scope="col">Current Role</th>
                 <th scope="col">Role Options:</th>
@@ -60,9 +60,9 @@
                             [disabled]="user.user_role === 'ADMIN'"
                             (click)="confirmUpdate(user.full_name, 'ADMIN')">ADMIN
                         </button>
-                        <!-- Mostrar botón LEADER solo si el usuario es LEADER -->
+                        <!-- Mostrar botón LEADER solo si el usuario es LEADER y ADMIN -->
                         <button
-                            *ngIf="(getAccessRole() === 'LEADER' && user.user_role !== 'LEADER') || getAccessRole() === 'ADMIN'"
+                            *ngIf="(getAccessRole() === 'ADMIN' || getAccessRole() === 'LEADER')"
                             class="btn btn-primary" [disabled]="user.user_role === 'LEADER'"
                             (click)="confirmUpdate(user.full_name, 'LEADER')">LEADER
                         </button>
