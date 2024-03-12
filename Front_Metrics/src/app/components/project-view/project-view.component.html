@@ -1,138 +1,122 @@
-<div class="container" *ngIf="projectDetails && projectDetails.length > 0">
+<div class="bodycomponent">
+    <br>
+    <div class="container" *ngIf="projectDetails && projectDetails.length > 0">
 
-    <br>
-    <div class="d-flex justify-content-between">
-        <div class="return-back">
-            <button routerLink="/home" class="btn btn-info">Back</button>
+        <br>
+        <div class="d-flex justify-content-between">
+            <div class="return-back">
+                <button routerLink="/home" class="btn btn-primary">Back</button>
+            </div>
+            <br>
+            <div class="title">
+                <h1 class="ResumeProject"><strong>{{ projectDetails[0].project_name }}</strong>
+                </h1>
+            </div>
+            <br>
+            <div class="edith_reg">
+                <button *ngIf="!isAdminRole()" [routerLink]="['/dbeditproject', projectID]"
+                    class="btn btn-warning">Edit</button>
+            </div>
         </div>
         <br>
-        <div class="title">
-            <h1 class="ResumeProject"><strong>{{ projectDetails[0].project_name }}</strong>
-            </h1>
+        <div class="date_created">
+            <h2>Created Date: {{ projectDetails[0].start_date }}</h2>
         </div>
         <br>
-        <div class="edith_reg">
-            <button *ngIf="!isAdminRole()" [routerLink]="['/dbeditproject', projectID]"
-                class="btn btn-warning">Edit</button>
-        </div>
-    </div>
-    <br>
-    <div class="date_created">
-        <h2>Created Date: {{ projectDetails[0].start_date }}</h2>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="responsable">
-                <h1 for="exampleTextarea">Responsible:</h1>
-                <h1>{{ nameperson }}</h1>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="status_projects">
-                <h3 [ngClass]="{
-                    'complete': projectDetails[0].status_project === 'COMPLETE',
-                    'created': projectDetails[0].status_project === 'CREATED',
-                    'pending': projectDetails[0].status_project === 'PENDING',
-                    'active': projectDetails[0].status_project === 'ACTIVE'
-                }"> {{ projectDetails[0].status_project }}</h3>
-            </div>
-        </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-md-6 offset-md-3"> <!-- Alineamos el botón en el centro -->
-            <div class="toggle-description text-center">
-                <button class="btn btn-primary" (click)="toggleDescription()">
-                    {{ showDescription ? 'Hide Description' : 'Show Description' }}
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="form-group" *ngIf="showDescription">
-        <h1 for="exampleTextarea">Description:</h1>
-        <div [innerHTML]="formattedDescription"></div>
-    </div>
-    <br>
-    <div class="participants" *ngIf="filteredParticipants && filteredParticipants.length > 0">
-        <h2>Participants</h2>
-        <div class="participant-container">
-            <ng-container *ngFor="let participant of filteredParticipants">
-                <div class="participant">
-                    <i class="material-icons">person</i>
-                    <span>{{ getUserName(participant.person_idactive) }}</span>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="responsable">
+                    <h1 for="exampleTextarea">Responsible:</h1>
+                    <h1>{{ nameperson }}</h1>
                 </div>
-            </ng-container>
+            </div>
+            <div class="col-md-6">
+                <div class="status_projects">
+                    <h3 [ngClass]="{
+                        'complete': projectDetails[0].status_project === 'COMPLETE',
+                        'created': projectDetails[0].status_project === 'CREATED',
+                        'pending': projectDetails[0].status_project === 'PENDING',
+                        'active': projectDetails[0].status_project === 'ACTIVE'
+                    }"> {{ projectDetails[0].status_project }}</h3>
+                </div>
+            </div>
         </div>
-    </div>
-    <br>
-    <div class="kpiperformance">
-        <h2>KPI Performance</h2>
-        <div class="progress">
-            <div #progressBar id="progress-bar"
-                class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar"
-                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+        <div class="form-group row">
+            <div class="col-md-6 offset-md-3"> <!-- Alineamos el botón en el centro -->
+                <div class="toggle-description text-center">
+                    <button class="btn btn-primary" (click)="toggleDescription()">
+                        {{ showDescription ? 'Hide Description' : 'Show Description' }}
+                    </button>
+                </div>
+            </div>
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name (KPI)</th>
-                    <th>Type (KPI)</th>
-                    <th>Quantity</th>
-                    <th>Quality</th>
-                    <th>Description</th>
-                    <th>Date</th>
-                    <th>Percentage</th>
-                </tr>
-            </thead>
-            <!-- <tbody>
-                <tr *ngFor="let kpi of kpiPerformance">
-                    <td>{{ kpi.name }}</td>
-                    <td>{{ kpi.type_kp }}</td>
-                    <td>{{ kpi.kpi_num }}</td>
-                    <td>{{ kpi.kpi_str }}</td>
-                    <td>{{ kpi.kpi_descripcion }}</td>
-                    <td>{{ kpi.date_upload }}</td>
-                    <td>
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                role="progressbar" [style.width]="kpi.kpi_str_porcent + '%'" aria-valuemin="0"
-                                aria-valuemax="100">
-                                {{ kpi.kpi_str_porcent }}%
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody> -->
-            <tbody>
-                <ng-container *ngFor="let kpi of kpiPerformance; let i = index">
-                    <tr>
-                        <td>{{ kpi.name }}</td>
-                        <td>{{ kpi.type_kp }}</td>
-                        <td>{{ kpi.kpi_num }}</td>
-                        <td>{{ kpi.kpi_str }}</td>
-                        <td>
-                            <div class="description-container" *ngIf="kpi.showDescription">
-                                <!-- Aquí colocas la descripción completa -->
-                                {{ kpi.kpi_descripcion }}
-                            </div>
-                            <span (click)="DescriptionTable(kpi)" class="toggle-description"
-                                [id]="'descriptionLink_' + i" [style.color]="kpi.showDescription ? 'blue' : 'red'">
-                                {{ kpi.showDescription ? 'Hide Description' : 'Show Description' }}
-                            </span>
-                        </td>
-                        <td>{{ kpi.date_upload }}</td>
-                        <td>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                    role="progressbar" [style.width]="kpi.kpi_str_porcent + '%'" aria-valuemin="0"
-                                    aria-valuemax="100">
-                                    {{ kpi.kpi_str_porcent }}%
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
+        <div class="form-group" *ngIf="showDescription">
+            <h1 for="exampleTextarea">Description:</h1>
+            <div [innerHTML]="formattedDescription"></div>
+        </div>
+        <br>
+        <div class="participants" *ngIf="filteredParticipants && filteredParticipants.length > 0">
+            <h2>Participants</h2>
+            <div class="participant-container">
+                <ng-container *ngFor="let participant of filteredParticipants">
+                    <div class="participant">
+                        <i class="material-icons">person</i>
+                        <span>{{ getUserName(participant.person_idactive) }}</span>
+                    </div>
                 </ng-container>
-            </tbody>
-        </table>
+            </div>
+        </div>
+        <br>
+        <div class="kpiperformance">
+            <h2>KPI Performance</h2>
+            <div class="progress">
+                <div #progressBar id="progress-bar"
+                    class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr class="table-primary">
+                        <th>Name (KPI)</th>
+                        <th>Type (KPI)</th>
+                        <th>Quantity</th>
+                        <th>Quality</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>Percentage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let kpi of kpiPerformance; let i = index">
+                        <tr class="">
+                            <td>{{ kpi.name }}</td>
+                            <td>{{ kpi.type_kp }}</td>
+                            <td>{{ kpi.kpi_num }}</td>
+                            <td>{{ kpi.kpi_str }}</td>
+                            <td>
+                                <div class="description-container" *ngIf="kpi.showDescription">
+                                    <!-- Aquí colocas la descripción completa -->
+                                    {{ kpi.kpi_descripcion }}
+                                </div>
+                                <span (click)="DescriptionTable(kpi)" class="toggle-description"
+                                    [id]="'descriptionLink_' + i" [style.color]="kpi.showDescription ? 'blue' : 'red'">
+                                    {{ kpi.showDescription ? 'Hide Description' : 'Show Description' }}
+                                </span>
+                            </td>
+                            <td>{{ kpi.date_upload }}</td>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                        role="progressbar" [style.width]="kpi.kpi_str_porcent + '%'" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                        {{ kpi.kpi_str_porcent }}%
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

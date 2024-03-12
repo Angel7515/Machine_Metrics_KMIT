@@ -20,12 +20,12 @@ import { AllProjectsServiceService } from '../../services/AllProjectsDB/all-proj
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+  searchTerm: string = ''; // Atributo para almacenar el término de búsqueda
 
 
   accessToken: string = '';
   projects: any[] = [];
   filteredProjects: any[] = [];
-  searchTerm: string = '';
   endate: any;
   projectID: string = '';
   projectDetails: any;
@@ -54,7 +54,25 @@ export class HomeComponent {
     this.setUserRole();
     this.loadKpiPerformance()
     this.getUsers()
+
+
   }
+
+  // Método para filtrar los proyectos en función de searchTerm
+  filterProjects(): void {
+    const searchTermLower = this.searchTerm.toLowerCase().trim();
+    if (searchTermLower === '') {
+      this.filteredProjects = [...this.projects]; // Restaurar todos los proyectos si el término de búsqueda está vacío
+      return; 
+    }
+  
+    this.filteredProjects = this.projects.filter(project =>
+      project.person_name.toLowerCase().includes(searchTermLower) ||
+      project.project_name.toLowerCase().includes(searchTermLower) ||
+      project.status_project.toLowerCase().includes(searchTermLower)
+    );
+  }
+  
 
   getAccessRole(): string {
     return this.authServiceToken.getAccessRole();
@@ -97,8 +115,7 @@ export class HomeComponent {
   loadProjects() {
     this.projectService.getProjects().subscribe(
       (data: any[]) => {
-        // Fusionar los arreglos
-        this.filteredProjects = data.map(project => {
+        this.projects = data.map(project => {
           const summary = this.projectSummary.find(summary => summary.project_idproject === project.idproject);
           if (summary) {
             project.total_porcentaje = summary.total_porcentaje;
@@ -115,29 +132,34 @@ export class HomeComponent {
           }
           return project;
         });
-
+  
         // Filtrar los usuarios por idactive
         this.userService.getUsers().subscribe((users: any[]) => {
           this.users = users;
-          // Agregar el nombre de los usuarios al arreglo filteredProjects si person_idactive coincide con idactive
-          this.filteredProjects.forEach(project => {
+          // Agregar el nombre de los usuarios al arreglo projects si person_idactive coincide con idactive
+          this.projects.forEach(project => {
             const user = this.users.find((user: any) => user.idactive === project.person_idactive);
             if (user) {
               project.person_name = user.full_name;
             }
           });
-        });console.log(this.filteredProjects)
+        });
+  
         // Aplicar el filtro según el rol de acceso
         if (this.authServiceToken.getAccessRole() !== 'ADMIN') {
           const idactive_responsable = this.authServiceToken.getAccessIdactive();
-          this.filteredProjects = this.filteredProjects.filter(project => project.person_idactive === idactive_responsable);
+          this.projects = this.projects.filter(project => project.person_idactive === idactive_responsable);
         }
+  
+        // Filtrar proyectos al cargarlos inicialmente
+        this.filterProjects();
       },
       error => {
         console.log('Error al obtener proyectos:', error);
       }
     );
   }
+  
 
 
   getUsers(): void {
@@ -186,7 +208,6 @@ export class HomeComponent {
         this.kpiPerformance.forEach(kpi => {
           kpi.date_upload = kpi.date_upload.substring(0, 10);
         });
-        console.log(this.kpiPerformance)
       },
       error => {
         console.log('Error al obtener los KPIs de rendimiento:', error);

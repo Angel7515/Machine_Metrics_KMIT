@@ -1,80 +1,75 @@
-<div class="container">
-    <br>
-    <h1>Users list</h1>
-    <br>
-    <!-- solo cuando se crea un usuario nuevo  -->
-    <div class="form-group">
-        <label class="col-form-label mt-4" for="inputDefault"><strong>Search User:</strong></label>
-        <input type="text" class="form-control" placeholder="Enter username by last name or your corporate email"
-            id="inputDefault" (input)="onSearch($event)">
+<div class="bodycomponent">
+    <h1 class="title"><strong>Users list</strong></h1>
+    <div class="container">
+        <!-- solo cuando se crea un usuario nuevo  -->
+        <div class="form-group">
+            <label class="col-form-label mt-4" for="inputDefault"><strong>Search User:</strong></label>
+            <input type="text" class="form-control" placeholder="Enter username by last name or your corporate email"
+                id="inputDefault" (input)="onSearch($event)">
+        </div>
+        <!-- end user new -->
+        <div class="alert alert-dismissible alert-success" role="alert" *ngIf="showAlert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <h3><strong>Well done!</strong> You have successfully added a new person.</h3>
+        </div>
+        <!-- Nueva tabla para mostrar usuarios encontrados -->
+        <table class="table table-hover" *ngIf="foundUsers.length > 0">
+            <thead>
+                <tr class="table-success">
+                    <th scope="col">User(s) found</th>
+                    <th scope="col">Register User as:</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of foundUsers">
+                    <td><strong>{{ user.full_name }}</strong></td>
+                    <td>
+                        <div class="input-group mb-3">
+                            <button class="btn btn-primary" [disabled]="user.user_role === 'LEADER'"
+                                (click)="registerAs(user.id,user.full_name, 'LEADER')">LEADER</button>
+                            <button class="btn btn-warning" [disabled]="user.user_role === 'PARTICIPANT'"
+                                (click)="registerAs(user.id,user.full_name, 'PARTICIPANT')">PARTICIPANT</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- end  -->
+        <br>
+        <table class="table">
+            <thead>
+                <tr class="table-primary">
+                    <th scope="col">Full Name</th>
+                    <th scope="col">Current Role</th>
+                    <th scope="col">Role Options:</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users">
+                    <td><strong>{{ user.full_name }}</strong></td>
+                    <td><strong>{{ user.user_role }}</strong></td>
+                    <td>
+                        <div class="input-group mb-3">
+                            <!-- Mostrar botón ADMIN solo si el usuario es ADMIN -->
+                            <button *ngIf="getAccessRole() === 'ADMIN'" class="btn btn-success"
+                                [disabled]="user.user_role === 'ADMIN'"
+                                (click)="confirmUpdate(user.full_name, 'ADMIN')">ADMIN
+                            </button>
+                            <!-- Mostrar botón LEADER solo si el usuario es LEADER y ADMIN -->
+                            <button *ngIf="(getAccessRole() === 'ADMIN' || getAccessRole() === 'LEADER')"
+                                class="btn btn-primary" [disabled]="user.user_role === 'LEADER'"
+                                (click)="confirmUpdate(user.full_name, 'LEADER')">LEADER
+                            </button>
+                            <!-- Mostrar botón PARTICIPANT solo si el usuario es LEADER o PARTICIPANT -->
+                            <button
+                                *ngIf="getAccessRole() === 'LEADER' && user.user_role !== 'ADMIN' || getAccessRole() === 'ADMIN'"
+                                class="btn btn-warning" [disabled]="user.user_role === 'PARTICIPANT'"
+                                (click)="confirmUpdate(user.full_name, 'PARTICIPANT')">PARTICIPANT
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <!-- end user new -->
-    <br>
-    <div class="alert alert-dismissible alert-success" role="alert" *ngIf="showAlert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        <h3><strong>Well done!</strong> You have successfully added a new person.</h3>
-    </div>
-    <br>
-    <!-- Nueva tabla para mostrar usuarios encontrados -->
-    <table class="table table-hover" *ngIf="foundUsers.length > 0">
-        <thead>
-            <tr class="table-active">
-                <th scope="col">User(s) found</th>
-                <th scope="col">Register User as:</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of foundUsers">
-                <td><strong>{{ user.full_name }}</strong></td>
-                <td>
-                    <div class="input-group mb-3">
-                        <button class="btn btn-primary" [disabled]="user.user_role === 'LEADER'"
-                            (click)="registerAs(user.id,user.full_name, 'LEADER')">LEADER</button>
-                        <button class="btn btn-warning" [disabled]="user.user_role === 'PARTICIPANT'"
-                            (click)="registerAs(user.id,user.full_name, 'PARTICIPANT')">PARTICIPANT</button>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-
-    <!-- end  -->
-    <br>
-    <table class="table">
-        <thead>
-            <tr class="table-primary">
-                <th scope="col">Full Name</th>
-                <th scope="col">Current Role</th>
-                <th scope="col">Role Options:</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of users">
-                <td><strong>{{ user.full_name }}</strong></td>
-                <td><strong>{{ user.user_role }}</strong></td>
-                <td>
-                    <div class="input-group mb-3">
-                        <!-- Mostrar botón ADMIN solo si el usuario es ADMIN -->
-                        <button *ngIf="getAccessRole() === 'ADMIN'" class="btn btn-success"
-                            [disabled]="user.user_role === 'ADMIN'"
-                            (click)="confirmUpdate(user.full_name, 'ADMIN')">ADMIN
-                        </button>
-                        <!-- Mostrar botón LEADER solo si el usuario es LEADER y ADMIN -->
-                        <button
-                            *ngIf="(getAccessRole() === 'ADMIN' || getAccessRole() === 'LEADER')"
-                            class="btn btn-primary" [disabled]="user.user_role === 'LEADER'"
-                            (click)="confirmUpdate(user.full_name, 'LEADER')">LEADER
-                        </button>
-                        <!-- Mostrar botón PARTICIPANT solo si el usuario es LEADER o PARTICIPANT -->
-                        <button
-                            *ngIf="getAccessRole() === 'LEADER' && user.user_role !== 'ADMIN' || getAccessRole() === 'ADMIN'"
-                            class="btn btn-warning" [disabled]="user.user_role === 'PARTICIPANT'"
-                            (click)="confirmUpdate(user.full_name, 'PARTICIPANT')">PARTICIPANT
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </div>

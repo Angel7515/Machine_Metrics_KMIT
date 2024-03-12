@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Environment } from '../../environments/environment';
 import { KpisAllService } from '../../services/KpisAll/kpis-all.service';
 import { ActivatedRoute } from '@angular/router';
+import { AuthServiceTokenService } from '../../services/AuthServiceToken/auth-service-token.service';
 
 @Component({
   selector: 'app-kpis-view',
@@ -15,7 +16,7 @@ export class KpisViewComponent implements OnInit{
   project_name = '';
   kpis: any[] = [];
 
-  constructor(private route: ActivatedRoute, private kpisAllService: KpisAllService, private router:Router) {}
+  constructor(private route: ActivatedRoute, private kpisAllService: KpisAllService, private router:Router, private authServiceToken:AuthServiceTokenService) {}
 
   ngOnInit(): void {
     this.project_number = Environment.getProjectId();
@@ -24,6 +25,13 @@ export class KpisViewComponent implements OnInit{
       this.getKPIs();
     });
   }
+
+  isAdminRole(): boolean {
+    // Obtener el rol del localStorage y comprobar si es 'admin'
+    const role = this.authServiceToken.getAccessRole();
+    return role === 'ADMIN';
+  }
+  
 
   getKPIs(): void {
     this.kpisAllService.getAllKPIs().subscribe(

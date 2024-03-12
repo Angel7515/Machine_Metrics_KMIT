@@ -1,23 +1,22 @@
 <div class="body">
     <br>
-    <h1 class="title mb-4"><strong> KPIs For Project</strong></h1>
+    <h1 class="title mb-4"><strong>KPIs For Project</strong></h1>
+    <h3 class="title"><strong>Please, select a Project to view your KPI's</strong></h3>
     <div class="container">
         <br>
         <div class="table-responsive">
             <table class="table table-bordered table-hover custom-table">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col">ID</th>
                         <th scope="col">Project</th>
                         <th scope="col">Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <ng-container *ngIf="filteredProjects.length > 0; else noProjects">
-                        <tr *ngFor="let project of filteredProjects | filter: searchTerm" (click)="navigateToKpisView(project.idproject, project.project_name)">
-                            <th scope="row">{{ project.idproject }}</th>
-                            <td class="project-name">{{ project.project_name }}</td>
-                            <td>{{ project.status_project }}</td>
+                        <tr *ngFor="let project of filteredProjects | filter: searchTerm" (click)="navigateToKpisView(project.idproject, project.project_name)" class="table-row">
+                            <td class="project-name"><strong>{{ project.project_name }}</strong></td>
+                            <td><strong>{{ project.status_project }}</strong></td>
                         </tr>
                     </ng-container>
                     <ng-template #noProjects>

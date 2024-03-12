@@ -35,7 +35,7 @@
 }
 
 .active {
-    background-color: rgb(28, 250, 28);
+    background-color:  rgb(0,255,0);
     color: rgb(0, 0, 0);
     /* Para asegurarse de que el texto sea legible */
     padding: 5px 10px;
@@ -77,7 +77,7 @@
 }
 
 .list-group-item {
-    background-color: antiquewhite;
+    background-color:#ffcc88;
 }
 
 .Welcome {

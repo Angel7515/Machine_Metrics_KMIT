@@ -10,15 +10,34 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.background-overlay {
+    position: fixed; /* Fija el div en la pantalla */
+    top: 0;
+    left: 0;
+    width: 100%; /* Ocupa toda la anchura de la pantalla */
+    height: 100%; /* Ocupa toda la altura de la pantalla */
+    background-color: rgba(255, 255, 255, 0.5); /* Color de fondo con opacidad */
+    z-index: -1; /* Coloca el div detrás de otros elementos */
+}
+
 .mat-typography {
-    position: relative;
+    /* Mantén los estilos para el fondo de pantalla aquí */
     background-image: url('./assets/general/fondo3.png');
-    /* Ruta de tu imagen de fondo */
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
 
-.container{
-    background-color: #f7e7d4;
+
+
+.all{
+    background-color: aliceblue;
 }
+
+.container {
+    background-color: #ffcc88;
+    padding-bottom: 10px;
+    border-radius: 10px; /* para esquinas redondeadas */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9); /* para dar un aspecto alzado con sombra */
+}
+

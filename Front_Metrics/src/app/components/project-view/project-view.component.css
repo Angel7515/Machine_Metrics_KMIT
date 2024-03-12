@@ -1,5 +1,5 @@
 .ResumeProject {
-    color: rgb(236, 166, 16);
+    color: rgb(0,0,0);
     font-size: 40px;
     /* Establece el tamaño del texto al 3% del ancho de la ventana */
     word-wrap: break-word;
@@ -48,7 +48,7 @@
 }
 
 .active {
-    background-color: rgb(28, 250, 28);
+    background-color: rgb(0, 255, 0);
     color: rgb(0, 0, 0);
     /* Para asegurarse de que el texto sea legible */
     padding: 5px 10px;
@@ -124,10 +124,14 @@
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    border-color: white;
+    color: black;
+    background-color: white;
 }
 
 .participant i {
     margin-right: 5px;
+    border-color: black;
 }
 
 .participant span {

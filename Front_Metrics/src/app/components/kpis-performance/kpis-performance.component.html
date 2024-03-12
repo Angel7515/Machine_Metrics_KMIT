@@ -1,36 +1,43 @@
-<div class="container">
-    <h1>KPI Performance</h1>
-    <div>
-        <p><strong>ID:</strong> {{ kpiData.idkpis }}</p>
-        <p><strong>Name:</strong> {{ kpiData.name }}</p>
-        <p><strong>Type:</strong> {{ kpiData.type_kp }}</p>
-        <p><strong>Importance:</strong> {{ kpiData.importance }}</p>
-        <!-- Aquí puedes mostrar más detalles de la KPI según sea necesario -->
-        <button routerLink="/newperformance" [queryParams]="{ idkpis: kpiData.idkpis, name: kpiData.name, type_kp: kpiData.type_kp, importance: kpiData.importance }" class="btn btn-primary">New Performance</button>
+<div class="contenedor">
+    <br>
+    <h1 class="title"><strong>KPI Performance</strong></h1>
+    <div class="container">
+        <div>
+            <br>
+            <p><strong>ID:</strong> {{ kpiData.idkpis }}</p>
+            <p><strong>Name:</strong> {{ kpiData.name }}</p>
+            <p><strong>Type:</strong> {{ kpiData.type_kp }}</p>
+            <p><strong>Importance:</strong> {{ kpiData.importance }}</p>
+            <div class="d-flex justify-content-between mb-3">
+                <button class="btn btn-danger" routerLink="/dbkpis">Back</button>
+                <button *ngIf="!isAdminRole()" routerLink="/newperformance"
+                    [queryParams]="{ idkpis: kpiData.idkpis, name: kpiData.name, type_kp: kpiData.type_kp, importance: kpiData.importance }"
+                    class="btn btn-success">New Performance</button>
+            </div>
+        </div>
+        <!-- Tabla de performance -->
+        <table class="table">
+            <thead class="table-primary">
+                <tr>
+                    <th>ID Performance</th>
+                    <th *ngIf="kpiData.type_kp === 'QUANTITATIVE'">KPI (Quantity)</th>
+                    <th *ngIf="kpiData.type_kp === 'QUALITATIVE'">KPI (Quality)</th>
+                    <th>KPI Percentage %</th>
+                    <th>Description</th>
+                    <th>Date Upload</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let performance of performances">
+                    <td>{{ performance.idperformance }}</td>
+                    <td *ngIf="kpiData.type_kp === 'QUANTITATIVE'">{{ performance.kpi_num }}</td>
+                    <td *ngIf="kpiData.type_kp === 'QUALITATIVE'">{{ performance.kpi_str }}</td>
+                    <td>{{ performance.kpi_str_porcent }}</td>
+                    <td>{{ performance.kpi_descripcion }}</td>
+                    <td>{{ performance.date_upload }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
     </div>
-    <br>
-    <!-- Tabla de performance -->
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID Performance</th>
-                <th *ngIf="kpiData.type_kp === 'QUANTITATIVE'">KPI (Quantity)</th>
-                <th *ngIf="kpiData.type_kp === 'QUALITATIVE'">KPI (Quality)</th>
-                <th>KPI Percentage %</th>
-                <th>Description</th>
-                <th>Date Upload</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let performance of performances">
-                <td>{{ performance.idperformance }}</td>
-                <td *ngIf="kpiData.type_kp === 'QUANTITATIVE'">{{ performance.kpi_num }}</td>
-                <td *ngIf="kpiData.type_kp === 'QUALITATIVE'">{{ performance.kpi_str }}</td>
-                <td>{{ performance.kpi_str_porcent }}</td>
-                <td>{{ performance.kpi_descripcion }}</td>
-                <td>{{ performance.date_upload }}</td>
-            </tr>
-        </tbody>
-    </table>
-    <br>
 </div>

@@ -1,0 +1,9 @@
+.title{
+    margin-left: 10%;
+    margin-top: 2%;
+}
+
+.table-primary {
+    --bs-table-color: #fff;
+    --bs-table-bg: #1a72ca;
+}

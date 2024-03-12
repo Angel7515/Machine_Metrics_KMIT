@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
               this.checkUserService.checkUserAccess(response.id, response.displayName).subscribe(
                 (accessResponse) => {
                   if (accessResponse.accessGranted) {
-                    this.router.navigate(['home']);
+                    // No hagas nada aquí, ya que el usuario ya está autenticado
                   } else {
                     this.router.navigate(['access-denied']);
                   }
@@ -89,6 +89,18 @@ export class AppComponent implements OnInit {
     });
   }
   
+  // Login
+  login() {
+    this.authService.loginPopup().subscribe((response: AuthenticationResult) => {
+      const accessToken = response.accessToken;
+      this.authServiceToken.setAccessToken(accessToken);
+      this.authService.instance.setActiveAccount(response.account);
+
+      // Redirige al usuario a la página de inicio después de iniciar sesión
+      this.router.navigate(['home']);
+    });
+  }
+  
 
 
 
@@ -101,16 +113,6 @@ export class AppComponent implements OnInit {
     public http: HttpClient
   ) { }
 
-
-  // Login
-  login() {
-    this.authService.loginPopup().subscribe((response: AuthenticationResult) => {
-      const accessToken = response.accessToken;
-      this.authServiceToken.setAccessToken(accessToken);
-      this.authService.instance.setActiveAccount(response.account);
-
-    });
-  }
 
   // Logout
   logout() {
