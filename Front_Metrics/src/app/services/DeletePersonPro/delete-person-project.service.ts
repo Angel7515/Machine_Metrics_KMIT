@@ -8,7 +8,7 @@ import { Environment } from '../../environments/environment';
 })
 export class DeletePersonProjectService {
 
-  private baseUrl = Environment.API_URL+'dbdeletePerPro';
+  private baseUrl = Environment.API_URL+'api/dbdeletePerPro';
 
   constructor(private http: HttpClient) { }
 

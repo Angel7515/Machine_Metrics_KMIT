@@ -9,7 +9,7 @@ import { catchError } from 'rxjs';
 })
 export class ParticipantsService {
 
-  api = Environment.API_URL + 'dbpersonproject/person_has_project'
+  api = Environment.API_URL + 'api/dbpersonproject/person_has_project'
 
   constructor(private http: HttpClient) { }
 

@@ -8,7 +8,7 @@ import { Environment } from '../../environments/environment';
 })
 export class CreateKpisService {
 
-  private apiUrl = Environment.API_URL+'dbkpis/kpis';
+  private apiUrl = Environment.API_URL+'api/dbkpis/kpis';
 
   constructor(private http: HttpClient) { }
 

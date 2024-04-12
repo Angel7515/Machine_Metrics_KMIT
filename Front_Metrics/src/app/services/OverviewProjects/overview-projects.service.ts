@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class OverviewProjectsService {
 
-  api = Environment.API_URL + 'dboverviewP/summary'
+  api = Environment.API_URL + 'api/dboverviewP/summary'
 
   constructor(private http: HttpClient) { }
 

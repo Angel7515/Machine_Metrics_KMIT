@@ -7,7 +7,7 @@ import { Environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class AllProjectsServiceService {
-  api = Environment.API_URL+'dbprojects/all';
+  api = Environment.API_URL+'api/dbprojects/all';
 
   constructor(private http: HttpClient) { }
 

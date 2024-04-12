@@ -7,7 +7,7 @@ import { Environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class UsersService {
-  api = Environment.API_URL+'dbusers/all'
+  api = Environment.API_URL+'api/dbusers/all'
 
   constructor(private http: HttpClient) { }
 

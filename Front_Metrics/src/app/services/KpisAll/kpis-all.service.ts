@@ -8,7 +8,7 @@ import { Environment } from '../../environments/environment';
 })
 export class KpisAllService {
 
-  private apiUrl = Environment.API_URL+'kpis'; // URL del servidor Node.js
+  private apiUrl = Environment.API_URL+'api/kpis'; // URL del servidor Node.js
 
   constructor(private http: HttpClient) { }
 

@@ -8,7 +8,7 @@ import { Environment } from '../../environments/environment';
 })
 export class IDprojectService {
 
-  api = Environment.API_URL+'dbproject';
+  api = Environment.API_URL+'api/dbproject';
   
   constructor(private http: HttpClient) { }
 

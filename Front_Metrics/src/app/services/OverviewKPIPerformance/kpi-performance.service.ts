@@ -8,7 +8,7 @@ import { Environment } from '../../environments/environment';
 })
 export class KpiPerformanceService {
 
-  apiUrl = Environment.API_URL+'dboverview'
+  apiUrl = Environment.API_URL+'api/dboverview'
 
   constructor(private http: HttpClient) { }
 

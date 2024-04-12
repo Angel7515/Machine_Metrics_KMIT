@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class UpdateKPIService {
 
-  apiUrl = Environment.API_URL+'dbupKPI'
+  apiUrl = Environment.API_URL+'api/dbupKPI'
 
   constructor(private http: HttpClient) { }
 

@@ -8,7 +8,7 @@ import { Environment } from '../../environments/environment';
 })
 export class GetPerformanceService {
 
-  private baseUrl = Environment.API_URL+'dbgetperformance'; // URL base para las solicitudes
+  private baseUrl = Environment.API_URL+'api/dbgetperformance'; // URL base para las solicitudes
 
   constructor(private http: HttpClient) { }
 

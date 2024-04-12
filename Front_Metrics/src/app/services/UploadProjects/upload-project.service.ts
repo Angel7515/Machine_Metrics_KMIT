@@ -8,7 +8,7 @@ import { Environment } from '../../environments/environment';
 })
 export class UPloadProjectService {
 
-  private api = Environment.API_URL + 'dbputprojects'
+  private api = Environment.API_URL + 'api/dbputprojects'
 
   constructor(private http: HttpClient) { }
 

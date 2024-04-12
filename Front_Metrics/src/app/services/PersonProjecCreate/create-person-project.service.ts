@@ -8,7 +8,7 @@ import { Environment } from '../../environments/environment';
 })
 export class CreatePersonProjectService {
 
-  private api = Environment.API_URL+'dbcreatePersonProject/personhasproject'; // Cambia la URL según tu configuración de backend
+  private api = Environment.API_URL+'api/dbcreatePersonProject/personhasproject'; // Cambia la URL según tu configuración de backend
 
   constructor(private http: HttpClient) { }
 

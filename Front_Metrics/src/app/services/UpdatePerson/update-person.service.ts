@@ -8,7 +8,7 @@ import { Environment } from '../../environments/environment';
 })
 export class UpdatePersonService {
 
-  private apiUrl = Environment.API_URL+'dbupdateuser';
+  private apiUrl = Environment.API_URL+'api/dbupdateuser';
 
   constructor(private http: HttpClient) { }
 

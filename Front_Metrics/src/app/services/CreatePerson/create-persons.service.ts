@@ -8,7 +8,7 @@ import { Environment } from '../../environments/environment';
 })
 export class CreatePersonsService {
 
-  private api = Environment.API_URL+'dbcreateperson'
+  private api = Environment.API_URL+'api/dbcreateperson'
 
   constructor(private http: HttpClient) { }
 

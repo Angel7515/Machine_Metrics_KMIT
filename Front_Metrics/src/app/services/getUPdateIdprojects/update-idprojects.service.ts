@@ -8,7 +8,7 @@ import { Environment } from '../../environments/environment';
 })
 export class UPdateIDProjectsService {
 
-  api = Environment.API_URL+'dbeditproject';
+  api = Environment.API_URL+'api/dbeditproject';
   
   constructor(private http: HttpClient) { }
 

@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class SearchOnePersonService {
 
-  private api = Environment.API_URL+'dbOneP'
+  private api = Environment.API_URL+'api/dbOneP'
 
   constructor(private http: HttpClient) { }
 

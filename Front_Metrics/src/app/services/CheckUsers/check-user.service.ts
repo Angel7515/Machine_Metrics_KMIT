@@ -9,7 +9,7 @@ import { Environment } from '../../environments/environment';
 })
 export class CheckUserService {
 
-  private api = Environment.API_URL + 'dbcheckUser/checkUserAccess';
+  private api = Environment.API_URL + 'api/dbcheckUser/checkUserAccess';
 
   constructor(private http: HttpClient) { }
 

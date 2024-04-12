@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class GetParticipantsAllService {
 
-  api = Environment.API_URL+'dbpersonHasProjects/all'
+  api = Environment.API_URL+'api/dbpersonHasProjects/all'
 
   constructor(private http: HttpClient) { }
 
