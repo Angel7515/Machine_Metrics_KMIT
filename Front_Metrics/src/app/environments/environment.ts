@@ -1,9 +1,9 @@
 /* CIMMYT */
 export const Environment = {
     CLIENT_ID: 'e0f0e1e2-8dfc-41c8-bc60-1cb97b2bdc98',
-    REDIRECT_URI: 'https://localhost:4200/',
+    REDIRECT_URI: 'https://cimmyt-project-management.cimmyt.org/',
     AUTHORITY: "https://login.microsoftonline.com/da1068b1-9955-40c3-a728-451a21599bb3",
-    API_URL: 'http://localhost:3000/',
+    API_URL: 'https://cimmyt-project-management.cimmyt.org:8443/',
 
     projectId: '', // Variable para almacenar el ID
     getProjectId: () => Environment.projectId, // Función getter para obtener el ID
