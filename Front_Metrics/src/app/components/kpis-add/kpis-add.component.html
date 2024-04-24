@@ -2,7 +2,7 @@
   <br>
   <h1 class="title"><strong>Create a new KPI to Project</strong></h1>
   <div class="container">
-    <button class="btn btn-primary mt-3" routerLink="/dbkpis">Back</button>
+    <button class="btn btn-primary mt-3" (click)="navigateToKpisView()">Back</button>
 
     <!-- CARD NOTIFICATION -->
     <div *ngIf="projectCreationSuccess" class="alert alert-dismissible alert-success" id="alert">
@@ -49,7 +49,7 @@
     </div>
 
     <div class="text-center mt-4">
-      <button class="btn btn-danger float-start" routerLink="/dbkpis">Cancel</button>
+      <button class="btn btn-danger float-start" (click)="navigateToKpisView()">Cancel</button>
       <button class="btn btn-primary ms-2" (click)="createKpi()"
         [disabled]="!kpiName || !kpiType || !kpiDescription">Create</button>
     </div>

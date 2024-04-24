@@ -18,7 +18,7 @@ export class KpisAddComponent {
   projectCreationSuccess: boolean = false;
   projectCreationError: boolean = false;
 
-  constructor(private createKpisService: CreateKpisService, private authServiceToken: AuthServiceTokenService, private authService: MsalService, private router:Router) { }
+  constructor(private createKpisService: CreateKpisService, private authServiceToken: AuthServiceTokenService, private authService: MsalService, private router: Router) { }
 
   getAccountName(): any {
     let name = this.authService.instance.getActiveAccount()?.name;
@@ -41,7 +41,7 @@ export class KpisAddComponent {
         this.projectCreationError = false;
         // Aquí puedes redirigir a una página de éxito o realizar otra acción necesaria
         setTimeout(() => {
-          this.router.navigate(['/dbkpis']);
+          this.navigateToKpisView()
         }, 2000);
       },
       error => {
@@ -56,8 +56,10 @@ export class KpisAddComponent {
     );
   }
 
-  cancel(): void {
-    // Lógica para cancelar la creación del KPI, si es necesario
+
+  navigateToKpisView() {    
+    this.router.navigate(['/kpisview', Environment.getProjectId(), { projectName: Environment.getusername() }]);
   }
+
 
 }
