@@ -45,8 +45,8 @@
                 <button type="button" class="btn btn-outline-danger" routerLink="/home">Cancel</button>
             </div>
             <div class="col">
-                <button type="button" class="btn btn-outline-success" (click)="createProject()">Accept</button>
-            </div>
+                <button type="button" class="btn btn-outline-success" (click)="createProject()" [disabled]="!projectData.project_name">Accept</button>
+            </div>            
         </div>
     </div>
 </div>
