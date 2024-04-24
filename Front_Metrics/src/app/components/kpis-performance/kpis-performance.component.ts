@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { CreatePerformanceService } from '../../services/CreatePerformance/create-performance.service';
 import { GetPerformanceService } from '../../services/GetPerformance/get-performance.service';
 import { AuthServiceTokenService } from '../../services/AuthServiceToken/auth-service-token.service';
+import { Environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-kpis-performance',
@@ -14,7 +16,7 @@ export class KpisPerformanceComponent implements OnInit {
   kpiData: any;
   performances: any[] = [];
 
-  constructor(private route: ActivatedRoute, private getPerformance:GetPerformanceService, private createPerformance: CreatePerformanceService, private authServiceToken:AuthServiceTokenService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private getPerformance:GetPerformanceService, private createPerformance: CreatePerformanceService, private authServiceToken:AuthServiceTokenService) { }
 
   ngOnInit(): void {
     // Obtener los datos de la KPI del estado de la navegación
@@ -56,6 +58,10 @@ export class KpisPerformanceComponent implements OnInit {
         console.log('Error al cargar los datos de performance:', error);
       }
     );
+  }
+
+  navigateToKpisView() {    
+    this.router.navigate(['/kpisview', Environment.getProjectId(), { projectName: Environment.getusername() }]);
   }
   
 

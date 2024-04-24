@@ -32,7 +32,7 @@
     </div>
     <br>
     <div class="text-center mt-4">
-        <button class="btn btn-danger float-start" routerLink="/dbkpis">Cancel</button>
+        <button class="btn btn-danger float-start" (click)="navigateToKpisView()">Cancel</button>
         <button class="btn btn-primary ms-2" (click)="updateKpi()"
             [disabled]="!kpiName || !kpiDescription">Save</button>
     </div>

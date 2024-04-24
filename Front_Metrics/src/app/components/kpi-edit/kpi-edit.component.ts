@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UpdateKPIService } from '../../services/UpKPI/update-kpi.service';
+import { Environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-kpi-edit',
@@ -46,7 +47,7 @@ export class KpiEditComponent implements OnInit {
           this.projectCreationError = false;
           // Manejo adicional después de la actualización exitosa
           setTimeout(() => {
-            this.router.navigate(['/dbkpis']);
+            this.navigateToKpisView();
           }, 2000);
         },
         error => {
@@ -59,6 +60,10 @@ export class KpiEditComponent implements OnInit {
           }, 2000);
         }
       );
+  }
+
+  navigateToKpisView() {    
+    this.router.navigate(['/kpisview', Environment.getProjectId(), { projectName: Environment.getusername() }]);
   }
 
 }

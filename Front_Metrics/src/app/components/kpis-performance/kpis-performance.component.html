@@ -9,7 +9,7 @@
             <p><strong>Type:</strong> {{ kpiData.type_kp }}</p>
             <p><strong>Importance:</strong> {{ kpiData.importance }}</p>
             <div class="d-flex justify-content-between mb-3">
-                <button class="btn btn-danger" routerLink="/dbkpis">Back</button>
+                <button class="btn btn-danger" (click)="navigateToKpisView()">Back</button>
                 <button *ngIf="!isAdminRole()" routerLink="/newperformance"
                     [queryParams]="{ idkpis: kpiData.idkpis, name: kpiData.name, type_kp: kpiData.type_kp, importance: kpiData.importance }"
                     class="btn btn-success">New Performance</button>
