@@ -124,7 +124,8 @@ export class ProjectViewComponent implements OnInit {
     );
   }
 
-  loadKpiPerformance() {
+  /*original */
+  /* loadKpiPerformance() {
     this.kpiPerformanceDB.getKpisByProject(parseInt(this.projectID)).subscribe(
       (data: any[]) => {
         this.kpiPerformance = data;
@@ -144,7 +145,32 @@ export class ProjectViewComponent implements OnInit {
         console.log('Error al obtener los KPIs de rendimiento:', error);
       }
     );
+  } */
+
+  loadKpiPerformance() {
+    this.kpiPerformanceDB.getKpisByProject(parseInt(this.projectID)).subscribe(
+      (data: any[]) => {
+        this.kpiPerformance = data;
+        let totalKPIs = this.kpiPerformance.length;
+        let kpiDataArray: any[] = [];
+        this.kpiStrPorcentSum = 0; // Reinicializar la suma antes de calcular el promedio
+        this.kpiPerformance.forEach(kpi => {
+          kpi.date_upload = kpi.date_upload.substring(0, 10);
+          this.kpiStrPorcentSum += parseFloat(kpi.kpi_str_porcent);
+          kpiDataArray.push({ name: kpi.name, kpi_str_porcent: kpi.kpi_str_porcent });
+        });
+        if (totalKPIs > 0) {
+          this.kpiStrPorcentAverage = this.kpiStrPorcentSum / totalKPIs;
+        }
+        // Llamar a graphics() dentro del bloque subscribe
+        this.graphics(kpiDataArray, this.kpiStrPorcentAverage);
+      },
+      error => {
+        console.log('Error al obtener los KPIs de rendimiento:', error);
+      }
+    );
   }
+
 
   graphics(kpiDataArray: any[], kpiStrPorcentAverage: number) {
     this.fillProgressBar();
