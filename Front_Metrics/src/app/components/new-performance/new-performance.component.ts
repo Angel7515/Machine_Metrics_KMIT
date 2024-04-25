@@ -72,7 +72,7 @@ export class NewPerformanceComponent implements OnInit {
         this.projectCreationError = false;
         // Iniciar temporizador para redirigir después de 3 segundos (ajusta el tiempo según sea necesario)
         setTimeout(() => {
-          this.router.navigate(['/dbkpis']);
+          this.navigateToKpisView();
         }, 2000);
       },
       error => {
@@ -85,5 +85,9 @@ export class NewPerformanceComponent implements OnInit {
         // Maneja errores aquí si es necesario
       }
     );
+  }
+
+  navigateToKpisView() {    
+    this.router.navigate(['/kpisview', Environment.getProjectId(), { projectName: Environment.getusername() }]);
   }
 }

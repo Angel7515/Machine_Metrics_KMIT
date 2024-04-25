@@ -26,7 +26,8 @@
             <td>{{ kpi.type_kp }}</td>
             <td>{{ kpi.importance }}</td>
             <td><button *ngIf="!isAdminRole()" (click)="redirectToEditKPI(kpi)"
-                class="btn btn-warning">Edit</button><button class="btn btn-success">Follow up</button></td>
+                class="btn btn-warning">Edit</button>
+                <button class="btn btn-success">Follow up</button></td>
           </tr>
         </tbody>
       </table>
