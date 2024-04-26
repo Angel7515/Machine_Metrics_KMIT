@@ -183,7 +183,9 @@ export class ProjectViewComponent implements OnInit {
             kpiStrPorcentSum += parseFloat(kpi.kpi_str_porcent);
             totalKPIsWithPerformance++; // Incrementar el contador de KPIs con registros de rendimiento
           }
-          kpi.date_upload = kpi.date_upload.substring(0, 10);
+          if (kpi.date_upload !== null) { // Verificar si date_upload no es nulo
+            kpi.date_upload = kpi.date_upload.substring(0, 10);
+          }
         });
 
         // Calcular el promedio solo si hay KPIs con registros de rendimiento
@@ -200,6 +202,7 @@ export class ProjectViewComponent implements OnInit {
       }
     );
   }
+
 
   graphics(kpiStrPorcentAverage: number) {
     this.fillProgressBar(kpiStrPorcentAverage);
