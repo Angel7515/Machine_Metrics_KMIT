@@ -124,7 +124,6 @@ export class ProjectViewComponent implements OnInit {
     );
   }
 
-  /*original */
   /* loadKpiPerformance() {
     this.kpiPerformanceDB.getKpisByProject(parseInt(this.projectID)).subscribe(
       (data: any[]) => {
@@ -145,36 +144,11 @@ export class ProjectViewComponent implements OnInit {
         console.log('Error al obtener los KPIs de rendimiento:', error);
       }
     );
-  } */
-
-  loadKpiPerformance() {
-    this.kpiPerformanceDB.getKpisByProject(parseInt(this.projectID)).subscribe(
-      (data: any[]) => {
-        this.kpiPerformance = data;
-        let totalKPIs = this.kpiPerformance.length;
-        let kpiDataArray: any[] = [];
-        this.kpiStrPorcentSum = 0; // Reinicializar la suma antes de calcular el promedio
-        this.kpiPerformance.forEach(kpi => {
-          kpi.date_upload = kpi.date_upload.substring(0, 10);
-          this.kpiStrPorcentSum += parseFloat(kpi.kpi_str_porcent);
-          kpiDataArray.push({ name: kpi.name, kpi_str_porcent: kpi.kpi_str_porcent });
-        });
-        if (totalKPIs > 0) {
-          this.kpiStrPorcentAverage = this.kpiStrPorcentSum / totalKPIs;
-        }
-        // Llamar a graphics() dentro del bloque subscribe
-        this.graphics(kpiDataArray, this.kpiStrPorcentAverage);
-      },
-      error => {
-        console.log('Error al obtener los KPIs de rendimiento:', error);
-      }
-    );
   }
 
 
   graphics(kpiDataArray: any[], kpiStrPorcentAverage: number) {
     this.fillProgressBar();
-    // Actualiza el valor de la barra de progreso
     const progressBar = document.getElementById('progress-bar') as HTMLElement;
     if (progressBar) {
       progressBar.style.width = kpiStrPorcentAverage + '%';
@@ -193,8 +167,52 @@ export class ProjectViewComponent implements OnInit {
         progressBar.style.width = width + '%';
         progressBar.innerText = width + '%';
       }
-    }, 70); // Este intervalo determina la velocidad de llenado de la barra de progreso
+    }, 70);
+  } */
+
+  loadKpiPerformance() {
+    this.kpiPerformanceDB.getKpisByProject(parseInt(this.projectID)).subscribe(
+      (data: any[]) => {
+        this.kpiPerformance = data;
+        let totalKPIsWithPerformance = 0; // Contador de KPIs con registros de rendimiento
+        let kpiStrPorcentSum = 0; // Suma de valores kpi_str_porcent
+
+        // Iterar sobre las KPIs para calcular la suma de los valores kpi_str_porcent
+        this.kpiPerformance.forEach(kpi => {
+          if (kpi.kpi_str_porcent !== null) { // Solo sumar si el valor no es nulo
+            kpiStrPorcentSum += parseFloat(kpi.kpi_str_porcent);
+            totalKPIsWithPerformance++; // Incrementar el contador de KPIs con registros de rendimiento
+          }
+          kpi.date_upload = kpi.date_upload.substring(0, 10);
+        });
+
+        // Calcular el promedio solo si hay KPIs con registros de rendimiento
+        if (totalKPIsWithPerformance > 0) {
+          this.kpiStrPorcentAverage = kpiStrPorcentSum / totalKPIsWithPerformance;
+        } else {
+          this.kpiStrPorcentAverage = 0; // Establecer en 0 si no hay KPIs con registros de rendimiento
+        }
+
+        this.graphics(this.kpiStrPorcentAverage);
+      },
+      error => {
+        console.log('Error al obtener los KPIs de rendimiento:', error);
+      }
+    );
   }
+
+  graphics(kpiStrPorcentAverage: number) {
+    this.fillProgressBar(kpiStrPorcentAverage);
+  }
+
+  fillProgressBar(kpiStrPorcentAverage: number): void {
+    const progressBar = this.progressBar.nativeElement;
+
+    // Establecer el valor de la barra de progreso
+    progressBar.style.width = kpiStrPorcentAverage + '%';
+    progressBar.innerText = kpiStrPorcentAverage + '%';
+  }
+
 
   DescriptionTable(kpi: any) {
     kpi.showDescription = !kpi.showDescription;

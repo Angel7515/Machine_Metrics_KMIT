@@ -86,7 +86,7 @@
                         <th>Percentage</th>
                     </tr>
                 </thead>
-                <!-- <tbody>
+                <tbody>
                     <ng-container *ngFor="let kpi of kpiPerformance; let i = index">
                         <tr class="">
                             <td>{{ kpi.name }}</td>
@@ -114,41 +114,7 @@
                             </td>
                         </tr>
                     </ng-container>
-                </tbody> -->
-
-
-                <tbody>
-                    <ng-container *ngFor="let kpi of kpiPerformance; let i = index">
-                      <tr class="">
-                        <td>{{ kpi.name }}</td>
-                        <td>{{ kpi.type_kp }}</td>
-                        <td>{{ kpi.kpi_num || 'no record' }}</td>
-                        <td>{{ kpi.kpi_str || 'no record' }}</td>
-                        <td>
-                          <div class="description-container" *ngIf="kpi.showDescription">
-                            <!-- Aquí colocas la descripción completa -->
-                            {{ kpi.kpi_descripcion }}
-                          </div>
-                          <span (click)="DescriptionTable(kpi)" class="toggle-description"
-                            [id]="'descriptionLink_' + i" [style.color]="kpi.showDescription ? 'blue' : 'red'">
-                            {{ kpi.showDescription ? 'Hide Description' : 'Show Description' }}
-                          </span>
-                        </td>
-                        <td>{{ kpi.date_upload }}</td>
-                        <td>
-                          <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                              role="progressbar" [style.width]="kpi.kpi_str_porcent + '%'" aria-valuemin="0"
-                              aria-valuemax="100">
-                              {{ kpi.kpi_str_porcent ? kpi.kpi_str_porcent + '%' : 'no record' }}
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </ng-container>
-                  </tbody>
-                  
-
+                </tbody>
             </table>
         </div>
     </div>
