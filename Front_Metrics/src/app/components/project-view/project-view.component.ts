@@ -124,7 +124,7 @@ export class ProjectViewComponent implements OnInit {
     );
   }
 
-  /* loadKpiPerformance() {
+  loadKpiPerformance() {
     this.kpiPerformanceDB.getKpisByProject(parseInt(this.projectID)).subscribe(
       (data: any[]) => {
         this.kpiPerformance = data;
@@ -168,97 +168,10 @@ export class ProjectViewComponent implements OnInit {
         progressBar.innerText = width + '%';
       }
     }, 70);
-  } */
-
-
-  /* ant */
-  /* loadKpiPerformance() {
-    this.kpiPerformanceDB.getKpisByProject(parseInt(this.projectID)).subscribe(
-      (data: any[]) => {
-        this.kpiPerformance = data;
-        let totalKPIsWithPerformance = 0; // Contador de KPIs con registros de rendimiento
-        let kpiStrPorcentSum = 0; // Suma de valores kpi_str_porcent
-
-        // Iterar sobre las KPIs para calcular la suma de los valores kpi_str_porcent
-        this.kpiPerformance.forEach(kpi => {
-          if (kpi.kpi_str_porcent !== null) { // Solo sumar si el valor no es nulo
-            kpiStrPorcentSum += parseFloat(kpi.kpi_str_porcent);
-            totalKPIsWithPerformance++; // Incrementar el contador de KPIs con registros de rendimiento
-          }
-          if (kpi.date_upload !== null) { // Verificar si date_upload no es nulo
-            kpi.date_upload = kpi.date_upload.substring(0, 10);
-          }
-        });
-
-        // Calcular el promedio solo si hay KPIs con registros de rendimiento
-        if (totalKPIsWithPerformance > 0) {
-          this.kpiStrPorcentAverage = kpiStrPorcentSum / totalKPIsWithPerformance;
-        } else {
-          this.kpiStrPorcentAverage = 0; // Establecer en 0 si no hay KPIs con registros de rendimiento
-        }
-
-        this.graphics(this.kpiStrPorcentAverage);
-      },
-      error => {
-        console.log('Error al obtener los KPIs de rendimiento:', error);
-      }
-    );
-  } */
-
-
-  loadKpiPerformance() {
-    this.kpiPerformanceDB.getKpisByProject(parseInt(this.projectID)).subscribe(
-      (data: any[]) => {
-        // Agrupar los registros de rendimiento por ID de KPI
-        const groupedKpiPerformance: { [key: string]: any } = {};
-        data.forEach(kpi => {
-          if (!groupedKpiPerformance[kpi.kpi_idkpi] || 
-              new Date(kpi.date_upload) > new Date(groupedKpiPerformance[kpi.kpi_idkpi].date_upload)) {
-            groupedKpiPerformance[kpi.kpi_idkpi] = kpi;
-          }
-        });
-  
-        // Convertir el objeto de grupos en un array de resultados
-        this.kpiPerformance = Object.keys(groupedKpiPerformance).map(key => groupedKpiPerformance[key]);
-  
-        // Formatear la fecha de carga
-        this.kpiPerformance.forEach(kpi => {
-          if (kpi.date_upload) {
-            kpi.date_upload = kpi.date_upload.substring(0, 10);
-          } else {
-            kpi.date_upload = 'No record';
-          }
-        });
-  
-        // Calcular el porcentaje promedio
-        const totalKPIsWithPerformance = Object.keys(groupedKpiPerformance).length;
-        if (totalKPIsWithPerformance > 0) {
-          const kpiStrPorcentSum = this.kpiPerformance.reduce((sum, kpi) => sum + parseFloat(kpi.kpi_str_porcent), 0);
-          this.kpiStrPorcentAverage = kpiStrPorcentSum / totalKPIsWithPerformance;
-        } else {
-          this.kpiStrPorcentAverage = 0;
-        }
-  
-        this.graphics(this.kpiStrPorcentAverage);
-      },
-      error => {
-        console.log('Error al obtener los KPIs de rendimiento:', error);
-      }
-    );
-  }
-  
-
-  graphics(kpiStrPorcentAverage: number) {
-    this.fillProgressBar(kpiStrPorcentAverage);
   }
 
-  fillProgressBar(kpiStrPorcentAverage: number): void {
-    const progressBar = this.progressBar.nativeElement;
 
-    // Establecer el valor de la barra de progreso
-    progressBar.style.width = kpiStrPorcentAverage + '%';
-    progressBar.innerText = kpiStrPorcentAverage + '%';
-  }
+  
 
 
   DescriptionTable(kpi: any) {
