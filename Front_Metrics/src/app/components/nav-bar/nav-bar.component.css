@@ -18,10 +18,6 @@
     transition: background-color 0.3s ease; /* Agrega una transición suave */
 }
 
-/* Estilo para el botón de hamburguesa */
-.navbar-toggler-icon {
-    background-color: white; /* Cambia el color del icono del botón */
-}
 
 /* Estilo para el logo de la barra de navegación */
 .navbar-brand {
