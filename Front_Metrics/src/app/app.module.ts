@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -77,4 +78,9 @@ export function MSSALInstanceFactory(): IPublicClientApplication {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(matIconRegistry: MatIconRegistry) {
+    // Registrar los íconos de Material Design
+    matIconRegistry.registerFontClassAlias('material-icons', 'material-icons');
+  }
+ }
