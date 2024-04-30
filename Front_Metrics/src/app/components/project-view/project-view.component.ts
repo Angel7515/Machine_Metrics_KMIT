@@ -170,7 +170,9 @@ export class ProjectViewComponent implements OnInit {
     }, 70);
   } */
 
-  loadKpiPerformance() {
+
+  /* ant */
+  /* loadKpiPerformance() {
     this.kpiPerformanceDB.getKpisByProject(parseInt(this.projectID)).subscribe(
       (data: any[]) => {
         this.kpiPerformance = data;
@@ -201,8 +203,50 @@ export class ProjectViewComponent implements OnInit {
         console.log('Error al obtener los KPIs de rendimiento:', error);
       }
     );
-  }
+  } */
 
+
+  loadKpiPerformance() {
+    this.kpiPerformanceDB.getKpisByProject(parseInt(this.projectID)).subscribe(
+      (data: any[]) => {
+        // Agrupar los registros de rendimiento por ID de KPI
+        const groupedKpiPerformance: { [key: string]: any } = {};
+        data.forEach(kpi => {
+          if (!groupedKpiPerformance[kpi.kpi_idkpi] || 
+              new Date(kpi.date_upload) > new Date(groupedKpiPerformance[kpi.kpi_idkpi].date_upload)) {
+            groupedKpiPerformance[kpi.kpi_idkpi] = kpi;
+          }
+        });
+  
+        // Convertir el objeto de grupos en un array de resultados
+        this.kpiPerformance = Object.keys(groupedKpiPerformance).map(key => groupedKpiPerformance[key]);
+  
+        // Formatear la fecha de carga
+        this.kpiPerformance.forEach(kpi => {
+          if (kpi.date_upload) {
+            kpi.date_upload = kpi.date_upload.substring(0, 10);
+          } else {
+            kpi.date_upload = 'No record';
+          }
+        });
+  
+        // Calcular el porcentaje promedio
+        const totalKPIsWithPerformance = Object.keys(groupedKpiPerformance).length;
+        if (totalKPIsWithPerformance > 0) {
+          const kpiStrPorcentSum = this.kpiPerformance.reduce((sum, kpi) => sum + parseFloat(kpi.kpi_str_porcent), 0);
+          this.kpiStrPorcentAverage = kpiStrPorcentSum / totalKPIsWithPerformance;
+        } else {
+          this.kpiStrPorcentAverage = 0;
+        }
+  
+        this.graphics(this.kpiStrPorcentAverage);
+      },
+      error => {
+        console.log('Error al obtener los KPIs de rendimiento:', error);
+      }
+    );
+  }
+  
 
   graphics(kpiStrPorcentAverage: number) {
     this.fillProgressBar(kpiStrPorcentAverage);
