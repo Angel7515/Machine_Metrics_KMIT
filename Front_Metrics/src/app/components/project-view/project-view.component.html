@@ -60,8 +60,10 @@
             <div class="participant-container">
                 <ng-container *ngFor="let participant of filteredParticipants">
                     <div class="participant">
-                        <i class="material-icons">person</i>
-                        <span>{{ getUserName(participant.person_idactive) }}</span>
+                        <span>
+                            <i class="fas fa-user"></i>
+                            {{ getUserName(participant.person_idactive) }}
+                        </span>
                     </div>
                 </ng-container>
             </div>
