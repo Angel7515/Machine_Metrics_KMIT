@@ -95,3 +95,13 @@
     /* Asegura que la barra de progreso esté por encima de otros elementos */
 }
 
+.date-info {
+    position: sticky;
+    top: 0; /* Mantendrá los datos en la parte superior del contenedor */
+    background-color: #FFCC88; /* Opcional: para que los datos sean visibles */
+    padding: 5px; /* Opcional: para mejorar la presentación */
+    border: 1px solid #FFCC88; /* Opcional: para crear un borde */
+    z-index: 1; /* Asegura que esté por encima del contenido desplazable */
+}
+
+

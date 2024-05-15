@@ -3,21 +3,35 @@
     <div class="container">
         <br>
         <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Search by Project name, Project Status or Name of person responsible"
+            <input type="text" class="form-control"
+                placeholder="Search by Project name, Project Status or Name of person responsible"
                 aria-label="search by project name or person responsible" aria-describedby="button-addon2"
                 [(ngModel)]="searchTerm" (ngModelChange)="filterProjects()">
-            <button *ngIf="!isAdminRole()" routerLink="/project" type="button" class="btn btn-warning">CREATE A NEW
+            <button *ngIf="!isAdminRole()" routerLink="/project" type="button" class="btn btn-dark custom-btn-dark">CREATE A NEW
                 PROJECT</button>
         </div>
+
+        <div class="btn-group" role="group" aria-label="Project Status Filters">
+            <!-- Botón para filtrar proyectos con estado 'PENDING' -->
+            <button type="button" class="btn btn-danger" (click)="filterByStatus('PENDING')">View PENDING Projects</button>
+            <!-- Botón para filtrar proyectos con estado 'COMPLETE' -->
+            <button type="button" class="btn btn-warning" (click)="filterByStatus('COMPLETE')">View COMPLETE Projects</button>
+            <!-- Botón para filtrar proyectos con estado 'COMPLETE' -->
+            <button type="button" class="btn btn-primary" (click)="filterByStatus('ACTIVE')">Reset Filter</button>
+        </div>
+
         <br>
         <div class="list-group">
             <a *ngFor="let project of filteredProjects" (click)="navigateToProjectView(project.idproject)"
                 class="list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-between">
-                    <h2 class="mb-1">{{ project.project_name }}</h2>
-                    <p><strong>{{ project.start_date }}</strong></p>
+                    <h1 class="mb-1"><strong>{{ project.project_name }}</strong></h1>
+                    <div class="date-info">
+                        <p>Start Date: <strong>{{ project.start_date }}</strong></p>
+                        <p class="mb-1">End Date: <strong>{{ project.end_date }}</strong></p>
+                    </div>
                 </div>
-                <p class="mb-1">{{ project.end_date }}</p>
+                <p class="mb-1"><strong>{{ project.person_name }}</strong></p>
                 <div [ngClass]="{
                     'complete': project.status_project === 'COMPLETE',
                     'created': project.status_project === 'CREATED',
@@ -28,7 +42,7 @@
                     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
                         [style.width.%]="project.prom" [attr.aria-valuenow]="project.prom" aria-valuemin="0"
                         aria-valuemax="100">
-                        {{ project.prom }}%
+                        {{ project.prom | number:'1.1-1' }}% <!-- Mostrar solo un decimal -->
                     </div>
                 </div>
 

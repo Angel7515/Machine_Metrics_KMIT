@@ -52,10 +52,8 @@ export class HomeComponent {
     this.loadProjects();
     this.loadProjectSummary();
     this.setUserRole();
-    this.loadKpiPerformance()
-    this.getUsers()
-
-
+    this.loadKpiPerformance();
+    this.getUsers();
   }
 
   // Método para filtrar los proyectos en función de searchTerm
@@ -63,16 +61,16 @@ export class HomeComponent {
     const searchTermLower = this.searchTerm.toLowerCase().trim();
     if (searchTermLower === '') {
       this.filteredProjects = [...this.projects]; // Restaurar todos los proyectos si el término de búsqueda está vacío
-      return; 
+      return;
     }
-  
+
     this.filteredProjects = this.projects.filter(project =>
       project.person_name.toLowerCase().includes(searchTermLower) ||
       project.project_name.toLowerCase().includes(searchTermLower) ||
       project.status_project.toLowerCase().includes(searchTermLower)
     );
   }
-  
+
 
   getAccessRole(): string {
     return this.authServiceToken.getAccessRole();
@@ -132,7 +130,7 @@ export class HomeComponent {
           }
           return project;
         });
-  
+
         // Filtrar los usuarios por idactive
         this.userService.getUsers().subscribe((users: any[]) => {
           this.users = users;
@@ -144,23 +142,36 @@ export class HomeComponent {
             }
           });
         });
-  
+
         // Aplicar el filtro según el rol de acceso
         if (this.authServiceToken.getAccessRole() !== 'ADMIN') {
           const idactive_responsable = this.authServiceToken.getAccessIdactive();
           this.projects = this.projects.filter(project => project.person_idactive === idactive_responsable);
         }
-  
+
         // Filtrar proyectos al cargarlos inicialmente
         this.filterProjects();
+
+        // Filtrar proyectos al cargarlos inicialmente
+        this.filterByStatus('ACTIVE'); // Inicializar con el filtro 'ACTIVE'
       },
       error => {
         console.log('Error al obtener proyectos:', error);
       }
     );
   }
-  
 
+
+
+  filterByStatus(status: string): void {
+    if (status === 'PENDING' || status === 'COMPLETE') {
+      // Filtrar la lista de proyectos según el estado seleccionado
+      this.filteredProjects = this.projects.filter(project => project.status_project === status);
+    } else {
+      // Si el estado no es 'PENDING' ni 'COMPLETE', mostrar todos los proyectos
+      this.filteredProjects = this.projects.filter(project => project.status_project === 'ACTIVE');
+    }
+  }
 
   getUsers(): void {
     this.userService.getUsers().subscribe(

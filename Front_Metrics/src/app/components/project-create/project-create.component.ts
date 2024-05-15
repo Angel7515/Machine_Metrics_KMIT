@@ -55,17 +55,33 @@ export class ProjectCreateComponent implements OnInit {
       project_name: '',
       description: '',
       start_date: '',
-      status_project: 'CREATED',
+      end_date: '',
+      status_project: 'ACTIVE',
       person_idactive: this.idactive // id del usuario responsable 
     };
   }
 
   createProject(): void {
-    console.log('data de envio',this.projectData)
+    // Verificar si tanto start_date como end_date están presentes y son completos
+    if (!this.projectData.start_date || !this.projectData.end_date) {
+        // Marcar la creación del proyecto como fallida
+        this.projectCreationSuccess = false;
+        this.projectCreationError = true;
+        setTimeout(() => {
+            this.projectCreationError = false;
+        }, 2000);
+        return; // Salir de la función para evitar enviar la solicitud al servidor
+    }
+    
+    // Formatear las fechas antes de asignarlas
+    this.projectData.start_date = this.formatDate(this.projectData.start_date);
+    this.projectData.end_date = this.formatDate(this.projectData.end_date);
+    
+    /* console.log('data de envio',this.projectData) */ /* lo que se envia */
     this.projectService.createProject(this.projectData)
       .subscribe({
         next: response => {
-          console.log(response); // Manejar la respuesta del servidor
+          /* console.log(response); */ // Manejar la respuesta del servidor
           // Marcar la creación del proyecto como exitosa
           this.projectCreationSuccess = true;
           this.projectCreationError = false;
@@ -84,6 +100,17 @@ export class ProjectCreateComponent implements OnInit {
           }, 2000);
         }
       });
+  }
+
+
+  formatDate(date: any): string {
+    // Convertir a objeto Date si no lo es
+    if (!(date instanceof Date)) {
+      date = new Date(date);
+    }
+    // Formatear a 'YYYY-MM-DD'
+    const formattedDate = date.toISOString().split('T')[0];
+    return formattedDate;
   }
 
   getUsers(): void {

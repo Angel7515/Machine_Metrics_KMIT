@@ -151,27 +151,20 @@ export class ProjectViewComponent implements OnInit {
     this.fillProgressBar();
     const progressBar = document.getElementById('progress-bar') as HTMLElement;
     if (progressBar) {
-      progressBar.style.width = kpiStrPorcentAverage + '%';
-      progressBar.innerText = kpiStrPorcentAverage + '%';
+      progressBar.style.width = kpiStrPorcentAverage.toFixed(1); + '%';
+      progressBar.innerText = progressBar.style.width;
     }
   }
 
   fillProgressBar(): void {
     const progressBar = this.progressBar.nativeElement;
-    let width = 0;
-    const interval = setInterval(() => {
-      if (width >= this.kpiStrPorcentAverage) {
-        clearInterval(interval);
-      } else {
-        width++;
-        progressBar.style.width = width + '%';
-        progressBar.innerText = width + '%';
-      }
-    }, 70);
+    const targetWidth = this.kpiStrPorcentAverage.toFixed(1);
+    progressBar.style.width = targetWidth + '%';
+    progressBar.innerText = targetWidth + '%';
   }
 
 
-  
+
 
 
   DescriptionTable(kpi: any) {

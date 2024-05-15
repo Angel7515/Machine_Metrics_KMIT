@@ -44,3 +44,12 @@ body {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9); /* para dar un aspecto alzado con sombra */
 }
 
+/* Botones  */
+/* Dark */
+.custom-btn-dark {
+    background-color: #54565A;
+}
+/* Warning */
+.custom-btn-warning {
+    background-color: #f29657;
+}
