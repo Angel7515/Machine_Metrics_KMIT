@@ -40,6 +40,22 @@
       </select>
     </div>
 
+    <br>
+    <div class="date_start">
+      <label class="col-form-label mt-4" for="startDate"><strong>Project Duration:</strong></label>
+      <small class="text-muted">*Required</small><br>
+      <mat-form-field>
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate placeholder="MM/DD/YYYY" [(ngModel)]="startDate">
+          <input matEndDate placeholder="MM/DD/YYYY" [(ngModel)]="endDate">
+        </mat-date-range-input>
+        <mat-hint>Start Date – End Date</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+    </div>
+
     <div class="mt-4">
       <div>
         <label for="exampleTextarea" class="form-label"><strong>Description:</strong></label>
@@ -48,10 +64,24 @@
       <textarea class="form-control" id="exampleTextarea" rows="3" [(ngModel)]="kpiDescription"></textarea>
     </div>
 
+    <!-- Lista de Participantes -->
+    <div class="mt-4">
+      <h2>Participantes</h2>
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let participant of combinedData">
+          {{ participant.full_name }}
+          <button class="btn" [ngClass]="{'btn-primary': !participant.isResponsible, 'btn-danger': participant.isResponsible}"
+            (click)="toggleResponsibility(participant)">
+            {{ participant.isResponsible ? 'Eliminar' : 'Responsable' }}
+          </button>
+        </li>
+      </ul>
+    </div>
+
     <div class="text-center mt-4">
       <button class="btn btn-danger float-start" (click)="navigateToKpisView()">Cancel</button>
       <button class="btn btn-primary ms-2" (click)="createKpi()"
-        [disabled]="!kpiName || !kpiType || !kpiDescription">Create</button>
+        [disabled]="!kpiName || !kpiType || !kpiDescription || !startDate || !endDate">Create</button>
     </div>
   </div>
 </div>

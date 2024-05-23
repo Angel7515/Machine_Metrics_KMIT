@@ -2,3 +2,33 @@
     margin-left: 10%;
     margin-top: 2%;
 }
+
+.btn-admin{
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+    color: white;
+}
+.btn-admin:hover{
+    border-color: #4CAF50;
+    color: black;
+}
+
+.btn-leader{
+    background-color: rgb(79, 185, 192);
+    border-color: rgb(79, 185, 192);
+    color: white;
+}
+.btn-leader:hover{
+    border-color: rgb(79, 185, 192);
+    color: black;
+}
+
+.btn-participant{
+    background-color: #FDBE50;
+    border-color: #FDBE50;
+    color: white;
+}
+.btn-participant:hover{
+    border-color: #FDBE50;
+    color: black;
+}

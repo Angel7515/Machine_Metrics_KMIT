@@ -3,8 +3,19 @@
     cursor: pointer;
 }
 
+/* button PENDING */
+.btn-reset {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+    color: white;
+}
+.btn-reset:hover {
+    border-color: #4CAF50;
+    color: black;
+}
+
 .complete {
-    background-color: rgb(235, 255, 52);
+    background-color: #FDBE50;
     color: rgb(0, 0, 0);
     /* Para asegurarse de que el texto sea legible */
     padding: 5px 10px;
@@ -14,6 +25,16 @@
     display: inline-block;
     /* Para que ocupen solo el ancho del contenido */
     font-weight: bold;
+}
+/* button COMPLETE */
+.btn-complete {
+    background-color: #FDBE50;
+    border-color: #FDBE50;
+    color: white;
+}
+.btn-complete:hover {
+    border-color: #FDBE50;
+    color: black;
 }
 
 .created {
@@ -26,7 +47,7 @@
 }
 
 .pending {
-    background-color: rgb(255, 0, 0);
+    background-color: rgb(79, 185, 192);
     color: white;
     padding: 5px 10px;
     border-radius: 10px;
@@ -34,9 +55,20 @@
     font-weight: bold;
 }
 
+/* button PENDING */
+.btn-pending {
+    background-color: rgb(79, 185, 192);
+    border-color: rgb(79, 185, 192);
+    color: white;
+}
+.btn-pending:hover {
+    border-color: rgb(79, 185, 192);
+    color: black;
+}
+
 .active {
-    background-color:  rgb(0,255,0);
-    color: rgb(0, 0, 0);
+    background-color: #4CAF50;
+    color: rgb(255, 255, 255);
     /* Para asegurarse de que el texto sea legible */
     padding: 5px 10px;
     /* Ajustar el relleno según sea necesario */
@@ -77,8 +109,9 @@
 }
 
 .list-group-item {
-    background-color:#ffcc88;
+    background-color: #ffffffeb;
 }
+
 
 .Welcome {
     margin-left: 10%;
@@ -97,11 +130,18 @@
 
 .date-info {
     position: sticky;
-    top: 0; /* Mantendrá los datos en la parte superior del contenedor */
-    background-color: #FFCC88; /* Opcional: para que los datos sean visibles */
-    padding: 5px; /* Opcional: para mejorar la presentación */
-    border: 1px solid #FFCC88; /* Opcional: para crear un borde */
-    z-index: 1; /* Asegura que esté por encima del contenido desplazable */
+    top: 0;
+    /* Mantendrá los datos en la parte superior del contenedor */
+    background-color: #ffffffeb;
+    /* Opcional: para que los datos sean visibles */
+    padding: 5px;
+    /* Opcional: para mejorar la presentación */
+    border: 1px solid #ffffffeb;
+    /* Opcional: para crear un borde */
+    z-index: 1;
+    /* Asegura que esté por encima del contenido desplazable */
 }
+
+
 
 

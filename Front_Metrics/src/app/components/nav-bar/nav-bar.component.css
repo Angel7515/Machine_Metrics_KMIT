@@ -13,7 +13,7 @@
 
 /* Estilo para el enlace hover en la barra de navegación */
 .navbar-nav .nav-item .nav-link:hover {
-    background-color: #fda219; /* Cambia el color de fondo al pasar el ratón */
+    background-color: #FDBE50; /* Cambia el color de fondo al pasar el ratón */
     color: rgb(0, 0, 0);
     transition: background-color 0.3s ease; /* Agrega una transición suave */
 }
@@ -33,5 +33,5 @@
 
 .bg-success {
     --bs-bg-opacity: 1;
-    background-color: rgb(63, 167, 49) !important;
+    background-color:#4CAF50 !important;
 }

@@ -14,16 +14,15 @@ import { Router } from '@angular/router'; // Importa el módulo Router
 @Component({
   selector: 'app-project-edit',
   templateUrl: './project-edit.component.html',
-  styleUrl: './project-edit.component.css'
+  styleUrls: ['./project-edit.component.css']
 })
 export class ProjectEditComponent implements OnInit {
 
   projectID: string = '';
   projectDetails: any;
   selectedStatus: string = '';
-  endDate: Date | null = null; // Ajusta el tipo de endDate a string
-  selectedStartDate: any = null;
-  selectedEndDate: any = null; // Declaración de selectedEndDate
+  selectedStartDate: string = ''; // Ajusta el tipo a string
+  selectedEndDate: string = ''; // Ajusta el tipo a string
   isEndDateSelected: boolean = false;
   projectCreationSuccess: boolean = false;
   projectCreationError: boolean = false;
@@ -33,14 +32,13 @@ export class ProjectEditComponent implements OnInit {
   idperson_has_project: number = 0;
   getparticipantsAll: any[] = [];
 
-
   constructor(
     private route: ActivatedRoute,
     private projectService: UPdateIDProjectsService,
     private uploadService: UPloadProjectService,
     private authService: MsalService,
     private authserviceToken: AuthServiceTokenService,
-    private router: Router, // Inyecta el módulo Router
+    private router: Router,
     private usersAll: UsersService,
     private participantsService: ParticipantsService,
     private getparticipants: GetParticipantsAllService,
@@ -54,11 +52,6 @@ export class ProjectEditComponent implements OnInit {
     this.getAllPersonProjects();
   }
 
-  getAccountName() {
-    let name = this.authService.instance.getActiveAccount()?.name;
-    return name;
-  }
-
   loadUsers(): void {
     this.usersAll.getUsers().subscribe(
       (users: any[]) => {
@@ -70,29 +63,22 @@ export class ProjectEditComponent implements OnInit {
     );
   }
 
-
-  // Método para cargar los detalles del proyecto
   loadProjectDetails(projectID: string) {
     this.projectService.getProjectById(projectID).subscribe(
       (data: any) => {
         this.projectDetails = data;
-        this.projectDetails[0].start_date = this.projectDetails[0].start_date.substring(0, 10);
+        // Ajusta la fecha de inicio al formato deseado
+        this.selectedStartDate = this.projectDetails[0].start_date ? this.projectDetails[0].start_date.substring(0, 10) : '';
+        this.selectedEndDate = this.projectDetails[0].end_date ? this.projectDetails[0].end_date.substring(0, 10) : '';
         this.selectedStatus = this.projectDetails[0].status_project;
-        this.selectedStartDate = this.projectDetails[0].start_date; // Inicializar selectedStartDate con la fecha de inicio actual
-        this.idperson_has_project = this.projectDetails[0].idproject;//id del proyecto
-        if (this.selectedStatus === 'COMPLETE') {
-          this.projectDetails[0].end_date = this.projectDetails[0].end_date.substring(0, 10);
-          this.selectedEndDate = this.projectDetails[0].end_date;
-        }
+        this.idperson_has_project = this.projectDetails[0].idproject;
+        console.log(this.selectedEndDate);
       },
       error => {
         console.log('Error al obtener los detalles del proyecto:', error);
       }
     );
   }
-
-
-  /* get participants in the project */
 
   getAllPersonProjects(): void {
     this.getparticipants.getAllPersonProjects().subscribe(
@@ -105,78 +91,50 @@ export class ProjectEditComponent implements OnInit {
     );
   }
 
-
-  // Método para cargar los datos del proyecto
   uploadProjectData(): void {
     const startDateInput = document.getElementById('startDate') as HTMLInputElement;
+    const endDateInput = document.getElementById('endDate') as HTMLInputElement;
     const projectNameInput = document.getElementById('projectName') as HTMLInputElement;
     const projectDescriptionInput = document.getElementById('projectDescription') as HTMLTextAreaElement;
 
     if (projectNameInput && projectDescriptionInput && startDateInput) {
       const projectName = projectNameInput.value;
       const projectDescription = projectDescriptionInput.value;
-
-      // Verifica si startDateInput tiene un valor
       const selectedStartDate = startDateInput.value ? startDateInput.value : this.selectedStartDate;
+      const selectedEndDate = endDateInput.value ? endDateInput.value : this.selectedEndDate; // Usa el valor de la fecha de finalización actual si no se selecciona una nueva fecha
 
-      // Verifica si el estado es "COMPLETE" y obtén la fecha de finalización si es necesario
-      if (this.selectedStatus === 'COMPLETE') {
-        const endDateInput = document.getElementById('endDate') as HTMLInputElement;
-        if (endDateInput && endDateInput.value) { // Verifica si se ha seleccionado una fecha
-          this.selectedEndDate = endDateInput.value; // Actualiza selectedEndDate con la fecha seleccionada
-          this.isEndDateSelected = true; // Marcar como verdadero si se selecciona una fecha de término
-          this.projectCreationSuccess = true;
-          this.projectCreationError = false;
-        } else {
-          this.projectCreationSuccess = false;
-          this.projectCreationError = true;
-          this.isEndDateSelected = false; // Marcar como falso si no se selecciona una fecha de término
-          return;
-        }
-      }
+      const formData = {
+        project_name: projectName,
+        description: projectDescription,
+        start_date: selectedStartDate,
+        end_date: selectedEndDate,
+        status_project: this.selectedStatus,
+        person_idactive: this.authserviceToken.getAccessIdactive()
+      };
 
-      // Envía los datos al servidor solo si la fecha de término está seleccionada o si el estado no es "COMPLETE"
-      if (this.selectedStatus !== 'COMPLETE' || this.isEndDateSelected) {
-        const formData = {
-          project_name: projectName,
-          description: projectDescription,
-          start_date: selectedStartDate,
-          end_date: this.selectedEndDate,
-          status_project: this.selectedStatus,
-          person_idactive: this.authserviceToken.getAccessIdactive()
-        };
+      this.uploadService.uploadProjectData(this.projectID, formData)
+        .subscribe(
+          response => {
+            this.projectCreationSuccess = true;
+            this.projectCreationError = false;
 
-        // Llama al servicio para cargar los datos del proyecto
-        this.uploadService.uploadProjectData(this.projectID, formData)
-          .subscribe(
-            response => {
-              this.projectCreationSuccess = true;
-              this.projectCreationError = false;
-              //console.log('Datos enviados exitosamente al servidor:', response);
-
-              // Oculta la notificación después de 2 segundos y redirige a la página de inicio
-              setTimeout(() => {
-                this.projectCreationSuccess = false;
-                this.router.navigate(['/home']);
-              }, 2000);
-            },
-            error => {
-              console.error('Error al enviar datos al servidor:', error);
+            setTimeout(() => {
               this.projectCreationSuccess = false;
-              this.projectCreationError = true;
-              // Maneja el error según sea necesario
-            }
-          );
-      } else {
-        console.error('Fecha de término no seleccionada.');
-      }
+              this.router.navigate(['/home']);
+            }, 2000);
+          },
+          error => {
+            console.error('Error al enviar datos al servidor:', error);
+            this.projectCreationSuccess = false;
+            this.projectCreationError = true;
+          }
+        );
     } else {
       console.error('Elementos projectName, projectDescription o startDate no encontrados.');
     }
     this.associateUsersWithProject();
   }
 
-  // Función para asociar usuarios con el proyecto
   associateUsersWithProject(): void {
     this.participants.forEach(participant => {
       this.participantsService.createPersonProject(participant.idactive, this.idperson_has_project)
@@ -191,7 +149,6 @@ export class ProjectEditComponent implements OnInit {
     });
   }
 
-  /* obtener todos los usuarios - participants */
   searchUsers(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value;
     if (searchTerm !== '') {
@@ -203,7 +160,6 @@ export class ProjectEditComponent implements OnInit {
     }
   }
 
-
   addParticipant(user: any) {
     if (!this.participants.some(participant => participant.idactive === user.idactive)) {
       this.participants.push(user);
@@ -214,7 +170,6 @@ export class ProjectEditComponent implements OnInit {
     this.participants.splice(index, 1);
   }
 
-  /* si participante existe */
   isUserRegistered(user: any): boolean {
     return this.getparticipantsAll.some(participant =>
       participant.person_idactive === user.idactive &&
@@ -222,20 +177,14 @@ export class ProjectEditComponent implements OnInit {
     );
   }
 
-
-  /* remove user */
   removeParticipantFromProject(user: any): void {
     this.deletePersonP.deletePersonProject(user.idactive).subscribe(
       () => {
-        // Eliminación exitosa, recargar la lista de personas registradas en el proyecto
         this.getAllPersonProjects();
       },
       error => {
         console.error('Error al eliminar la persona del proyecto:', error);
-        // Manejar el error según sea necesario
       }
     );
   }
-
-
 }

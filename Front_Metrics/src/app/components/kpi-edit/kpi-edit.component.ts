@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { UpdateKPIService } from '../../services/UpKPI/update-kpi.service';
 import { Environment } from '../../environments/environment';
 
+import { UsersService } from '../../services/AllUsers/users.service';
+import { DbKpisPersonService } from '../../services/kpisResponsable/db-kpis-person.service';
+
 @Component({
   selector: 'app-kpi-edit',
   templateUrl: './kpi-edit.component.html',
@@ -13,6 +16,8 @@ export class KpiEditComponent implements OnInit {
   kpiName: string = '';
   kpiType: string = '';
   kpiDescription: string = '';
+  startDate: string = '';
+  endDate: string = '';
   projectCreationSuccess: boolean = false;
   projectCreationError: boolean = false;
 
@@ -22,12 +27,16 @@ export class KpiEditComponent implements OnInit {
     if (this.kpiData) {
       this.kpiName = this.kpiData.name;
       this.kpiDescription = this.kpiData.importance;
+      this.startDate = this.kpiData.start_date;
+      this.endDate = this.kpiData.end_date;
     }
   }
 
   constructor(
-    private router:Router,
-    private Updatekpi: UpdateKPIService
+    private router: Router,
+    private Updatekpi: UpdateKPIService,
+    private userAllDB: UsersService,
+    private dbKpisPersonService: DbKpisPersonService
   ) { }
 
   updateKpi(): void {
@@ -36,25 +45,23 @@ export class KpiEditComponent implements OnInit {
       name: this.kpiName,
       type_kp: this.kpiData.type_kp,
       importance: this.kpiDescription,
+      start_date: this.startDate,
+      end_date: this.endDate,
       project_idproject: this.kpiData.project_idproject,
       project_person_idactive: this.kpiData.project_person_idactive
     };
     this.Updatekpi.updateKpi(this.kpiData.idkpis, newData)
       .subscribe(
         response => {
-          //console.log('KPI updated successfully:', response);
           this.projectCreationSuccess = true;
           this.projectCreationError = false;
-          // Manejo adicional después de la actualización exitosa
           setTimeout(() => {
             this.navigateToKpisView();
           }, 2000);
         },
         error => {
-          //console.error('Error updating KPI:', error);
           this.projectCreationSuccess = false;
           this.projectCreationError = true;
-          // Manejo de errores
           setTimeout(() => {
             this.projectCreationError = false;
           }, 2000);
@@ -62,8 +69,7 @@ export class KpiEditComponent implements OnInit {
       );
   }
 
-  navigateToKpisView() {    
+  navigateToKpisView() {
     this.router.navigate(['/kpisview', Environment.getProjectId(), { projectName: Environment.getusername() }]);
   }
-
 }

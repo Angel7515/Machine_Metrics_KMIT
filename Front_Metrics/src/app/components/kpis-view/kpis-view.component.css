@@ -7,3 +7,15 @@
     --bs-table-color: #fff;
     --bs-table-bg: #1a72ca;
 }
+
+.btn-edit{
+    background-color: #FDBE50;
+    border-color: #FDBE50;
+    color: white;
+}
+
+.btn-follow{
+    background-color: #4CAF50;
+    border-color:#4CAF50;
+    color: rgb(255, 255, 255);
+}

@@ -16,6 +16,9 @@
             <th scope="col">Name</th>
             <th scope="col">Type</th>
             <th scope="col">Importance</th>
+            <th scope="col">Start Date</th> <!-- Nueva columna para la fecha de inicio -->
+            <th scope="col">End Date</th> <!-- Nueva columna para la fecha de finalización -->
+            <th scope="col">Responsible(s)</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -25,9 +28,18 @@
             <td>{{ kpi.name }}</td>
             <td>{{ kpi.type_kp }}</td>
             <td>{{ kpi.importance }}</td>
-            <td><button *ngIf="!isAdminRole()" (click)="redirectToEditKPI(kpi)"
-                class="btn btn-warning">Edit</button>
-                <button class="btn btn-success">Follow up</button></td>
+            <td>{{ kpi.start_date }}</td> <!-- Mostrar fecha de inicio -->
+            <td>{{ kpi.end_date }}</td> <!-- Mostrar fecha de finalización -->
+            <td>
+              <div *ngFor="let person of kpi.personsResponsible">
+                {{ person.user_name }}
+                <br>
+              </div>
+            </td>
+            <td>
+              <button *ngIf="!isAdminRole()" (click)="redirectToEditKPI(kpi)" class="btn btn-warning btn-edit">Edit</button>
+              <button class="btn btn-success btn-follow">Follow up</button>
+            </td>
           </tr>
         </tbody>
       </table>

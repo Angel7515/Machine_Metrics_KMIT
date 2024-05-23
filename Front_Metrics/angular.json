@@ -74,8 +74,8 @@
           "options": {
             "browserTarget": "Front_Metrics:build",
             "ssl": true,
-            "sslKey": "/home/angel/monitorApp/Machine_Metrics_KMIT/Front_Metrics/src/server.key",
-            "sslCert": "/home/angel/monitorApp/Machine_Metrics_KMIT/Front_Metrics/src/server.cert"
+            "sslKey": "/home/angel/richard_app/Machine_Metrics_KMIT/Front_Metrics/src/server.key",
+            "sslCert": "/home/angel/richard_app/Machine_Metrics_KMIT/Front_Metrics/src/server.cert"
           },
           "configurations": {
             "production": {

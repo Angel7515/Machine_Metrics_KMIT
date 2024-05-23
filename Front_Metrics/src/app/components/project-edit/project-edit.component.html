@@ -34,7 +34,6 @@
                 <div class="status_projects">
                     <label for="statusSelect"><strong>Status:</strong></label>
                     <select id="statusSelect" [(ngModel)]="selectedStatus">
-                        <option value="CREATED">CREATED</option>
                         <option value="PENDING">PENDING</option>
                         <option value="ACTIVE">ACTIVE</option>
                         <option value="COMPLETE">COMPLETE</option>
@@ -43,18 +42,17 @@
             </div>
             <div class="col">
                 <div class="date_start">
-                    <label class="col-form-label mt-4" for="startDate"><strong>Start Date ( old ): </strong></label>
-                    <p>Created Date: {{ projectDetails[0]?.start_date }}</p>
-                    <label class="col-form-label mt-4" for="startDate"><strong>Start Date ( new ): </strong></label>
+                    <label class="col-form-label mt-4" for="startDate"><strong>Start Date</strong></label>
                     <input type="date" id="startDate" [value]="selectedStartDate">
                 </div>
             </div>
-            <div class="col" *ngIf="selectedStatus === 'COMPLETE'">
+            <div class="col">
                 <div class="date_end">
-                    <label class="col-form-label mt-4" for="endDate"><strong>End Date:</strong></label>
+                    <label class="col-form-label mt-4" for="endDate"><strong>End Date ( new ): </strong></label>
                     <input type="date" id="endDate" [value]="selectedEndDate">
                 </div>
             </div>
+            
         </div>
 
         <br>

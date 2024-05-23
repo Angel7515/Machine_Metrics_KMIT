@@ -5,7 +5,7 @@
         <br>
         <div class="d-flex justify-content-between">
             <div class="return-back">
-                <button routerLink="/home" class="btn btn-primary">Back</button>
+                <button routerLink="/home" class="btn btn-primary btn-back">Back</button>
             </div>
             <br>
             <div class="title">
@@ -15,19 +15,19 @@
             <br>
             <div class="edith_reg">
                 <button *ngIf="!isAdminRole()" [routerLink]="['/dbeditproject', projectID]"
-                    class="btn btn-warning">Edit</button>
+                    class="btn btn-warning btn-edit">Edit</button>
             </div>
         </div>
         <br>
         <div class="date_created">
-            <h2>Created Date: {{ projectDetails[0].start_date }}</h2>
+            <h2 class="date_data">Created Date: {{ projectDetails[0].start_date }}</h2>
         </div>
         <br>
         <div class="row">
             <div class="col-md-6">
                 <div class="responsable">
                     <h1 for="exampleTextarea">Responsible:</h1>
-                    <h1>{{ nameperson }}</h1>
+                    <h1 class="responsable-name">{{ nameperson }}</h1>
                 </div>
             </div>
             <div class="col-md-6">
@@ -52,7 +52,7 @@
         </div>
         <div class="form-group" *ngIf="showDescription">
             <h1 for="exampleTextarea">Description:</h1>
-            <div [innerHTML]="formattedDescription"></div>
+            <div class="text-des" [innerHTML]="formattedDescription"></div>
         </div>
         <br>
         <div class="participants" *ngIf="filteredParticipants && filteredParticipants.length > 0">
@@ -74,15 +74,18 @@
         <br>
         <div class="kpiperformance">
             <h2>KPI Performance</h2>
+            <div class="text-center">
+                <button class="btn btn-primary" (click)="navigateToKpisView(projectID, projectDetails[0].project_name)">
+                    KPIs Advance
+                </button>
+            </div>
             <div class="progress">
-                <div #progressBar id="progress-bar"
-                    class="progress-bar bg-success"
-                    [style.width.%]="kpiStrPorcentAverage" role="progressbar"
-                    aria-valuemin="0" aria-valuemax="100">
+                <div #progressBar id="progress-bar" class="progress-bar bg-success"
+                    [style.width.%]="kpiStrPorcentAverage" role="progressbar" aria-valuemin="0" aria-valuemax="100">
                     {{ kpiStrPorcentAverage }}%
                 </div>
             </div>
-            <div class="table-responsive"> <!-- Agregar la clase table-responsive -->
+            <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
                         <tr class="table-primary">
@@ -93,6 +96,7 @@
                             <th>Description</th>
                             <th>Date</th>
                             <th>Percentage</th>
+                            <th>Responsible(s)</th> <!-- Nueva columna para mostrar los responsables -->
                         </tr>
                     </thead>
                     <tbody>
@@ -107,26 +111,35 @@
                                         {{ kpi.kpi_descripcion }}
                                     </div>
                                     <span (click)="DescriptionTable(kpi)" class="toggle-description"
-                                        [id]="'descriptionLink_' + i" [style.color]="kpi.showDescription ? 'blue' : 'red'">
+                                        [id]="'descriptionLink_' + i"
+                                        [style.color]="kpi.showDescription ? 'blue' : 'red'">
                                         {{ kpi.showDescription ? 'Hide Description' : 'Show Description' }}
                                     </span>
+
                                 </td>
                                 <td>{{ kpi.date_upload }}</td>
                                 <td>
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                            role="progressbar" [style.width]="kpi.kpi_str_porcent + '%'" aria-valuemin="0"
-                                            aria-valuemax="100">
-                                            {{ kpi.kpi_str_porcent | number:'1.1-1' }}% 
+                                            role="progressbar" [style.width]="kpi.kpi_str_porcent + '%'"
+                                            aria-valuemin="0" aria-valuemax="100">
+                                            {{ kpi.kpi_str_porcent | number:'1.1-1' }}%
                                         </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div *ngFor="let person of kpi.personsResponsible">
+                                        {{ person.user_name }} <!-- Mostrar el nombre del responsable -->
+                                        <br>
                                     </div>
                                 </td>
                             </tr>
                         </ng-container>
                     </tbody>
+
                 </table>
             </div>
         </div>
-               
+
     </div>
 </div>

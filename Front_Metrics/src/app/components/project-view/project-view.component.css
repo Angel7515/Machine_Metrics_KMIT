@@ -17,7 +17,7 @@
 }
 
 .complete {
-    background-color: rgb(235, 255, 52);
+    background-color: #FDBE50;
     color: rgb(0, 0, 0);
     /* Para asegurarse de que el texto sea legible */
     padding: 5px 10px;
@@ -39,7 +39,7 @@
 }
 
 .pending {
-    background-color: rgb(255, 0, 0);
+    background-color: rgb(79, 185, 192);
     color: white;
     padding: 5px 10px;
     border-radius: 10px;
@@ -48,8 +48,8 @@
 }
 
 .active {
-    background-color: rgb(0, 255, 0);
-    color: rgb(0, 0, 0);
+    background-color: #4CAF50;
+    color: rgb(255, 255, 255);
     /* Para asegurarse de que el texto sea legible */
     padding: 5px 10px;
     /* Ajustar el relleno según sea necesario */
@@ -152,3 +152,26 @@
     /* Ajusta el alto del contenedor de la barra de progreso según tus necesidades */
 }
 
+/* Boton de retorno */
+.btn-back{
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+.btn-back:hover{
+    border-color: #4CAF50;
+    color: black;
+}
+
+.title, .responsable-name, .date_data, .text-des {
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+
+.toggle-description {
+    cursor: pointer;
+  }
+  
+.btn-edit, .btn-edit:hover{
+    background-color: #FDBE50;
+    border-color: #FDBE50;
+}
