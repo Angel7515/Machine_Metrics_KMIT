@@ -25,7 +25,7 @@ export class KpisAddComponent implements OnInit {
   combinedData: any[] = [];
   projectCreationSuccess: boolean = false;
   projectCreationError: boolean = false;
-
+  
   startDate: Date | null = null;
   endDate: Date | null = null;
 
@@ -105,6 +105,11 @@ export class KpisAddComponent implements OnInit {
       .filter(participant => participant.isResponsible)
       .map(participant => participant.person_idactive);
 
+    // Verificar si no hay participantes responsables, añadir el usuario actual
+    if (responsibleParticipants.length === 0) {
+      responsibleParticipants.push(this.authServiceToken.getAccessIdactive());
+    }
+
     const kpiData = {
       name: this.kpiName,
       type_kp: this.kpiType,
@@ -148,6 +153,6 @@ export class KpisAddComponent implements OnInit {
   }
 
   navigateToKpisView() {
-    this.router.navigate(['/kpis']);
+    this.router.navigate(['/kpisview', Environment.getProjectId(), { projectName: Environment.getusername() }]);
   }
 }

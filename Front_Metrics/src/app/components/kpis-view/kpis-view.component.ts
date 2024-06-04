@@ -5,6 +5,7 @@ import { KpisAllService } from '../../services/KpisAll/kpis-all.service';
 import { AuthServiceTokenService } from '../../services/AuthServiceToken/auth-service-token.service';
 import { UsersService } from '../../services/AllUsers/users.service';
 import { DbKpisPersonService } from '../../services/kpisResponsable/db-kpis-person.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-kpis-view',
@@ -24,7 +25,8 @@ export class KpisViewComponent implements OnInit {
     private router: Router,
     private authServiceToken: AuthServiceTokenService,
     private userAllDB: UsersService,
-    private dbKpisPersonService: DbKpisPersonService
+    private dbKpisPersonService: DbKpisPersonService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +37,15 @@ export class KpisViewComponent implements OnInit {
       this.loadUsuarios();
       this.getKpisPersons();
     });
+  }
+
+  goBack() {
+    this.location.back();
+  }
+
+  navigateToProjectView() {
+    let projectId = Environment.getProjectId
+    this.router.navigate(['/projectview', projectId]);
   }
 
   isAdminRole(): boolean {

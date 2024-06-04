@@ -2,3 +2,12 @@
     margin-left: 10%;
     margin-top: 2%;
 }
+
+.button-container {
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #ddd; 
+    margin: 0 auto;
+    border-radius: 5px;
+  }
+  

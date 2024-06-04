@@ -4,7 +4,8 @@
   <div class="container">
     <br>
     <div class="d-flex justify-content-between mb-3">
-      <button class="btn btn-danger" routerLink="/dbkpis">Back</button>
+      <!-- <button class="btn btn-warning btn-edit" routerLink="/dbkpis">Back</button> -->
+      <button class="btn btn-warning btn-edit" (click)="navigateToProjectView()">Project Details</button>
       <button *ngIf="!isAdminRole()" routerLink="/kpiAdd" class="btn btn-primary btn-lg">Add New KPI</button>
     </div>
     <br>

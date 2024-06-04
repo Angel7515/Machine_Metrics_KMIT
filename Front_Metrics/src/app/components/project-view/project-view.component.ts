@@ -62,7 +62,6 @@ export class ProjectViewComponent implements OnInit {
     this.dbKpisPersonService.getAllKpisPerson().subscribe(
       data => {
         this.kpisPersons = data;
-        console.log('KPIs Persons:', this.kpisPersons);
   
         // Creamos un nuevo array para almacenar los datos de asignaciones de personas responsables a KPIs con los nombres de usuario
         const kpiPersonsWithUserNames: any[] = [];

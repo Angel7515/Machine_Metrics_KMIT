@@ -11,7 +11,12 @@
 .btn-edit{
     background-color: #FDBE50;
     border-color: #FDBE50;
-    color: white;
+    color: rgb(255, 255, 255);
+}
+
+.btn-edit:hover{
+    border-color: #FDBE50;
+    color: black;
 }
 
 .btn-follow{

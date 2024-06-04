@@ -48,10 +48,25 @@
             </div>
         </div>
         <br>
+        <div class="mt-4">
+            <h2>Participants</h2>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let participant of combinedData">
+                    {{ participant.full_name }}
+                    <button class="btn"
+                        [ngClass]="{'btn-primary': !participant.isResponsible, 'btn-danger': participant.isResponsible}"
+                        (click)="toggleResponsibility(participant)">
+                        {{ participant.isResponsible ? 'Remove' : 'Responsible' }}
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <br>
         <div class="text-center mt-4">
             <button class="btn btn-danger float-start" (click)="navigateToKpisView()">Cancel</button>
             <button class="btn btn-success ms-2" (click)="updateKpi()"
-                [disabled]="!kpiName || !kpiDescription">Save</button>
+                [disabled]="!kpiName || !kpiDescription || !isAnyParticipantResponsible()">Save</button>
         </div>
     </div>
 </div>
