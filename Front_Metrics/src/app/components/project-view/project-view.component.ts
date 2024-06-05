@@ -1,14 +1,10 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-
 import { Router } from '@angular/router';
-
-
 import { ActivatedRoute } from '@angular/router';
 import { IDprojectService } from '../../services/IDprojectService/idproject.service';
 import { Environment } from '../../environments/environment';
 import { SearchOnePersonService } from '../../services/SearchOnePerson/search-one-person.service';
 import { AuthServiceTokenService } from '../../services/AuthServiceToken/auth-service-token.service';
-
 import { UsersService } from '../../services/AllUsers/users.service';
 import { GetParticipantsAllService } from '../../services/GetPersonProject/get-participants-all.service';
 import { KpiPerformanceService } from '../../services/OverviewKPIPerformance/kpi-performance.service';
@@ -63,31 +59,21 @@ export class ProjectViewComponent implements OnInit {
       data => {
         this.kpisPersons = data;
   
-        // Creamos un nuevo array para almacenar los datos de asignaciones de personas responsables a KPIs con los nombres de usuario
         const kpiPersonsWithUserNames: any[] = [];
   
-        // Iteramos sobre cada registro en kpisPersons
         this.kpisPersons.forEach(kpiPerson => {
-          // Obtenemos el nombre del usuario correspondiente al person_idactive
           const userName = this.getUserName(kpiPerson.person_idactive);
-          // Creamos un nuevo objeto que contenga los datos de la asignación de persona responsable a KPI, junto con el nombre del usuario
           const kpiPersonWithUserName = {
             kpis_idkpis: kpiPerson.kpis_idkpis,
             kpis_project_idproject: kpiPerson.kpis_project_idproject,
             person_idactive: kpiPerson.person_idactive,
-            user_name: userName // Añadimos el nombre del usuario al objeto
+            user_name: userName
           };
-          // Agregamos el nuevo objeto al array kpiPersonsWithUserNames
           kpiPersonsWithUserNames.push(kpiPersonWithUserName);
         });
   
-        // Ahora kpiPersonsWithUserNames contiene los datos de asignaciones de personas responsables a KPIs con los nombres de usuario
-  
-        // Asociamos estos datos con los registros de KPIs
         this.kpiPerformance.forEach(kpi => {
-          // Filtramos kpiPersonsWithUserNames para encontrar los registros correspondientes al ID del KPI actual
           const matchingRecords = kpiPersonsWithUserNames.filter(record => record.kpis_idkpis === kpi.idkpis);
-          // Asignamos los registros correspondientes al KPI actual
           kpi.personsResponsible = matchingRecords;
         });
       },
@@ -97,15 +83,11 @@ export class ProjectViewComponent implements OnInit {
     );
   }
 
-
-
   getKpisPersons(): void {
     this.dbKpisPersonService.getAllKpisPerson()
       .subscribe(
         data => {
           this.kpisPersons = data;
-          /* console.log('KPIs Persons:', this.kpisPersons); */
-          // Asociar los IDs de las personas responsables con las KPIs
           this.kpiPerformance.forEach(kpi => {
             const person = this.kpisPersons.find(person => person.kpis_idkpis === kpi.idkpis);
             if (person) {
@@ -133,7 +115,7 @@ export class ProjectViewComponent implements OnInit {
     this.toggleDescription();
   }
 
-  showDescription: boolean = true; // Variable para controlar la visibilidad de la descripción
+  showDescription: boolean = true;
 
   toggleDescription(): void {
     this.showDescription = !this.showDescription;
@@ -206,7 +188,6 @@ export class ProjectViewComponent implements OnInit {
     );
   }
 
-
   graphics(kpiDataArray: any[], kpiStrPorcentAverage: number) {
     this.fillProgressBar();
     const progressBar = document.getElementById('progress-bar') as HTMLElement;
@@ -223,41 +204,36 @@ export class ProjectViewComponent implements OnInit {
     progressBar.innerText = targetWidth + '%';
   }
 
-
-
-
-
   DescriptionTable(kpi: any) {
     kpi.showDescription = !kpi.showDescription;
-    // Cambiar el color del texto del enlace en función del estado de showDescription
     const link = document.getElementById('descriptionLink_' + kpi.id) as HTMLSpanElement;
     if (link) {
       link.style.color = kpi.showDescription ? 'blue' : 'red';
     }
   }
 
-
-
-
   isAdminRole(): boolean {
-    if (this.authServiceToken.getAccessRole() === 'ADMIN') {
-      return true
-    } else {
-      return false
-    }
+    return this.authServiceToken.getAccessRole() === 'ADMIN';
   }
 
-  /* Filtrar usuarios por proyecto y registro diccionario */
   filterParticipants() {
     this.filteredParticipants = this.participantesDB.filter(participant => {
       return participant.project_idproject === this.projectID;
     });
+
+    this.filteredParticipants.sort((a, b) => {
+      const nameA = this.getUserName(a.person_idactive).toLowerCase();
+      const nameB = this.getUserName(b.person_idactive).toLowerCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
-  /* getUserName(personId: string): string {
-    const user = this.usuariosDB.find(user => user.idactive === personId);
-    return user ? user.full_name : '';
-  } */
   getUserName(personId: string): string {
     const user = this.usuariosDB.find(user => user.idactive === personId);
     return user ? user.full_name : '';
@@ -268,6 +244,4 @@ export class ProjectViewComponent implements OnInit {
     Environment.setProjectId(projectId);
     Environment.setusername(projectName);
   }
-  
-
 }

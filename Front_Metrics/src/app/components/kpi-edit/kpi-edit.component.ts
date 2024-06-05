@@ -41,6 +41,7 @@ export class KpiEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.loadParticipantes();
     this.kpiData = history.state.kpiData;
     /* console.log(this.kpiData); */
     if (this.kpiData) {
@@ -51,7 +52,6 @@ export class KpiEditComponent implements OnInit {
       this.endDate = this.kpiData.end_date;
     }
 
-    this.loadParticipantes();
     this.loadUsuarios();
     this.loadResponsibles();
     this.currentUser = this.authServiceToken.getAccessIdactive(); // Obtener el usuario actual
@@ -75,6 +75,7 @@ export class KpiEditComponent implements OnInit {
       (data: any[]) => {
         this.participantesDB = data;
         this.filterParticipants();
+        console.log('Participantes filtrados:', this.filteredParticipants);
         this.checkDataLoaded();
       },
       error => {
