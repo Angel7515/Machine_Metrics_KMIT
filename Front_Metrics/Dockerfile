@@ -18,7 +18,7 @@ RUN npm install -g @angular/cli@17.2.0
 COPY . .
 
 # Build the Angular app with the production configuration
-RUN ng build --configuration=production
+#RUN ng build --configuration=production
 
 # Step 2: Use the nginx image to serve the application
 FROM nginx:latest
