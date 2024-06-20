@@ -207,4 +207,9 @@ export class ProjectViewComponent implements OnInit, AfterViewInit {
     Environment.setusername(projectName);
     Environment.setProjectStatus(status);
   }
+
+  redirectToPerformance(selectedKpi: any): void {
+    this.router.navigate(['/performance', selectedKpi.idkpis], { state: { kpiData: selectedKpi } });
+  }
+
 }

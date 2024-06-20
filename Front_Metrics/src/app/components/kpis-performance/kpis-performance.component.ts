@@ -65,5 +65,9 @@ export class KpisPerformanceComponent implements OnInit {
     this.router.navigate(['/kpisview', Environment.getProjectId(), { projectName: Environment.getusername() }]);
   }
   
+  navigateToProjectView() {
+    let projectId = Environment.getProjectId();
+    this.router.navigate(['/projectview', projectId]);
+  }
 
 }

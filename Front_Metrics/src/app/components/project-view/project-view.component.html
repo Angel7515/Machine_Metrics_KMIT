@@ -85,7 +85,7 @@
       <div class="table-responsive">
         <table class="table table-hover">
           <thead>
-            <tr class="table-primary">
+            <tr>
               <th>Name (KPI)</th>
               <!-- <th>Type (KPI)</th> -->
               <th>Quantity</th>
@@ -96,6 +96,7 @@
               <th>Performance Date</th>
               <th>Percentage</th>
               <th>Responsible(s)</th> <!-- Nueva columna para mostrar los responsables -->
+              <th>Action</th> <!-- Nueva columna para los botones de acción -->
             </tr>
           </thead>
           <tbody>
@@ -130,6 +131,10 @@
                     {{ person.user_name }} <!-- Mostrar el nombre del responsable -->
                     <br>
                   </div>
+                </td>
+                <td>
+                  <!-- Botón para redirigir a la vista de performance -->
+                  <button class="btn btn-primary" (click)="redirectToPerformance(kpi)">Follow</button>
                 </td>
               </tr>
             </ng-container>
