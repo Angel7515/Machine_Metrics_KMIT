@@ -41,10 +41,6 @@ export class KpisViewComponent implements OnInit {
     });
   }
 
-  goBack() {
-    this.location.back();
-  }
-
   navigateToProjectView() {
     let projectId = Environment.getProjectId();
     this.router.navigate(['/projectview', projectId]);
@@ -59,7 +55,7 @@ export class KpisViewComponent implements OnInit {
     this.kpisAllService.getAllKPIs().subscribe(
       (data: any[]) => {
         this.kpis = data.filter(kpi => kpi.project_idproject === this.project_number);
-        this.kpis.sort((a, b) => a.name.localeCompare(b.name)); // Ordenar KPIs por nombre
+        this.sortKpiByEndDate(); // Ordenar KPIs por fecha de término
         this.formatDates(); // Formatear fechas después de obtener los KPIs
         this.assignResponsiblesToKpis(); // Llamar después de obtener los KPIs
       },
@@ -68,6 +64,15 @@ export class KpisViewComponent implements OnInit {
       }
     );
   }
+  
+  sortKpiByEndDate(): void {
+    this.kpis.sort((a, b) => {
+      const dateA: Date = new Date(a.end_date); // Explicitly declare as Date
+      const dateB: Date = new Date(b.end_date); // Explicitly declare as Date
+      return dateA.getTime() - dateB.getTime(); // Use getTime() to get numeric value for comparison
+    });
+  }
+  
 
   loadUsuarios(): void {
     this.userAllDB.getUsers().subscribe(

@@ -197,9 +197,26 @@ export class ProjectViewComponent implements OnInit, AfterViewInit {
     return user ? user.full_name : '';
   }
 
-  sortKpiPerformance() {
+  /* sortKpiPerformance() {
     this.kpiPerformance.sort((a, b) => a.name.localeCompare(b.name));
-  }
+  } */
+    sortKpiPerformance() {
+      this.kpiPerformance.sort((a, b) => {
+        // Parsea las fechas de término en objetos Date
+        const dateA = new Date(a.end_date);
+        const dateB = new Date(b.end_date);
+    
+        // Compara las fechas para determinar el orden
+        if (dateA < dateB) {
+          return -1;
+        }
+        if (dateA > dateB) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+    
 
   navigateToKpisView(projectId: string, projectName: string, status: string) {
     this.router.navigate(['/kpisview', projectId, { projectName }]);

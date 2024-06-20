@@ -1,10 +1,9 @@
 <div class="contenedor">
   <br>
-  <h1 class="title"><strong>KPIS In Project: {{project_name}}</strong></h1>
+  <h1 class="title"><strong>KPIS In Project: {{ project_name }}</strong></h1>
   <div class="container">
     <br>
     <div class="d-flex justify-content-between mb-3">
-      <!-- <button class="btn btn-warning btn-edit" routerLink="/dbkpis">Back</button> -->
       <button class="btn btn-warning btn-edit" (click)="navigateToProjectView()">Project Details</button>
       <button *ngIf="!isAdminRole() && status !== 'COMPLETE'" routerLink="/kpiAdd" class="btn btn-primary btn-lg">Add New KPI</button>
     </div>
@@ -12,25 +11,23 @@
     <div class="table-responsive">
       <table class="table table-hover table-striped">
         <thead class="table-primary">
-          <tr><!-- 
-            <th scope="col">ID</th> -->
+          <tr>
             <th scope="col">Name</th>
             <th scope="col">Type</th>
             <th scope="col">Importance</th>
-            <th scope="col">Start Date</th> <!-- Nueva columna para la fecha de inicio -->
-            <th scope="col">End Date</th> <!-- Nueva columna para la fecha de finalización -->
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
             <th scope="col">Responsible(s)</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody class="table-default">
-          <tr *ngFor="let kpi of kpis" (click)="redirectToPerformance(kpi)"><!-- 
-            <th scope="row">{{ kpi.idkpis }}</th> -->
+          <tr *ngFor="let kpi of kpis" (click)="redirectToPerformance(kpi)">
             <td>{{ kpi.name }}</td>
             <td>{{ kpi.type_kp }}</td>
             <td>{{ kpi.importance }}</td>
-            <td>{{ kpi.start_date }}</td> <!-- Mostrar fecha de inicio -->
-            <td>{{ kpi.end_date }}</td> <!-- Mostrar fecha de finalización -->
+            <td>{{ kpi.start_date }}</td>
+            <td>{{ kpi.end_date }}</td>
             <td>
               <div *ngFor="let person of kpi.personsResponsible">
                 {{ person.user_name }}
