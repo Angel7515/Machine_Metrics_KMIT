@@ -1,6 +1,5 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { IDprojectService } from '../../services/IDprojectService/idproject.service';
 import { Environment } from '../../environments/environment';
 import { SearchOnePersonService } from '../../services/SearchOnePerson/search-one-person.service';
@@ -13,14 +12,13 @@ import { DbKpisPersonService } from '../../services/kpisResponsable/db-kpis-pers
 @Component({
   selector: 'app-project-view',
   templateUrl: './project-view.component.html',
-  styleUrl: './project-view.component.css'
+  styleUrls: ['./project-view.component.css']
 })
-export class ProjectViewComponent implements OnInit {
+export class ProjectViewComponent implements OnInit, AfterViewInit {
   @ViewChild('progressBar') progressBar!: ElementRef;
 
   projectID: string = '';
   projectDetails: any;
-  date: any;
   nameperson: string = '';
 
   usuariosDB: any[] = [];
@@ -29,11 +27,9 @@ export class ProjectViewComponent implements OnInit {
   kpisPersons: any[] = [];
   kpiStrPorcentSum: number = 0;
   kpiStrPorcentAverage: number = 0;
-  pieChartData: number[] = [];
-
   filteredParticipants: any[] = [];
-
   formattedDescription: string = '';
+  showDescription: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,107 +46,42 @@ export class ProjectViewComponent implements OnInit {
   ngOnInit() {
     this.projectID = Environment.getProjectId();
     this.loadProjectData();
-    this.getKpisPersons();
-    this.getKpiPersonsWithUserNames();
   }
 
-  getKpiPersonsWithUserNames(): void {
-    this.dbKpisPersonService.getAllKpisPerson().subscribe(
-      data => {
-        this.kpisPersons = data;
-  
-        const kpiPersonsWithUserNames: any[] = [];
-  
-        this.kpisPersons.forEach(kpiPerson => {
-          const userName = this.getUserName(kpiPerson.person_idactive);
-          const kpiPersonWithUserName = {
-            kpis_idkpis: kpiPerson.kpis_idkpis,
-            kpis_project_idproject: kpiPerson.kpis_project_idproject,
-            person_idactive: kpiPerson.person_idactive,
-            user_name: userName
-          };
-          kpiPersonsWithUserNames.push(kpiPersonWithUserName);
-        });
-  
-        this.kpiPerformance.forEach(kpi => {
-          const matchingRecords = kpiPersonsWithUserNames.filter(record => record.kpis_idkpis === kpi.idkpis);
-          kpi.personsResponsible = matchingRecords;
-        });
-      },
-      error => {
-        console.error('Error fetching KPIs Persons:', error);
-      }
-    );
-  }
-
-  getKpisPersons(): void {
-    this.dbKpisPersonService.getAllKpisPerson()
-      .subscribe(
-        data => {
-          this.kpisPersons = data;
-          this.kpiPerformance.forEach(kpi => {
-            const person = this.kpisPersons.find(person => person.kpis_idkpis === kpi.idkpis);
-            if (person) {
-              kpi.personId = person.person_idactive;
-            }
-          });
-        },
-        error => {
-          console.error('Error fetching KPIs Persons:', error);
-        }
-      );
-  }
-
-  formatDescription(): void {
-    if (this.projectDetails && this.projectDetails.length > 0) {
-      this.formattedDescription = this.projectDetails[0].description.replace(/\n/g, '<br>');
-    }
-  }
+  /* ngAfterViewInit() {
+    this.fillProgressBar();
+  } */
 
   loadProjectData() {
     this.loadProjectDetails(this.projectID);
     this.loadUsuarios();
     this.loadParticipantes();
     this.loadKpiPerformance();
-    this.toggleDescription();
-  }
-
-  showDescription: boolean = true;
-
-  toggleDescription(): void {
-    this.showDescription = !this.showDescription;
   }
 
   loadProjectDetails(projectID: string) {
     this.projectService.getProjectById(projectID).subscribe(
       (data: any) => {
         this.projectDetails = data;
-        this.projectDetails[0].start_date = this.projectDetails[0].start_date.substring(0, 10);
+        this.projectDetails[0].start_date = this.formatDate(this.projectDetails[0].start_date);
         this.formatDescription();
-        this.searchperson.getPersonNameByIdActive(this.projectDetails[0].person_idactive)
-          .subscribe(
-            (person: any) => {
-              this.nameperson = person.fullName;
-            },
-            error => {
-              console.log('Error al obtener el nombre de la persona:', error);
-            }
-          );
+        this.loadPersonName(this.projectDetails[0].person_idactive);
       },
-      error => {
-        console.log('Error al obtener los detalles del proyecto:', error);
-      }
+      error => console.error('Error al obtener los detalles del proyecto:', error)
+    );
+  }
+
+  loadPersonName(personIdActive: string) {
+    this.searchperson.getPersonNameByIdActive(personIdActive).subscribe(
+      (person: any) => this.nameperson = person.fullName,
+      error => console.error('Error al obtener el nombre de la persona:', error)
     );
   }
 
   loadUsuarios() {
     this.userAllDB.getUsers().subscribe(
-      (data: any[]) => {
-        this.usuariosDB = data;
-      },
-      error => {
-        console.log('Error al obtener los usuarios:', error);
-      }
+      (data: any[]) => this.usuariosDB = data,
+      error => console.error('Error al obtener los usuarios:', error)
     );
   }
 
@@ -160,56 +91,96 @@ export class ProjectViewComponent implements OnInit {
         this.participantesDB = data;
         this.filterParticipants();
       },
-      error => {
-        console.log('Error al obtener los participantes:', error);
-      }
+      error => console.error('Error al obtener los participantes:', error)
     );
   }
 
   loadKpiPerformance() {
     this.kpiPerformanceDB.getKpisByProject(parseInt(this.projectID)).subscribe(
       (data: any[]) => {
-        this.kpiPerformance = data;
-        let totalKPIs = this.kpiPerformance.length;
-        let kpiDataArray: any[] = [];
-        this.kpiPerformance.forEach(kpi => {
-          kpi.date_upload = kpi.date_upload.substring(0, 10);
-          this.kpiStrPorcentSum += parseFloat(kpi.kpi_str_porcent);
-          kpiDataArray.push({ name: kpi.name, kpi_str_porcent: kpi.kpi_str_porcent });
-        });
-        if (totalKPIs > 0) {
-          this.kpiStrPorcentAverage = this.kpiStrPorcentSum / totalKPIs;
-        }
-        this.graphics(kpiDataArray, this.kpiStrPorcentAverage);
+        this.kpiPerformance = data.map(kpi => ({
+          ...kpi,
+          date_upload: this.formatDate(kpi.date_upload),
+          start_date: this.formatDate(kpi.start_date),
+          end_date: this.formatDate(kpi.end_date)
+        }));
+        this.calculateKpiStrPorcentAverage();
+        this.getKpisPersons();
+        this.sortKpiPerformance();  // Ensure sorting is applied after all data is processed
       },
-      error => {
-        console.log('Error al obtener los KPIs de rendimiento:', error);
-      }
+      error => console.error('Error al obtener los KPIs de rendimiento:', error)
     );
   }
 
-  graphics(kpiDataArray: any[], kpiStrPorcentAverage: number) {
-    this.fillProgressBar();
-    const progressBar = document.getElementById('progress-bar') as HTMLElement;
-    if (progressBar) {
-      progressBar.style.width = kpiStrPorcentAverage.toFixed(1); + '%';
-      progressBar.innerText = progressBar.style.width;
+  getKpisPersons() {
+    this.dbKpisPersonService.getAllKpisPerson().subscribe(
+      data => {
+        this.kpisPersons = data;
+        this.assignPersonsToKpis();
+      },
+      error => console.error('Error fetching KPIs Persons:', error)
+    );
+  }
+
+  assignPersonsToKpis() {
+    const kpiPersonsWithUserNames = this.kpisPersons.map(kpiPerson => ({
+      ...kpiPerson,
+      user_name: this.getUserName(kpiPerson.person_idactive)
+    }));
+    this.kpiPerformance.forEach(kpi => {
+      kpi.personsResponsible = kpiPersonsWithUserNames.filter(record => record.kpis_idkpis === kpi.idkpis);
+    });
+  }
+
+  formatDescription() {
+    if (this.projectDetails && this.projectDetails.length > 0) {
+      this.formattedDescription = this.projectDetails[0].description.replace(/\n/g, '<br>');
     }
   }
 
-  fillProgressBar(): void {
+  formatDate(dateString: string): string {
+    return dateString.substring(0, 10);
+  }
+
+  calculateKpiStrPorcentAverage() {
+    this.kpiStrPorcentSum = this.kpiPerformance.reduce((sum, kpi) => sum + parseFloat(kpi.kpi_str_porcent), 0);
+    const totalKPIs = this.kpiPerformance.length;
+    if (totalKPIs > 0) {
+      this.kpiStrPorcentAverage = this.kpiStrPorcentSum / totalKPIs;
+    }
+    // Llamar a fillProgressBar después de calcular kpiStrPorcentAverage
+    this.fillProgressBar();
+  }
+
+
+  /* fillProgressBar() {
     const progressBar = this.progressBar.nativeElement;
     const targetWidth = this.kpiStrPorcentAverage.toFixed(1);
-    progressBar.style.width = targetWidth + '%';
-    progressBar.innerText = targetWidth + '%';
+    progressBar.style.width = `${targetWidth}%`;
+    progressBar.innerText = `${targetWidth}%`;
+  } */
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.fillProgressBar();
+    });
+  }
+
+  fillProgressBar() {
+    if (this.progressBar) {
+      const progressBar = this.progressBar.nativeElement;
+      const targetWidth = this.kpiStrPorcentAverage.toFixed(1);
+      progressBar.style.width = `${targetWidth}%`;
+      progressBar.innerText = `${targetWidth}%`;
+    } else {
+    }
+  }
+
+  toggleDescription() {
+    this.showDescription = !this.showDescription;
   }
 
   DescriptionTable(kpi: any) {
     kpi.showDescription = !kpi.showDescription;
-    const link = document.getElementById('descriptionLink_' + kpi.id) as HTMLSpanElement;
-    if (link) {
-      link.style.color = kpi.showDescription ? 'blue' : 'red';
-    }
   }
 
   isAdminRole(): boolean {
@@ -217,21 +188,8 @@ export class ProjectViewComponent implements OnInit {
   }
 
   filterParticipants() {
-    this.filteredParticipants = this.participantesDB.filter(participant => {
-      return participant.project_idproject === this.projectID;
-    });
-
-    this.filteredParticipants.sort((a, b) => {
-      const nameA = this.getUserName(a.person_idactive).toLowerCase();
-      const nameB = this.getUserName(b.person_idactive).toLowerCase();
-      if (nameA < nameB) {
-        return -1;
-      }
-      if (nameA > nameB) {
-        return 1;
-      }
-      return 0;
-    });
+    this.filteredParticipants = this.participantesDB.filter(participant => participant.project_idproject === this.projectID)
+      .sort((a, b) => this.getUserName(a.person_idactive).localeCompare(this.getUserName(b.person_idactive)));
   }
 
   getUserName(personId: string): string {
@@ -239,9 +197,14 @@ export class ProjectViewComponent implements OnInit {
     return user ? user.full_name : '';
   }
 
-  navigateToKpisView(projectId: string, projectName: string) {
-    this.router.navigate(['/kpisview', projectId, { projectName: projectName }]);
+  sortKpiPerformance() {
+    this.kpiPerformance.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  navigateToKpisView(projectId: string, projectName: string, status: string) {
+    this.router.navigate(['/kpisview', projectId, { projectName }]);
     Environment.setProjectId(projectId);
     Environment.setusername(projectName);
+    Environment.setProjectStatus(status);
   }
 }

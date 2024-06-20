@@ -1,145 +1,141 @@
 <div class="bodycomponent">
+  <br>
+  <div class="container" *ngIf="projectDetails && projectDetails.length > 0">
     <br>
-    <div class="container" *ngIf="projectDetails && projectDetails.length > 0">
-
-        <br>
-        <div class="d-flex justify-content-between">
-            <div class="return-back">
-                <button routerLink="/home" class="btn btn-primary btn-back">Dashboard</button>
-            </div>
-            <br>
-            <div class="title">
-                <h1 class="ResumeProject"><strong>{{ projectDetails[0].project_name }}</strong>
-                </h1>
-            </div>
-            <br>
-            <div class="edith_reg">
-                <button *ngIf="!isAdminRole()" [routerLink]="['/dbeditproject', projectID]"
-                    class="btn btn-warning btn-edit">Edit</button>
-            </div>
+    <div class="d-flex justify-content-between">
+      <div class="return-back">
+        <button routerLink="/home" class="btn btn-primary btn-back">Dashboard</button>
+      </div>
+      <br>
+      <div class="title">
+        <h1 class="ResumeProject"><strong>{{ projectDetails[0].project_name }}</strong></h1>
+      </div>
+      <br>
+      <div class="edith_reg">
+        <button *ngIf="!isAdminRole() && projectDetails[0].status_project !== 'COMPLETE'" [routerLink]="['/dbeditproject', projectID]" class="btn btn-warning btn-edit">Edit</button>
+      </div>
+    </div>
+    <br>
+    <div class="date_created">
+      <h2 class="date_data">Created Date: {{ projectDetails[0].start_date }}</h2>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="responsable">
+          <h1 for="exampleTextarea">Responsible:</h1>
+          <h1 class="responsable-name">{{ nameperson }}</h1>
         </div>
-        <br>
-        <div class="date_created">
-            <h2 class="date_data">Created Date: {{ projectDetails[0].start_date }}</h2>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="responsable">
-                    <h1 for="exampleTextarea">Responsible:</h1>
-                    <h1 class="responsable-name">{{ nameperson }}</h1>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="status_projects">
-                    <h3 [ngClass]="{
+      </div>
+      <div class="col-md-6">
+        <div class="status_projects">
+          <h3 [ngClass]="{
                         'complete': projectDetails[0].status_project === 'COMPLETE',
                         'created': projectDetails[0].status_project === 'CREATED',
                         'pending': projectDetails[0].status_project === 'PENDING',
                         'active': projectDetails[0].status_project === 'ACTIVE'
                     }"> {{ projectDetails[0].status_project }}</h3>
-                </div>
-            </div>
         </div>
-        <div class="form-group row">
-            <div class="col-md-6 offset-md-3"> <!-- Alineamos el botón en el centro -->
-                <div class="toggle-description text-center">
-                    <button class="btn btn-primary" (click)="toggleDescription()">
-                        {{ showDescription ? 'Hide Description' : 'Show Description' }}
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="form-group" *ngIf="showDescription">
-            <h1 for="exampleTextarea">Description:</h1>
-            <div class="text-des" [innerHTML]="formattedDescription"></div>
-        </div>
-        <br>
-        <div class="participants" *ngIf="filteredParticipants && filteredParticipants.length > 0">
-            <h2>Participants</h2>
-            <div class="participant-container">
-                <ng-container *ngFor="let participant of filteredParticipants">
-                    <div class="participant">
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-person-fill" viewBox="0 0 16 16">
-                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-                            </svg>
-                            {{ getUserName(participant.person_idactive) }}
-                        </span>
-                    </div>
-                </ng-container>
-            </div>
-        </div>
-        <br>
-        <div class="kpiperformance">
-            <h2>KPI Performance</h2>
-            <div class="text-center">
-                <button class="btn btn-primary" (click)="navigateToKpisView(projectID, projectDetails[0].project_name)">
-                    KPI management
-                </button>
-            </div>
-            <div class="progress">
-                <div #progressBar id="progress-bar" class="progress-bar bg-success"
-                    [style.width.%]="kpiStrPorcentAverage" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                    {{ kpiStrPorcentAverage }}%
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr class="table-primary">
-                            <th>Name (KPI)</th>
-                            <th>Type (KPI)</th>
-                            <th>Quantity</th>
-                            <th>Quality</th>
-                            <th>Description</th>
-                            <th>Date</th>
-                            <th>Percentage</th>
-                            <th>Responsible(s)</th> <!-- Nueva columna para mostrar los responsables -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ng-container *ngFor="let kpi of kpiPerformance; let i = index">
-                            <tr class="">
-                                <td>{{ kpi.name }}</td>
-                                <td>{{ kpi.type_kp }}</td>
-                                <td>{{ kpi.kpi_num }}</td>
-                                <td>{{ kpi.kpi_str }}</td>
-                                <td>
-                                    <div class="description-container" *ngIf="kpi.showDescription">
-                                        {{ kpi.kpi_descripcion }}
-                                    </div>
-                                    <span (click)="DescriptionTable(kpi)" class="toggle-description"
-                                        [id]="'descriptionLink_' + i"
-                                        [style.color]="kpi.showDescription ? 'blue' : 'red'">
-                                        {{ kpi.showDescription ? 'Hide Description' : 'Show Description' }}
-                                    </span>
-
-                                </td>
-                                <td>{{ kpi.date_upload }}</td>
-                                <td>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                            role="progressbar" [style.width]="kpi.kpi_str_porcent + '%'"
-                                            aria-valuemin="0" aria-valuemax="100">
-                                            {{ kpi.kpi_str_porcent | number:'1.1-1' }}%
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div *ngFor="let person of kpi.personsResponsible">
-                                        {{ person.user_name }} <!-- Mostrar el nombre del responsable -->
-                                        <br>
-                                    </div>
-                                </td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-
-                </table>
-            </div>
-        </div>
-
+      </div>
     </div>
+    <div class="form-group row">
+      <div class="col-md-6 offset-md-3"> <!-- Alineamos el botón en el centro -->
+        <div class="toggle-description text-center">
+          <button class="btn btn-primary" (click)="toggleDescription()">
+            {{ showDescription ? 'Hide Description' : 'Show Description' }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group" *ngIf="showDescription">
+      <h1 for="exampleTextarea">Description:</h1>
+      <div class="text-des" [innerHTML]="formattedDescription"></div>
+    </div>
+    <br>
+    <div class="participants" *ngIf="filteredParticipants && filteredParticipants.length > 0">
+      <h2>Participants</h2>
+      <div class="participant-container">
+        <ng-container *ngFor="let participant of filteredParticipants">
+          <div class="participant">
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-person-fill" viewBox="0 0 16 16">
+                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+              </svg>
+              {{ getUserName(participant.person_idactive) }}
+            </span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <br>
+    <div class="kpiperformance">
+      <h2>KPI Performance</h2>
+      <div class="text-center">
+        <button class="btn btn-primary" (click)="navigateToKpisView(projectID, projectDetails[0].project_name, projectDetails[0].status_project)">
+          KPI management
+        </button>
+      </div>
+      <div class="progress">
+        <div #progressBar id="progress-bar" class="progress-bar bg-success" [style.width.%]="kpiStrPorcentAverage"
+          role="progressbar" aria-valuemin="0" aria-valuemax="100">
+          {{ kpiStrPorcentAverage }}%
+        </div>
+      </div>      
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr class="table-primary">
+              <th>Name (KPI)</th>
+              <!-- <th>Type (KPI)</th> -->
+              <th>Quantity</th>
+              <th>Quality</th>
+              <th>Description</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Performance Date</th>
+              <th>Percentage</th>
+              <th>Responsible(s)</th> <!-- Nueva columna para mostrar los responsables -->
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let kpi of kpiPerformance; let i = index">
+              <tr class="">
+                <td>{{ kpi.name }}</td>
+                <!-- <td>{{ kpi.type_kp }}</td> -->
+                <td>{{ kpi.kpi_num }}</td>
+                <td>{{ kpi.kpi_str }}</td>
+                <td>
+                  <div class="description-container" *ngIf="kpi.showDescription">
+                    {{ kpi.kpi_descripcion }}
+                  </div>
+                  <span (click)="DescriptionTable(kpi)" class="toggle-description" [id]="'descriptionLink_' + i"
+                    [style.color]="kpi.showDescription ? 'blue' : 'red'">
+                    {{ kpi.showDescription ? 'Hide Description' : 'Show Description' }}
+                  </span>
+                </td>
+                <td>{{ kpi.start_date }}</td>
+                <td>{{ kpi.end_date }}</td>
+                <td>{{ kpi.date_upload }}</td>
+                <td>
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar"
+                      [style.width]="kpi.kpi_str_porcent + '%'" aria-valuemin="0" aria-valuemax="100">
+                      {{ kpi.kpi_str_porcent | number:'1.1-1' }}%
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div *ngFor="let person of kpi.personsResponsible">
+                    {{ person.user_name }} <!-- Mostrar el nombre del responsable -->
+                    <br>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>

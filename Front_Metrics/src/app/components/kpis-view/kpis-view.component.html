@@ -6,14 +6,14 @@
     <div class="d-flex justify-content-between mb-3">
       <!-- <button class="btn btn-warning btn-edit" routerLink="/dbkpis">Back</button> -->
       <button class="btn btn-warning btn-edit" (click)="navigateToProjectView()">Project Details</button>
-      <button *ngIf="!isAdminRole()" routerLink="/kpiAdd" class="btn btn-primary btn-lg">Add New KPI</button>
+      <button *ngIf="!isAdminRole() && status !== 'COMPLETE'" routerLink="/kpiAdd" class="btn btn-primary btn-lg">Add New KPI</button>
     </div>
     <br>
     <div class="table-responsive">
       <table class="table table-hover table-striped">
         <thead class="table-primary">
-          <tr>
-            <th scope="col">ID</th>
+          <tr><!-- 
+            <th scope="col">ID</th> -->
             <th scope="col">Name</th>
             <th scope="col">Type</th>
             <th scope="col">Importance</th>
@@ -24,8 +24,8 @@
           </tr>
         </thead>
         <tbody class="table-default">
-          <tr *ngFor="let kpi of kpis" (click)="redirectToPerformance(kpi)">
-            <th scope="row">{{ kpi.idkpis }}</th>
+          <tr *ngFor="let kpi of kpis" (click)="redirectToPerformance(kpi)"><!-- 
+            <th scope="row">{{ kpi.idkpis }}</th> -->
             <td>{{ kpi.name }}</td>
             <td>{{ kpi.type_kp }}</td>
             <td>{{ kpi.importance }}</td>
@@ -38,7 +38,7 @@
               </div>
             </td>
             <td>
-              <button *ngIf="!isAdminRole()" (click)="redirectToEditKPI(kpi)" class="btn btn-warning btn-edit">Edit</button>
+              <button *ngIf="!isAdminRole() && status !== 'COMPLETE'" (click)="redirectToEditKPI(kpi)" class="btn btn-warning btn-edit">Edit</button>
               <button class="btn btn-success btn-follow">Follow up</button>
             </td>
           </tr>

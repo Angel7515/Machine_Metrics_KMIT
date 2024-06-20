@@ -19,6 +19,8 @@ export class KpisViewComponent implements OnInit {
   usuariosDB: any[] = [];
   kpisPersons: any[] = [];
 
+  status = Environment.getProjectStatus();
+
   constructor(
     private route: ActivatedRoute,
     private kpisAllService: KpisAllService,
@@ -27,7 +29,7 @@ export class KpisViewComponent implements OnInit {
     private userAllDB: UsersService,
     private dbKpisPersonService: DbKpisPersonService,
     private location: Location
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.project_number = Environment.getProjectId();
@@ -44,7 +46,7 @@ export class KpisViewComponent implements OnInit {
   }
 
   navigateToProjectView() {
-    let projectId = Environment.getProjectId
+    let projectId = Environment.getProjectId();
     this.router.navigate(['/projectview', projectId]);
   }
 
@@ -57,6 +59,7 @@ export class KpisViewComponent implements OnInit {
     this.kpisAllService.getAllKPIs().subscribe(
       (data: any[]) => {
         this.kpis = data.filter(kpi => kpi.project_idproject === this.project_number);
+        this.kpis.sort((a, b) => a.name.localeCompare(b.name)); // Ordenar KPIs por nombre
         this.formatDates(); // Formatear fechas después de obtener los KPIs
         this.assignResponsiblesToKpis(); // Llamar después de obtener los KPIs
       },

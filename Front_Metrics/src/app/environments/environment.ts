@@ -3,15 +3,19 @@ export const Environment = {
 
     CLIENT_ID: 'e0f0e1e2-8dfc-41c8-bc60-1cb97b2bdc98',
     AUTHORITY: "https://login.microsoftonline.com/da1068b1-9955-40c3-a728-451a21599bb3",
-    /* REDIRECT_URI: 'https://localhost:4200/',
-    API_URL: 'http://localhost:3000/', */
+    REDIRECT_URI: 'https://localhost:4200/',
+    API_URL: 'http://localhost:3000/',
 
-    REDIRECT_URI: 'https://cimmyt-project-management.cimmyt.org/',
-    API_URL: 'https://cimmyt-project-management.cimmyt.org:8443/',
+    /* REDIRECT_URI: 'https://cimmyt-project-management.cimmyt.org/',
+    API_URL: 'https://cimmyt-project-management.cimmyt.org:8443/', */
 
     projectId: '', // Variable para almacenar el ID
     getProjectId: () => Environment.projectId, // Función getter para obtener el ID
     setProjectId: (id: string) => { Environment.projectId = id; }, // Función setter para establecer el ID
+
+    project_status:'',//variable para almacenar el status del project
+    getProjectStatus: () => Environment.project_status,// funcion getter para optener status
+    setProjectStatus: (status: string) => {Environment.project_status = status; },
 
     username: '', // Variable para almacenar el ID
     getusername: () => Environment.username, // Función getter para obtener el ID

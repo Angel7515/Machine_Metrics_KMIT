@@ -15,6 +15,7 @@ export class KpisPerformanceComponent implements OnInit {
 
   kpiData: any;
   performances: any[] = [];
+  status = Environment.getProjectStatus();
 
   constructor(private router: Router, private route: ActivatedRoute, private getPerformance:GetPerformanceService, private createPerformance: CreatePerformanceService, private authServiceToken:AuthServiceTokenService) { }
 
